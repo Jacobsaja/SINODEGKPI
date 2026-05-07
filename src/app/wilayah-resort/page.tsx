@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import ResortHero from "@/components/ResortHero";
 import Footer from "@/components/Footer";
@@ -42,10 +43,27 @@ export default function WilayahResortPage() {
       </div>
 
       {/* Map Explorer — full viewport height */}
-      <MapExplorer />
+      <Suspense fallback={<MapExplorerFallback />}>
+        <MapExplorer />
+      </Suspense>
 
       <Footer />
     </main>
+  );
+}
+
+function MapExplorerFallback() {
+  return (
+    <section
+      id="cari-jemaat"
+      className="flex items-center justify-center bg-background/80"
+      style={{ height: "calc(100vh - 72px)", minHeight: 600 }}
+    >
+      <div className="text-center space-y-3">
+        <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto" />
+        <p className="text-sm text-text-secondary">Memuat peta...</p>
+      </div>
+    </section>
   );
 }
 

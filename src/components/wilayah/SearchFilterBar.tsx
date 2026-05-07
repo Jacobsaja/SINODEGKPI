@@ -25,9 +25,12 @@ export default function SearchFilterBar({
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
-  useEffect(() => {
+  // Sync local state when searchQuery prop changes from outside (e.g. reset)
+  const [prevSearchQuery, setPrevSearchQuery] = useState(searchQuery);
+  if (searchQuery !== prevSearchQuery) {
     setLocalQuery(searchQuery);
-  }, [searchQuery]);
+    setPrevSearchQuery(searchQuery);
+  }
 
   useEffect(() => {
     const timer = setTimeout(() => {

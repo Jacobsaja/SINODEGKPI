@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme {
+:root {
   --color-primary: #2C5F8A;
   --color-primary-dark: #1E3F5A;
   --color-accent: #6FA8DC;
@@ -44,13 +44,14 @@ body {
 
 @layer base {
   h1, h2, h3, h4, h5, h6 {
-    @apply font-sans font-bold;
+    font-family: var(--font-sans);
+    font-weight: 700;
     line-height: 1.2;
     color: var(--color-text-primary);
   }
 
   p {
-    @apply font-sans;
+    font-family: var(--font-sans);
     color: var(--color-text-secondary);
   }
 
