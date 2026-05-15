@@ -124,7 +124,7 @@ export default function MapExplorer() {
   return (
     <section
       id="cari-jemaat"
-      className="relative z-0 isolate flex flex-col overflow-hidden"
+      className="relative z-10 flex flex-col overflow-hidden"
       style={{ height: "calc(100vh - 72px)", minHeight: 600 }}
     >
 
