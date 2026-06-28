@@ -12,10 +12,10 @@ const navLinks = [
   { name: "Tentang", href: "/tentang-gkpi" },
   { name: "Pengurus", href: "/pengurus" },
   { name: "Resort dan Wilayah", href: "/wilayah-resort" },
-  { name: "Info", href: "/#publikasi" },
-  { name: "Publikasi", href: "/#literasi" },
-  { name: "Mitra", href: "/#mitra" },
-  { name: "Kontak", href: "/#kontak" },
+  { name: "Info", href: "/info" },
+  { name: "Publikasi", href: "/publikasi" },
+  { name: "Mitra", href: "/mitra" },
+  { name: "Kontak", href: "/kontak" },
 ];
 
 export default function Navbar() {
@@ -39,11 +39,10 @@ export default function Navbar() {
       <nav
         role="navigation"
         aria-label="Navigasi utama"
-        className={`fixed top-0 w-full z-[1000] transition-all duration-300 ${
-          isScrolled
-            ? "bg-surface/80 backdrop-blur-md border-b border-border shadow-lg py-3"
-            : "bg-transparent py-5"
-        }`}
+        className={`fixed top-0 w-full z-[1000] transition-all duration-300 ${isScrolled
+          ? "bg-surface/80 backdrop-blur-md border-b border-border shadow-lg py-3"
+          : "bg-transparent py-5"
+          }`}
       >
         <div className="max-w-7xl mx-auto px-5 sm:px-8 flex justify-between items-center">
 
@@ -71,11 +70,10 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative group ${
-                    isActive 
-                      ? "text-white" 
-                      : "text-text-secondary hover:text-white hover:bg-white/5"
-                  }`}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative group ${isActive
+                    ? "text-white"
+                    : "text-text-secondary hover:text-white hover:bg-white/5"
+                    }`}
                 >
                   {link.name}
                   {isActive && (
@@ -84,7 +82,7 @@ export default function Navbar() {
                 </Link>
               );
             })}
-            
+
             <div className="ml-4">
               <Link
                 href="/login"
@@ -109,22 +107,19 @@ export default function Navbar() {
 
       {/* Mobile Overlay */}
       <div
-        className={`fixed inset-0 z-[1100] lg:hidden transition-all duration-300 ${
-          isOpen ? "visible" : "invisible"
-        }`}
+        className={`fixed inset-0 z-[1100] lg:hidden transition-all duration-300 ${isOpen ? "visible" : "invisible"
+          }`}
         aria-hidden={!isOpen}
       >
         <div
-          className={`absolute inset-0 bg-background/95 backdrop-blur-lg transition-opacity duration-300 ${
-            isOpen ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 bg-background/95 backdrop-blur-lg transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0"
+            }`}
           onClick={() => setIsOpen(false)}
         />
 
         <div
-          className={`absolute inset-0 flex flex-col transition-all duration-300 ${
-            isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
-          }`}
+          className={`absolute inset-0 flex flex-col transition-all duration-300 ${isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
+            }`}
         >
           <div className="flex items-center justify-between px-6 py-5 border-b border-border">
             <Link
@@ -158,9 +153,8 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`py-4 text-xl font-sans border-b border-border/30 transition-colors duration-200 ${
-                    isActive ? "text-accent font-bold" : "text-text-secondary hover:text-white"
-                  }`}
+                  className={`py-4 text-xl font-sans border-b border-border/30 transition-colors duration-200 ${isActive ? "text-accent font-bold" : "text-text-secondary hover:text-white"
+                    }`}
                   style={{ transitionDelay: isOpen ? `${i * 30}ms` : "0ms" }}
                   onClick={() => setIsOpen(false)}
                 >

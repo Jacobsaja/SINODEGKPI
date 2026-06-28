@@ -329,7 +329,7 @@ export default function TentangPage() {
                 </div>
               </div>
               <Link
-                href="/#kontak"
+                href="/kontak"
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-primary-dark"
               >
                 Hubungi Kami

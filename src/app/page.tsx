@@ -248,9 +248,10 @@ export default function Home() {
       {/* ── Announcements ──────────────────────────────────────────────── */}
       <Section
         id="publikasi"
-        title="Info Terbaru"
-        subtitle="Informasi terkini seputar kegiatan, ibadah, dan berita dari GKPI Sinode."
-        className="!pb-6 md:!pb-8"
+        title="Info"
+        subtitle="Ringkasan kabar, dokumen, dan arah pelayanan GKPI dalam satu ruang informasi."
+        className="!pb-8 md:!pb-10"
+        pattern
       >
         <InfoSlideshow />
       </Section>
@@ -286,9 +287,10 @@ export default function Home() {
       >
         <div className="mx-auto grid max-w-7xl grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-4 md:gap-5 items-stretch">
           {partners.map((partner, i) => (
-            <div
+            <Link
               key={i}
-              className="group relative w-full max-w-[170px] md:max-w-[180px] justify-self-center aspect-square bg-surface/90 rounded-3xl border border-border flex items-center justify-center p-3 hover:bg-white/5 transition-all duration-300"
+              href="/mitra"
+              className="group relative w-full max-w-[170px] md:max-w-[180px] justify-self-center aspect-square bg-surface/90 rounded-3xl border border-border flex items-center justify-center p-3 hover:bg-white/5 hover:border-accent/30 transition-all duration-300"
             >
               <div className="relative h-[60%] w-[60%] grayscale-0 opacity-100 transition-all duration-300">
                 <Image
@@ -303,8 +305,17 @@ export default function Home() {
               <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 translate-y-full opacity-0 group-hover:opacity-100 bg-background border border-border px-3 py-1.5 rounded-lg text-[10px] font-bold text-text-primary whitespace-nowrap z-10 transition-all pointer-events-none">
                 {partner.name}
               </div>
-            </div>
+            </Link>
           ))}
+        </div>
+        <div className="mt-12 text-center">
+          <Link
+            href="/mitra"
+            className="inline-flex items-center gap-2 text-sm text-accent font-bold hover:underline underline-offset-8 transition-all"
+          >
+            Lihat semua mitra
+            <ChevronRight size={16} />
+          </Link>
         </div>
       </Section>
 

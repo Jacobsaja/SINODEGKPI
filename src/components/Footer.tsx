@@ -6,11 +6,11 @@ import ScrollReveal from "@/components/ScrollReveal";
 
 const navLinks = [
   { name: "Beranda", href: "/" },
-  { name: "Tentang GKPI", href: "#tentang" },
-  { name: "Pengurus", href: "#pengurus" },
-  { name: "Wilayah", href: "#wilayah" },
-  { name: "Publikasi", href: "#publikasi" },
-  { name: "Mitra", href: "#mitra" },
+  { name: "Tentang GKPI", href: "tentang-gkpi" },
+  { name: "Pengurus", href: "pengurus" },
+  { name: "Wilayah", href: "wilayah-resort" },
+  { name: "Publikasi", href: "publikasi" },
+  { name: "Mitra", href: "mitra" },
 ];
 
 const serviceLinks = [
