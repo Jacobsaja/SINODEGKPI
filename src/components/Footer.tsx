@@ -14,11 +14,8 @@ const navLinks = [
 ];
 
 const serviceLinks = [
-  { name: "Jadwal Ibadah", href: "#" },
-  { name: "Renungan Harian", href: "#" },
-  { name: "Pengumuman", href: "#publikasi" },
-  { name: "Formulir Online", href: "#" },
-  { name: "Pendaftaran", href: "#" },
+  { name: "Renungan Harian", href: "publikasi" },
+  { name: "Pengumuman", href: "publikasi" },
 ];
 
 export default function Footer() {
@@ -50,16 +47,17 @@ export default function Footer() {
             {/* Social icons */}
             <div className="flex items-center gap-4">
               {[
-                { Icon: Facebook, label: "Facebook GKPI" },
-                { Icon: Instagram, label: "Instagram GKPI" },
-                { Icon: Youtube, label: "YouTube GKPI" },
-              ].map(({ Icon, label }) => (
+                { Icon: Facebook, label: "Facebook GKPI", href: "https://www.facebook.com/share/g/1D6Mpnv3uB/" },
+                { Icon: Instagram, label: "Instagram GKPI", href: "https://www.instagram.com/gkpisinode_official/" },
+                { Icon: Youtube, label: "YouTube GKPI", href: "https://www.youtube.com/channel/UCtvKVh4B_w5QVvLtsGslcdg" },
+              ].map(({ Icon, label, href }) => (
                 <Link
                   key={label}
-                  href="#"
+                  href={href}
                   aria-label={label}
                   className="w-10 h-10 rounded-xl border border-border flex items-center justify-center text-text-secondary hover:text-white hover:border-accent/40 hover:bg-accent/5 transition-all duration-300 shadow-sm"
                 >
+                 
                   <Icon size={18} />
                 </Link>
               ))}

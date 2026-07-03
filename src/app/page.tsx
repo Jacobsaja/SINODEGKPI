@@ -59,20 +59,20 @@ const misiPoints = [
 ];
 
 const partners = [
-  { name: "PGI", logo: "/mitra/desain/1.png" },
-  { name: "UEM", logo: "/mitra/desain/2.png" },
-  { name: "LWF", logo: "/mitra/desain/3.png" },
-  { name: "WCC", logo: "/mitra/desain/4.png" },
-  { name: "CCA", logo: "/mitra/desain/5.png" },
-  { name: "ELCA", logo: "/mitra/desain/6.png" },
-  { name: "LCA", logo: "/mitra/desain/7.png" },
-  { name: "PCK", logo: "/mitra/desain/8.png" },
-  { name: "Abdi Sabda", logo: "/mitra/desain/9.png" },
-  { name: "Yasuma", logo: "/mitra/desain/10.png" },
-  { name: "KN-LWF", logo: "/mitra/desain/11.png" },
-  { name: "LNM", logo: "/mitra/desain/12.png" },
-  { name: "Kleve", logo: "/mitra/desain/13.png" },
-  { name: "EMW", logo: "/mitra/desain/14.png" },
+  { name: "PGI", logo: "/mitra/desain/1.jpg" },
+  { name: "UEM", logo: "/mitra/desain/2.jpg" },
+  { name: "LWF", logo: "/mitra/desain/3.jpg" },
+  { name: "WCC", logo: "/mitra/desain/4.jpg" },
+  { name: "CCA", logo: "/mitra/desain/5.jpg" },
+  { name: "ELCA", logo: "/mitra/desain/6.jpg" },
+  { name: "LCA", logo: "/mitra/desain/7.jpg" },
+  { name: "PCK", logo: "/mitra/desain/8.jpg" },
+  { name: "Abdi Sabda", logo: "/mitra/desain/9.jpg" },
+  { name: "Yasuma", logo: "/mitra/desain/10.jpg" },
+  { name: "KN-LWF", logo: "/mitra/desain/11.jpg" },
+  { name: "LNM", logo: "/mitra/desain/12.jpg" },
+  { name: "Kleve", logo: "/mitra/desain/13.jpg" },
+  { name: "EMW", logo: "/mitra/desain/14.jpg" },
 ];
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
