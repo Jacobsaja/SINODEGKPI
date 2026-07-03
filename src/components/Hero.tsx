@@ -11,7 +11,6 @@ const slides = [
     type: "identity",
     title: "Gereja Kristen Protestan Indonesia",
     subtitle: "Melayani dengan Hati, Bertumbuh dalam Iman",
-    // We use the successfully generated Identity image
     image: assets.slide1,
   },
   {
@@ -19,9 +18,9 @@ const slides = [
     type: "verse",
     verse: "Beribadahlah kepada TUHAN dengan sukacita, datanglah ke hadapan-Nya dengan sorak-sorai!",
     reference: "Mazmur 100:2",
-    cta: "Lihat Jadwal Ibadah",
-    href: "#jadwal",
-    image: assets.slide2, // Falls back to hero-bg if missing in public/
+    cta: "Lihat Gereja Terdekat",
+    href: "wilayah-resort",
+    image: assets.slide2,
   },
   {
     id: 3,
@@ -29,7 +28,7 @@ const slides = [
     verse: "Firman-Mu itu pelita bagi kakiku dan terang bagi jalanku.",
     reference: "Mazmur 119:105",
     cta: "Baca Renungan",
-    href: "#renungan",
+    href: "publikasi",
     image: assets.slide3,
   },
   {
@@ -38,7 +37,7 @@ const slides = [
     verse: "Dan marilah kita saling memperhatikan supaya kita saling mendorong dalam kasih dan dalam pekerjaan baik.",
     reference: "Ibrani 10:24",
     cta: "Hubungi Kami",
-    href: "#kontak",
+    href: "kontak",
     image: assets.slide4,
   },
   {
@@ -47,42 +46,41 @@ const slides = [
     verse: "Segala tulisan yang diilhamkan Allah memang bermanfaat untuk mengajar, untuk menyatakan kesalahan, untuk memperbaiki kelakuan...",
     reference: "2 Timotius 3:16",
     cta: "Lihat Publikasi",
-    href: "#publikasi",
-    image: assets.slide3, // Reusing Bible image
+    href: "publikasi",
+    image: assets.slide3,
   },
   {
     id: 6,
     type: "verse",
-    verse: "Bernyanyilah bagi TUHAN, bermazmurlah bagi nama-Nya, buatlah jalan bagi Dia yang berkendaraan melintasi awan-awan!",
-    reference: "Mazmur 68:5",
-    cta: "Lihat Kidung Pujian",
-    href: "#kidung-pujian",
-    image: assets.slide2, // Reusing Worship/Singing image
+    verse: "Aku bersukacita, ketika orang berkata kepadaku: Mari kita pergi ke rumah TUHAN",
+    reference: "Mazmur 122:1",
+    cta: "Lihat Informasi Gereja",
+    href: "info",
+    image: assets.slide2,
   },
   {
     id: 7,
     type: "verse",
-    verse: "Tetapi yang kesukaannya ialah Taurat TUHAN, dan yang merenungkan Taurat itu siang dan malam.",
-    reference: "Mazmur 1:2",
-    cta: "Ayo Buka Alkitab",
-    href: "#alkitab-online",
-    image: assets.slide3, // Menggunakan gambar Alkitab
+    verse: "Berdua lebih baik dari pada seorang diri, karena mereka menerima upah yang baik dalam jerih payah mereka.",
+    reference: "Pengkhotbah 4:9",
+    cta: "Lihat Mitra Gereja",
+    href: "mitra",
+    image: assets.slide3,
   },
   {
     id: 8,
     type: "verse",
-    verse: "Sebab di mana dua atau tiga orang berkumpul dalam nama-Ku, di situ Aku ada di tengah-tengah mereka.",
-    reference: "Matius 18:20",
-    cta: "Masuk Portal",
-    href: "/login",
-    image: assets.slide4, // Reusing Community image
+    verse: "Sebagaimana tubuh itu satu dan anggota-anggotanya banyak, namun merupakan satu kesatuan, demikian pula Kristus (seluruh umat percaya).",
+    reference: "1 Korintus 12:12",
+    cta: "Lihat Struktur Gereja",
+    href: "pengurus",
+    image: assets.slide4,
   },
 ];
 
 export default function Hero() {
   const [current, setCurrent] = useState(0);
 
-  // Slow auto-play (10 seconds) for calm pacing
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
@@ -109,14 +107,12 @@ export default function Hero() {
                     }`}
                 >
                   <Image
-                    // Use slide image if exists, fallback to heroBg for missing placeholders
                     src={slide.image || assets.heroBg}
                     alt="GKPI Background"
                     fill
                     className="object-cover opacity-80"
                     priority={index === 0}
                     onError={(e) => {
-                      // Fallback if the image isn't generated yet
                       (e.target as HTMLImageElement).srcset = assets.heroBg;
                     }}
                   />

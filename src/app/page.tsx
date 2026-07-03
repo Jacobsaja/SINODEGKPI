@@ -21,6 +21,7 @@ import {
   BookOpen,
   Bell,
   Newspaper,
+  Store,
 } from "lucide-react";
 
 // ─── Data ────────────────────────────────────────────────────────────────────
@@ -87,12 +88,7 @@ export default function Home() {
         <ScrollReveal>
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6">
             {[
-              {
-                icon: Calendar,
-                title: "Jadwal Ibadah",
-                desc: "Jadwal pelayanan dan ibadah minggu.",
-                href: "#jadwal",
-              },
+              
               {
                 icon: BookOpen,
                 title: "Renungan",
@@ -116,6 +112,12 @@ export default function Home() {
                 title: "Kontak",
                 desc: "Hubungi kami untuk layanan pastoral.",
                 href: "#kontak",
+              },
+              {
+                icon: Store,
+                title: "Toko GKPI",
+                desc: "Produk-produk dari GKPI.",
+                href: "Toko",
               },
             ].map((feature, idx) => (
               <Link

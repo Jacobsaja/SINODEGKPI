@@ -450,11 +450,9 @@ export default function InfoPage() {
   const [isMuted, setIsMuted] = useState(false);
   const [volume, setVolume] = useState(1);
 
-  // Scroll lock when modal opens
   useEffect(() => {
     if (selectedDocIndex !== null) {
       document.body.style.overflow = "hidden";
-      setActiveTab(0); // reset tab to first section/article
     } else {
       document.body.style.overflow = "";
       if (audioRef.current) {
@@ -467,7 +465,6 @@ export default function InfoPage() {
     };
   }, [selectedDocIndex]);
 
-  // Audio player state tracking
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.muted = isMuted;
@@ -489,6 +486,11 @@ export default function InfoPage() {
       }
       setIsPlaying(!isPlaying);
     }
+  };
+
+  const openDocument = (index: number) => {
+    setActiveTab(0);
+    setSelectedDocIndex(index);
   };
 
   const handleTimeUpdate = () => {
@@ -859,7 +861,7 @@ export default function InfoPage() {
             <ScrollReveal key={idx}>
               <button
                 type="button"
-                onClick={() => setSelectedDocIndex(idx)}
+                onClick={() => openDocument(idx)}
                 className="w-full text-left group flex flex-col gap-5 p-7 rounded-3xl border border-border/60 bg-surface/50 hover:border-accent/30 hover:bg-surface/80 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-accent/5 transition-all duration-300 min-h-[200px] cursor-pointer"
                 style={{ backdropFilter: "blur(12px)" }}
               >

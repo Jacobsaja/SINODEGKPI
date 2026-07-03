@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Calendar, ChevronLeft, ChevronRight, FileText } from "lucide-react";
 
-// Dummy data for slideshow
 const slides = [
   {
     id: 1,
@@ -59,7 +58,6 @@ export default function InfoSlideshow() {
     <div className="relative mx-auto w-full max-w-6xl overflow-hidden rounded-[2rem] border border-white/10 bg-background/40 shadow-[0_28px_90px_rgba(0,0,0,0.35)] backdrop-blur-xl">
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent/10 via-transparent to-primary/20" />
       <div className="relative min-h-[520px] md:min-h-[460px]">
-        {/* All slides rendered but visually toggled via opacity */}
         {slides.map((slide, index) => {
           const isActive = index === currentIndex;
           
@@ -130,7 +128,6 @@ export default function InfoSlideshow() {
           );
         })}
 
-        {/* Navigation Controls (Arrows) */}
         <button
           onClick={prevSlide}
           className="absolute left-4 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-background/35 text-white backdrop-blur transition-all hover:bg-background/80 md:flex"
@@ -146,7 +143,6 @@ export default function InfoSlideshow() {
           <ChevronRight size={20} />
         </button>
 
-        {/* Navigation Controls (Dots) */}
         <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 items-center gap-3">
           {slides.map((_, index) => (
             <button

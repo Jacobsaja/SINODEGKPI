@@ -83,14 +83,14 @@ export default function Navbar() {
               );
             })}
 
-            <div className="ml-4">
+            {/* <div className="ml-4">
               <Link
                 href="/login"
                 className="px-6 py-2.5 rounded-full text-sm font-semibold bg-primary text-white hover:bg-primary-dark shadow-md transition-all duration-200"
               >
                 Masuk
               </Link>
-            </div>
+            </div> */}
           </div>
 
           {/* Mobile Hamburger */}
@@ -164,7 +164,7 @@ export default function Navbar() {
             })}
           </nav>
 
-          <div className="px-8 pb-12">
+          {/* <div className="px-8 pb-12">
             <Link
               href="/login"
               className="block w-full text-center py-4 bg-primary text-white font-bold rounded-2xl text-lg hover:bg-primary-dark transition-all shadow-lg"
@@ -172,7 +172,7 @@ export default function Navbar() {
             >
               Masuk
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

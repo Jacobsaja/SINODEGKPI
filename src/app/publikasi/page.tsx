@@ -32,7 +32,7 @@ interface PublikasiItem {
   title: string;
   excerpt: string;
   content: string;
-  category: "Berita" | "Pengumuman" | "Kegiatan" | "Dokumen";
+  category: "Berita" | "Pengumuman" | "Kegiatan" | "Dokumen" | "Renungan Harian";
   date: string;
   author: string;
   image: string;
@@ -44,124 +44,124 @@ interface PublikasiItem {
 const publicationsData: PublikasiItem[] = [
   {
     id: 1,
-    title: "Judul",
-    excerpt: "Deskripsi",
-    content: "Deskripsi Lengkap tentang publikasi ini. Halaman ini berisi informasi detail mengenai artikel, berita, atau pengumuman yang diunggah oleh admin. Seluruh konten di dalamnya menggunakan format placeholder generik untuk menjaga keseragaman tema website.",
-    category: "Berita",
-    date: "Tanggal",
-    author: "Nama",
+    title: "Renungan Harian: Bertumbuh dalam Pengharapan",
+    excerpt: "Bacaan rohani singkat untuk menolong jemaat memulai hari dengan firman, doa, dan pengharapan.",
+    content: "Renungan harian ini disiapkan sebagai ruang teduh bagi jemaat untuk membaca firman Tuhan, merenungkan panggilan iman, dan membawa semangat pelayanan ke dalam kehidupan sehari-hari.",
+    category: "Renungan Harian",
+    date: "03 Juli 2026",
+    author: "Tim Renungan GKPI",
     image: "/hero_slide_1.png",
-    readTime: "Menit",
-    views: "Jumlah",
+    readTime: "4 menit",
+    views: "1.248",
     isFeatured: true,
   },
   {
     id: 2,
-    title: "Judul",
-    excerpt: "Deskripsi",
-    content: "Deskripsi Lengkap tentang publikasi ini. Halaman ini berisi informasi detail mengenai artikel, berita, atau pengumuman yang diunggah oleh admin. Seluruh konten di dalamnya menggunakan format placeholder generik untuk menjaga keseragaman tema website.",
+    title: "Jadwal Ibadah Minggu dan Pelayanan Resort",
+    excerpt: "Informasi jadwal ibadah, pelayanan kategorial, dan kegiatan resort yang dapat diikuti jemaat minggu ini.",
+    content: "Pengumuman ini memuat jadwal ibadah minggu, pelayanan kategorial, serta agenda resort yang dapat menjadi panduan jemaat dalam mengikuti persekutuan dan pelayanan gereja.",
     category: "Pengumuman",
-    date: "Tanggal",
-    author: "Nama",
+    date: "01 Juli 2026",
+    author: "Sekretariat Sinode",
     image: "/hero_slide_2.png",
-    readTime: "Menit",
-    views: "Jumlah",
+    readTime: "3 menit",
+    views: "986",
   },
   {
     id: 3,
-    title: "Judul",
-    excerpt: "Deskripsi",
-    content: "Deskripsi Lengkap tentang publikasi ini. Halaman ini berisi informasi detail mengenai artikel, berita, atau pengumuman yang diunggah oleh admin. Seluruh konten di dalamnya menggunakan format placeholder generik untuk menjaga keseragaman tema website.",
+    title: "Kegiatan Pembinaan Pelayan Jemaat",
+    excerpt: "Rangkuman kegiatan pembinaan pelayan jemaat untuk memperkuat pelayanan pastoral dan administrasi gereja.",
+    content: "Kegiatan pembinaan pelayan jemaat dilaksanakan untuk memperkuat kapasitas pelayanan, memperjelas tata kelola, dan membangun koordinasi antar pelayan di tingkat jemaat, resort, dan sinode.",
     category: "Kegiatan",
-    date: "Tanggal",
-    author: "Nama",
+    date: "28 Juni 2026",
+    author: "Bidang Pelayanan",
     image: "/hero_slide_3.png",
-    readTime: "Menit",
-    views: "Jumlah",
+    readTime: "5 menit",
+    views: "742",
   },
   {
     id: 4,
-    title: "Judul",
-    excerpt: "Deskripsi",
-    content: "Deskripsi Lengkap tentang publikasi ini. Halaman ini berisi informasi detail mengenai artikel, berita, atau pengumuman yang diunggah oleh admin. Seluruh konten di dalamnya menggunakan format placeholder generik untuk menjaga keseragaman tema website.",
+    title: "Dokumen Tata Gereja dan Panduan Pelayanan",
+    excerpt: "Kumpulan dokumen dasar yang membantu jemaat memahami tata gereja, pelayanan, dan administrasi GKPI.",
+    content: "Dokumen ini berisi rujukan dasar mengenai tata gereja, pedoman pelayanan, dan ketentuan administratif yang digunakan dalam kehidupan bergereja di lingkungan GKPI.",
     category: "Dokumen",
-    date: "Tanggal",
-    author: "Nama",
+    date: "24 Juni 2026",
+    author: "Biro Administrasi",
     image: "/hero_slide_4.png",
-    readTime: "Menit",
-    views: "Jumlah",
+    readTime: "7 menit",
+    views: "1.104",
   },
   {
     id: 5,
-    title: "Judul",
-    excerpt: "Deskripsi",
-    content: "Deskripsi Lengkap tentang publikasi ini. Halaman ini berisi informasi detail mengenai artikel, berita, atau pengumuman yang diunggah oleh admin. Seluruh konten di dalamnya menggunakan format placeholder generik untuk menjaga keseragaman tema website.",
+    title: "Berita Pelayanan Diakonia Wilayah",
+    excerpt: "Kabar pelayanan diakonia di beberapa wilayah sebagai wujud kepedulian gereja bagi jemaat dan masyarakat.",
+    content: "Pelayanan diakonia wilayah menjadi ruang bagi gereja untuk hadir secara nyata melalui kunjungan, dukungan sosial, dan kerja bersama dengan jemaat setempat.",
     category: "Berita",
-    date: "Tanggal",
-    author: "Nama",
+    date: "20 Juni 2026",
+    author: "Tim Publikasi",
     image: "/resort-hero-bg.png",
-    readTime: "Menit",
-    views: "Jumlah",
+    readTime: "4 menit",
+    views: "653",
   },
   {
     id: 6,
-    title: "Judul",
-    excerpt: "Deskripsi",
-    content: "Deskripsi Lengkap tentang publikasi ini. Halaman ini berisi informasi detail mengenai artikel, berita, atau pengumuman yang diunggah oleh admin. Seluruh konten di dalamnya menggunakan format placeholder generik untuk menjaga keseragaman tema website.",
+    title: "Pengumuman Rapat Koordinasi Pelayanan",
+    excerpt: "Undangan rapat koordinasi pelayanan bagi pengurus resort, komisi, dan bidang pelayanan terkait.",
+    content: "Rapat koordinasi pelayanan akan membahas evaluasi program berjalan, agenda pelayanan mendatang, serta pembagian tugas untuk memperkuat kesinambungan pelayanan.",
     category: "Pengumuman",
-    date: "Tanggal",
-    author: "Nama",
+    date: "18 Juni 2026",
+    author: "Sekretariat Sinode",
     image: "/hero_slide_1.png",
-    readTime: "Menit",
-    views: "Jumlah",
+    readTime: "2 menit",
+    views: "521",
   },
   {
     id: 7,
-    title: "Judul",
-    excerpt: "Deskripsi",
-    content: "Deskripsi Lengkap tentang publikasi ini. Halaman ini berisi informasi detail mengenai artikel, berita, atau pengumuman yang diunggah oleh admin. Seluruh konten di dalamnya menggunakan format placeholder generik untuk menjaga keseragaman tema website.",
+    title: "Pelatihan Musik Gerejawi dan Liturgi",
+    excerpt: "Kegiatan pelatihan musik gerejawi untuk mendukung pelayanan ibadah yang tertib, hangat, dan partisipatif.",
+    content: "Pelatihan musik gerejawi dan liturgi berfokus pada penguatan pemahaman ibadah, pengaturan musik, dan kerja sama antar pelayan ibadah.",
     category: "Kegiatan",
-    date: "Tanggal",
-    author: "Nama",
+    date: "15 Juni 2026",
+    author: "Komisi Liturgi",
     image: "/hero_slide_2.png",
-    readTime: "Menit",
-    views: "Jumlah",
+    readTime: "4 menit",
+    views: "612",
   },
   {
     id: 8,
-    title: "Judul",
-    excerpt: "Deskripsi",
-    content: "Deskripsi Lengkap tentang publikasi ini. Halaman ini berisi informasi detail mengenai artikel, berita, atau pengumuman yang diunggah oleh admin. Seluruh konten di dalamnya menggunakan format placeholder generik untuk menjaga keseragaman tema website.",
+    title: "Panduan Administrasi Jemaat",
+    excerpt: "Panduan ringkas untuk membantu pengurus jemaat mengelola surat, data pelayanan, dan arsip gereja.",
+    content: "Panduan administrasi jemaat disusun untuk membantu pengurus menjaga kerapian data, mempercepat layanan administratif, dan memastikan arsip pelayanan terdokumentasi dengan baik.",
     category: "Dokumen",
-    date: "Tanggal",
-    author: "Nama",
+    date: "12 Juni 2026",
+    author: "Biro Administrasi",
     image: "/hero_slide_3.png",
-    readTime: "Menit",
-    views: "Jumlah",
+    readTime: "6 menit",
+    views: "899",
   },
   {
     id: 9,
-    title: "Judul",
-    excerpt: "Deskripsi",
-    content: "Deskripsi Lengkap tentang publikasi ini. Halaman ini berisi informasi detail mengenai artikel, berita, atau pengumuman yang diunggah oleh admin. Seluruh konten di dalamnya menggunakan format placeholder generik untuk menjaga keseragaman tema website.",
+    title: "Kabar Kemitraan Pelayanan GKPI",
+    excerpt: "Catatan perkembangan kerja sama pelayanan bersama mitra gereja dan lembaga Kristen di dalam dan luar negeri.",
+    content: "Kemitraan pelayanan GKPI terus diarahkan untuk memperluas dukungan pendidikan, penginjilan, sosial, dan penguatan kapasitas pelayan gereja.",
     category: "Berita",
-    date: "Tanggal",
-    author: "Nama",
+    date: "08 Juni 2026",
+    author: "Tim Kemitraan",
     image: "/hero_slide_4.png",
-    readTime: "Menit",
-    views: "Jumlah",
+    readTime: "5 menit",
+    views: "734",
   },
 ];
 
-const categories: ("Semua" | "Berita" | "Pengumuman" | "Kegiatan" | "Dokumen")[] = [
+const categories: ("Semua" | "Berita" | "Pengumuman" | "Kegiatan" | "Dokumen" | "Renungan Harian")[] = [
   "Semua",
+  "Renungan Harian",
   "Berita",
   "Pengumuman",
   "Kegiatan",
   "Dokumen",
 ];
 
-// Helper to render category icon
 const getCategoryIcon = (category: string) => {
   switch (category) {
     case "Berita":
@@ -172,6 +172,8 @@ const getCategoryIcon = (category: string) => {
       return <CalendarDays size={14} />;
     case "Dokumen":
       return <FileText size={14} />;
+    case "Renungan Harian":
+      return <Bookmark size={14} />;
     default:
       return <Sparkles size={14} />;
   }
@@ -195,13 +197,13 @@ export default function PublikasiPage() {
     return matchesCategory && matchesSearch;
   });
 
-  // Featured Headline post (first featured post in the selected category, or first post)
+  // Featured daily devotion post (first featured post in the selected category, or first post)
   const featuredPost =
     activeCategory === "Semua" && searchQuery === ""
       ? publicationsData.find((p) => p.isFeatured) || publicationsData[0]
       : null;
 
-  // Grid posts (excluding the featured headline post if it is shown)
+  // Grid posts (excluding the featured daily devotion post if it is shown)
   const gridPublications = featuredPost
     ? filteredPublications.filter((p) => p.id !== featuredPost.id)
     : filteredPublications;
@@ -261,7 +263,8 @@ export default function PublikasiPage() {
               Publikasi
             </h1>
             <p className="max-w-xl text-base leading-relaxed text-text-secondary md:text-lg">
-              Deskripsi
+              Kumpulan renungan, berita, pengumuman, kegiatan, dan dokumen
+              pelayanan GKPI dalam satu ruang arsip yang mudah ditelusuri.
             </p>
           </ScrollReveal>
         </div>
@@ -322,12 +325,12 @@ export default function PublikasiPage() {
           </div>
         </ScrollReveal>
 
-        {/* ── Featured Post (Headline) ── */}
+        {/* ── Featured Daily Devotion ── */}
         {featuredPost && (
           <ScrollReveal>
             <div className="mb-14">
               <p className="mb-4 text-xs font-bold uppercase tracking-widest text-accent flex items-center gap-2">
-                <Sparkles size={14} className="animate-pulse" /> Headline
+                <Bookmark size={14} className="animate-pulse" /> Renungan Harian
               </p>
               <div
                 onClick={() => setSelectedPost(featuredPost)}
@@ -398,7 +401,7 @@ export default function PublikasiPage() {
 
         {/* ── Grid List ── */}
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {gridPublications.slice(0, visibleCount).map((post, idx) => (
+          {gridPublications.slice(0, visibleCount).map((post) => (
             <ScrollReveal key={post.id}>
               <article
                 onClick={() => setSelectedPost(post)}
@@ -586,16 +589,8 @@ export default function PublikasiPage() {
               <div className="text-text-secondary leading-relaxed space-y-4 text-base md:text-lg">
                 <p>{selectedPost.content}</p>
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                  enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                  nisi ut aliquip ex ea commodo consequat.
-                </p>
-                <p>
-                  Duis aute irure dolor in reprehenderit in voluptate velit esse
-                  cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                  cupidatat non proident, sunt in culpa qui officia deserunt mollit
-                  anim id est laborum.
+                  Informasi ini akan diperbarui mengikuti materi resmi dari
+                  pengurus dan bidang pelayanan terkait.
                 </p>
               </div>
 
@@ -612,7 +607,7 @@ export default function PublikasiPage() {
                       </div>
                       <div className="text-left">
                         <p className="text-sm font-semibold text-white">Unduh Lampiran Dokumen</p>
-                        <p className="text-xs text-text-secondary">Format: PDF (Placeholder)</p>
+                        <p className="text-xs text-text-secondary">Format: PDF</p>
                       </div>
                     </div>
                     <Link

@@ -15,7 +15,6 @@ import {
   Send,
   CheckCircle,
   ChevronDown,
-  ArrowLeft,
   ChevronRight,
   Info,
 } from "lucide-react";
@@ -57,7 +56,6 @@ export default function KontakPage() {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
 
-    // Simulate form submission
     setIsSubmitted(true);
     setTimeout(() => {
       setIsSubmitted(false);
@@ -114,7 +112,8 @@ export default function KontakPage() {
               Kontak
             </h1>
             <p className="max-w-xl text-base leading-relaxed text-text-secondary md:text-lg">
-              Deskripsi
+              Terhubung dengan sekretariat sinode untuk informasi pelayanan,
+              administrasi, kemitraan, dan kebutuhan pastoral.
             </p>
           </ScrollReveal>
         </div>
