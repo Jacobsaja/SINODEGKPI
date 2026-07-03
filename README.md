@@ -1,5 +1,5 @@
 # Model Web Sinode GKPI
-A modern minimalize website for church build using React and Typscript
+A modern minimalist website for church build using React and Typscript
 
 ## Feature
 - Home
@@ -13,7 +13,7 @@ A modern minimalize website for church build using React and Typscript
 - React
 - Tailwind CSS
 - Typescript
-- Supabase (planed)
+- Supabase (planned)
 
 ## Status
 Under Development

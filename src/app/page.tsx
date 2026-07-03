@@ -93,31 +93,31 @@ export default function Home() {
                 icon: BookOpen,
                 title: "Renungan",
                 desc: "Bacaan rohani harian penguat iman.",
-                href: "#renungan",
+                href: "publikasi",
               },
               {
                 icon: Bell,
                 title: "Info",
-                desc: "Berita dan informasi terkini Sinode.",
-                href: "#publikasi",
+                desc: "Informasi terkait GKPI.",
+                href: "info",
               },
               {
                 icon: Newspaper,
                 title: "Publikasi",
                 desc: "Majalah, renungan, dan literasi GKPI.",
-                href: "#literasi",
+                href: "publikasi",
               },
               {
                 icon: Phone,
                 title: "Kontak",
                 desc: "Hubungi kami untuk layanan pastoral.",
-                href: "#kontak",
+                href: "kontak",
               },
               {
                 icon: Store,
                 title: "Toko GKPI",
                 desc: "Produk-produk dari GKPI.",
-                href: "Toko",
+                href: "toko",
               },
             ].map((feature, idx) => (
               <Link
