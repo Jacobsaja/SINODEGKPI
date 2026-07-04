@@ -1,96 +1,561 @@
-// src/app/toko/page.tsx
 "use client";
 
-import { useMemo, useState } from "react";
-import { Search } from "lucide-react";
-import { products, getCategories } from "@/lib/products";
-import ProductCard from "@/components/ProductCard";
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal";
+import {
+  Search,
+  ChevronRight,
+  X,
+  Share2,
+  ShoppingBag,
+  Tag,
+  Package,
+  Gift,
+  Sparkles,
+  ArrowRight,
+  ExternalLink,
+} from "lucide-react";
+
+// ─── Data Produk (Placeholder) ─────────────────────────────────────────────
+
+interface ProductItem {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  image: string;
+  tokopediaUrl: string;
+  shopeeUrl: string;
+  isFeatured?: boolean;
+}
+
+const productsData: ProductItem[] = [
+  {
+    id: 1,
+    name: "Alkitab Edisi Cetak Besar",
+    description:
+      "Alkitab dengan huruf cetak besar, sampul hardcover, cocok untuk ibadah harian maupun hadiah.",
+    price: 185000,
+    category: "Alkitab & Buku Rohani",
+    image:
+      "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=800&auto=format&fit=crop",
+    tokopediaUrl: "https://www.tokopedia.com/",
+    shopeeUrl: "https://shopee.co.id/",
+    isFeatured: true,
+  },
+  {
+    id: 2,
+    name: "Kaos Rohani GKPI",
+    description:
+      "Kaos katun combed 30s dengan sablon logo GKPI, tersedia ukuran S sampai XL.",
+    price: 95000,
+    category: "Merchandise",
+    image:
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800&auto=format&fit=crop",
+    tokopediaUrl: "https://www.tokopedia.com/",
+    shopeeUrl: "https://shopee.co.id/",
+  },
+  {
+    id: 3,
+    name: "Buku Renungan 40 Hari",
+    description:
+      "Kumpulan renungan harian selama 40 hari untuk menemani perjalanan iman sehari-hari.",
+    price: 65000,
+    category: "Alkitab & Buku Rohani",
+    image:
+      "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop",
+    tokopediaUrl: "https://www.tokopedia.com/",
+    shopeeUrl: "https://shopee.co.id/",
+  },
+  {
+    id: 4,
+    name: "Gantungan Kunci Salib",
+    description:
+      "Gantungan kunci berbahan logam dengan bentuk salib, cocok sebagai buah tangan.",
+    price: 25000,
+    category: "Aksesoris",
+    image:
+      "https://images.unsplash.com/photo-1602751584547-91a70df0d5c9?q=80&w=800&auto=format&fit=crop",
+    tokopediaUrl: "https://www.tokopedia.com/",
+    shopeeUrl: "https://shopee.co.id/",
+  },
+  {
+    id: 5,
+    name: "Mug Keramik Motif GKPI",
+    description:
+      "Mug keramik 300ml dengan cetakan motif gereja, aman untuk microwave dan dishwasher.",
+    price: 55000,
+    category: "Merchandise",
+    image:
+      "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?q=80&w=800&auto=format&fit=crop",
+    tokopediaUrl: "https://www.tokopedia.com/",
+    shopeeUrl: "https://shopee.co.id/",
+  },
+  {
+    id: 6,
+    name: "Buku Nyanyian Jemaat",
+    description:
+      "Kumpulan lagu-lagu jemaat lengkap dengan notasi, digunakan dalam ibadah minggu.",
+    price: 45000,
+    category: "Alkitab & Buku Rohani",
+    image:
+      "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=800&auto=format&fit=crop",
+    tokopediaUrl: "https://www.tokopedia.com/",
+    shopeeUrl: "https://shopee.co.id/",
+  },
+  {
+    id: 7,
+    name: "Tas Kanvas Tote Bag",
+    description:
+      "Tas kanvas serbaguna dengan sablon logo, kuat dan cocok dipakai sehari-hari.",
+    price: 75000,
+    category: "Merchandise",
+    image:
+      "https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=800&auto=format&fit=crop",
+    tokopediaUrl: "https://www.tokopedia.com/",
+    shopeeUrl: "https://shopee.co.id/",
+  },
+  {
+    id: 8,
+    name: "Kalender Rohani Meja 2026",
+    description:
+      "Kalender meja bertema renungan harian, dilengkapi ayat-ayat pilihan tiap bulan.",
+    price: 40000,
+    category: "Aksesoris",
+    image:
+      "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=800&auto=format&fit=crop",
+    tokopediaUrl: "https://www.tokopedia.com/",
+    shopeeUrl: "https://shopee.co.id/",
+  },
+];
+
+const categories = [
+  "Semua",
+  ...Array.from(new Set(productsData.map((p) => p.category))),
+];
+
+const categoryIcons = [ShoppingBag, Package, Gift, Tag, Sparkles];
+
+const getCategoryIcon = (category: string) => {
+  if (category === "Semua") return <Sparkles size={14} />;
+  const index = categories.indexOf(category) % categoryIcons.length;
+  const Icon = categoryIcons[index] ?? Tag;
+  return <Icon size={14} />;
+};
+
+function formatRupiah(value: number): string {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  }).format(value || 0);
+}
 
 export default function TokoPage() {
-  const [query, setQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState("Semua");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState<string>("Semua");
+  const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(
+    null
+  );
+  const [visibleCount, setVisibleCount] = useState(6);
+  const [isCopied, setIsCopied] = useState(false);
 
-  const categories = useMemo(() => getCategories(products), []);
+  // Filtered products
+  const filteredProducts = productsData.filter((item) => {
+    const matchesCategory =
+      activeCategory === "Semua" || item.category === activeCategory;
+    const matchesSearch =
+      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.category.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
-  const filtered = useMemo(() => {
-    return products.filter((p) => {
-      const matchesCategory =
-        activeCategory === "Semua" || p.category === activeCategory;
-      const matchesQuery =
-        query.trim() === "" ||
-        p.name.toLowerCase().includes(query.toLowerCase()) ||
-        p.description.toLowerCase().includes(query.toLowerCase());
-      return matchesCategory && matchesQuery;
-    });
-  }, [query, activeCategory]);
+  // Featured product (only shown when no filter/search active)
+  const featuredProduct =
+    activeCategory === "Semua" && searchQuery === ""
+      ? productsData.find((p) => p.isFeatured) || productsData[0]
+      : null;
+
+  const gridProducts = featuredProduct
+    ? filteredProducts.filter((p) => p.id !== featuredProduct.id)
+    : filteredProducts;
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 3);
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
+  };
 
   return (
-    <main className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-20 border-b border-border bg-background/85 backdrop-blur">
-        <div className="mx-auto max-w-6xl px-4 py-5 sm:px-6">
-          <h1 className="font-serif text-2xl font-bold sm:text-3xl">
-            Katalog Produk
-          </h1>
-          <p className="text-sm text-text-secondary">
-            Lihat produk kami, lalu beli langsung lewat Tokopedia atau Shopee.
-          </p>
+    <main className="relative min-h-screen overflow-hidden bg-background text-text-primary">
+      <Navbar />
 
-          {/* Search bar */}
-          <div className="mt-5">
-            <div className="relative">
+      {/* ── Hero Section ─────────────────────────────────────────────────── */}
+      <section className="relative flex min-h-[50vh] items-end overflow-hidden bg-background pb-12 pt-32 md:min-h-[55vh] md:pb-16">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/hero-bg.png"
+            alt="Toko Latar Belakang"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+            quality={90}
+          />
+          <div className="absolute inset-0 bg-primary/75 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-primary/35 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/20 to-background/80" />
+        </div>
+
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-8">
+          {/* Breadcrumbs */}
+          <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2">
+            <Link
+              href="/"
+              className="flex items-center gap-1.5 text-sm text-text-primary/75 transition-colors hover:text-accent"
+            >
+              Beranda
+            </Link>
+            <ChevronRight size={14} className="text-text-primary/30" />
+            <span className="text-sm font-medium text-accent">Toko</span>
+          </nav>
+
+          <ScrollReveal>
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.28em] text-accent">
+              Toko Resmi
+            </p>
+            <h1
+              className="mb-5 max-w-3xl text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            >
+              Toko
+            </h1>
+            <p className="max-w-xl text-base leading-relaxed text-text-secondary md:text-lg">
+              Alkitab, buku rohani, dan merchandise resmi. Pesan langsung
+              lewat Tokopedia atau Shopee pilihan kamu.
+            </p>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      {/* ── Main Layout (Content Area) ───────────────────────────────────── */}
+      <section className="relative mx-auto max-w-7xl px-5 py-12 sm:px-8 md:py-16">
+        {/* Search & Filter Panel */}
+        <ScrollReveal>
+          <div className="mb-12 flex flex-col gap-6 rounded-3xl border border-border/60 bg-surface/40 p-6 backdrop-blur-xl md:flex-row md:items-center md:justify-between">
+            {/* Search Input */}
+            <div className="relative max-w-md flex-1">
               <Search
                 size={18}
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary"
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary"
               />
               <input
                 type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Cari nama atau deskripsi produk..."
-                className="w-full rounded-xl border border-border bg-surface py-3 pl-10 pr-4 text-sm text-text-primary placeholder:text-text-secondary focus:border-accent focus:outline-none"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Cari produk..."
+                className="w-full rounded-2xl border border-border bg-background/50 py-3 pl-11 pr-4 text-sm text-white placeholder-text-secondary outline-none transition-all focus:border-accent/40 focus:bg-background/80"
               />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary hover:text-white"
+                >
+                  <X size={16} />
+                </button>
+              )}
+            </div>
+
+            {/* Categories */}
+            <div className="flex flex-wrap gap-2.5">
+              {categories.map((cat) => {
+                const isActive = activeCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => {
+                      setActiveCategory(cat);
+                      setVisibleCount(6);
+                    }}
+                    className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition-all
+                      ${
+                        isActive
+                          ? "bg-accent text-background shadow-lg shadow-accent/25"
+                          : "border border-border bg-surface/60 text-text-secondary hover:border-accent/20 hover:text-white"
+                      }`}
+                  >
+                    {getCategoryIcon(cat)}
+                    <span>{cat}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
+        </ScrollReveal>
 
-          {/* Category filter */}
-          <div className="no-scrollbar mt-4 flex gap-2 overflow-x-auto">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`whitespace-nowrap rounded-full border px-4 py-1.5 text-sm font-medium transition-colors ${
-                  activeCategory === cat
-                    ? "border-accent bg-accent/15 text-accent"
-                    : "border-border text-text-secondary hover:border-accent/50 hover:text-text-primary"
-                }`}
+        {/* ── Featured Product ── */}
+        {featuredProduct && (
+          <ScrollReveal>
+            <div className="mb-14">
+              <p className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent">
+                <Sparkles size={14} className="animate-pulse" /> Produk
+                Unggulan
+              </p>
+              <div
+                onClick={() => setSelectedProduct(featuredProduct)}
+                className="group relative grid cursor-pointer grid-cols-1 overflow-hidden rounded-[2rem] border border-border bg-surface/30 transition-all duration-500 hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/5 md:grid-cols-12"
+                style={{ backdropFilter: "blur(12px)" }}
               >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-      </header>
+                {/* Image side */}
+                <div className="relative min-h-[300px] overflow-hidden md:col-span-7 md:min-h-[420px]">
+                  <img
+                    src={featuredProduct.image}
+                    alt={featuredProduct.name}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[6000ms] group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-background/30 md:to-background/95" />
+                  <div className="absolute left-6 top-6 rounded-xl border border-white/10 bg-background/55 px-3 py-1.5 text-xs font-bold text-white backdrop-blur">
+                    {featuredProduct.category}
+                  </div>
+                </div>
 
-      {/* Product grid */}
-      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-border py-20 text-center">
-            <p className="font-serif text-lg font-bold text-text-primary">
-              Produk tidak ditemukan
-            </p>
-            <p className="max-w-sm text-sm text-text-secondary">
-              Coba kata kunci lain atau pilih kategori berbeda.
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+                {/* Content side */}
+                <div className="flex flex-col justify-between p-8 md:col-span-5 md:p-10">
+                  <div className="space-y-4">
+                    <h2
+                      className="font-serif text-2xl font-bold text-white transition-colors group-hover:text-accent md:text-3xl lg:text-4xl"
+                      style={{ fontFamily: "'Playfair Display', serif" }}
+                    >
+                      {featuredProduct.name}
+                    </h2>
+                    <p className="text-base leading-relaxed text-text-secondary">
+                      {featuredProduct.description}
+                    </p>
+                  </div>
+
+                  <div className="mt-8 border-t border-border/40 pt-6">
+                    <p className="mb-4 text-2xl font-bold text-white">
+                      {formatRupiah(featuredProduct.price)}
+                    </p>
+                    <div className="inline-flex items-center gap-1 text-sm font-bold text-accent group-hover:underline">
+                      <span>Lihat Detail</span>
+                      <ArrowRight
+                        size={16}
+                        className="transition-transform duration-300 group-hover:translate-x-1"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ScrollReveal>
+        )}
+
+        {/* ── Grid List ── */}
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {gridProducts.slice(0, visibleCount).map((product) => (
+            <ScrollReveal key={product.id}>
+              <article
+                onClick={() => setSelectedProduct(product)}
+                className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-[2rem] border border-border bg-surface/40 shadow-lg shadow-black/5 transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/30 hover:bg-surface/60 hover:shadow-2xl hover:shadow-accent/5"
+                style={{ backdropFilter: "blur(12px)" }}
+              >
+                {/* Card Thumbnail */}
+                <div className="relative aspect-[16/10] w-full overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
+                  <span className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-background/55 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur">
+                    {getCategoryIcon(product.category)}
+                    {product.category}
+                  </span>
+                </div>
+
+                {/* Card Body */}
+                <div className="flex flex-1 flex-col p-6">
+                  <h3
+                    className="mb-2 font-serif text-lg font-bold leading-snug text-white transition-colors group-hover:text-accent"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
+                  >
+                    {product.name}
+                  </h3>
+                  <p className="mb-6 line-clamp-2 text-sm leading-relaxed text-text-secondary">
+                    {product.description}
+                  </p>
+
+                  <div className="mt-auto flex items-center justify-between border-t border-border/40 pt-4">
+                    <span className="text-base font-bold text-white">
+                      {formatRupiah(product.price)}
+                    </span>
+                    <span className="flex items-center gap-1 text-xs font-semibold text-accent group-hover:underline">
+                      <span>Lihat</span>
+                      <ChevronRight
+                        size={14}
+                        className="transition-transform group-hover:translate-x-0.5"
+                      />
+                    </span>
+                  </div>
+                </div>
+              </article>
+            </ScrollReveal>
+          ))}
+        </div>
+
+        {/* Empty State */}
+        {filteredProducts.length === 0 && (
+          <ScrollReveal>
+            <div className="my-20 flex flex-col items-center justify-center rounded-3xl border border-border/40 bg-surface/20 p-8 text-center">
+              <ShoppingBag
+                size={48}
+                className="mb-4 text-text-secondary opacity-50"
+              />
+              <h3 className="text-lg font-bold text-white">
+                Produk tidak ditemukan
+              </h3>
+              <p className="mt-1 text-sm text-text-secondary">
+                Coba gunakan kata kunci pencarian atau kategori lain.
+              </p>
+            </div>
+          </ScrollReveal>
+        )}
+
+        {/* Load More Button */}
+        {filteredProducts.length > visibleCount && (
+          <ScrollReveal>
+            <div className="mt-16 text-center">
+              <button
+                onClick={handleLoadMore}
+                className="inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-full border border-border bg-surface/50 px-8 text-sm font-bold text-text-primary transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:bg-surface"
+              >
+                Muat Lebih Banyak
+              </button>
+            </div>
+          </ScrollReveal>
         )}
       </section>
+
+      {/* ── Detail Modal ─────────────────────────────────────────────────── */}
+      {selectedProduct && (
+        <div className="fixed inset-0 z-[1200] flex items-center justify-center p-4 animate-fade-in md:p-6">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 cursor-pointer bg-background/85 backdrop-blur-lg"
+            onClick={() => setSelectedProduct(null)}
+          />
+
+          {/* Modal Box */}
+          <div
+            className="relative flex h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-[2rem] border border-accent/20 shadow-2xl animate-slide-up md:h-[80vh]"
+            style={{
+              background:
+                "linear-gradient(160deg, rgba(22,42,64,0.98) 0%, rgba(8,17,30,0.98) 100%)",
+              boxShadow:
+                "0 28px 90px rgba(0,0,0,0.45), 0 0 50px rgba(111,168,220,0.12)",
+            }}
+          >
+            {/* Header / Top controls */}
+            <div className="flex shrink-0 items-center justify-between border-b border-border/40 p-6">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/25 bg-accent/15 px-3 py-1 text-xs font-bold text-accent">
+                {getCategoryIcon(selectedProduct.category)}
+                {selectedProduct.category}
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleCopyLink}
+                  className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-border/60 bg-surface/30 text-text-secondary transition-colors hover:text-white"
+                  title="Salin Tautan"
+                >
+                  <Share2 size={16} />
+                </button>
+                <button
+                  onClick={() => setSelectedProduct(null)}
+                  className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-border/60 bg-surface/30 text-text-secondary transition-colors hover:text-white"
+                  aria-label="Tutup"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+            </div>
+
+            {/* Scroll Content */}
+            <div className="no-scrollbar flex-1 space-y-6 overflow-y-auto p-6 md:p-8">
+              {/* Copy success alert */}
+              {isCopied && (
+                <div className="animate-fade-in rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3 text-center text-xs font-bold text-emerald-400">
+                  Tautan disalin ke papan klip!
+                </div>
+              )}
+
+              {/* Title */}
+              <h2
+                className="text-2xl font-bold leading-tight text-white md:text-3xl"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                {selectedProduct.name}
+              </h2>
+
+              {/* Large Image */}
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border/40">
+                <img
+                  src={selectedProduct.image}
+                  alt={selectedProduct.name}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              </div>
+
+              {/* Price */}
+              <p className="text-3xl font-bold text-white">
+                {formatRupiah(selectedProduct.price)}
+              </p>
+
+              {/* Description */}
+              <div className="space-y-4 text-base leading-relaxed text-text-secondary md:text-lg">
+                <p>{selectedProduct.description}</p>
+              </div>
+
+              {/* Buy Buttons */}
+              <div className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-2">
+                <Link
+                  href={selectedProduct.tokopediaUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#03AC0E]/40 bg-[#03AC0E]/10 px-5 py-3.5 text-sm font-bold text-[#4ADE80] transition-all hover:bg-[#03AC0E]/20"
+                >
+                  Beli di Tokopedia
+                  <ExternalLink size={14} />
+                </Link>
+                <Link
+                  href={selectedProduct.shopeeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#EE4D2D]/40 bg-[#EE4D2D]/10 px-5 py-3.5 text-sm font-bold text-[#FB923C] transition-all hover:bg-[#EE4D2D]/20"
+                >
+                  Beli di Shopee
+                  <ExternalLink size={14} />
+                </Link>
+              </div>
+              <p className="text-center text-xs text-text-secondary">
+                Pembelian diproses sepenuhnya di marketplace pilihan kamu.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <Footer />
     </main>
   );
 }

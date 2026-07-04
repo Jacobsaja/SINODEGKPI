@@ -8,6 +8,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import Image from "next/image";
 import Link from "next/link";
 import { assets } from "@/lib/assets";
+import { getLatestPublications, formatDateID } from "@/lib/publications";
 import {
   ChevronRight,
   ShieldCheck,
@@ -26,30 +27,6 @@ import {
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
-const publications = [
-  {
-    title: "Renungan Harian: Suara Gembala — Mei 2026",
-    excerpt:
-      "Edisi bulan Mei kini tersedia untuk dibaca dan diunduh. Temukan inspirasi firman Tuhan yang membangun setiap pagi.",
-    date: "25 April 2026",
-    category: "Renungan",
-  },
-  {
-    title: "Majalah GKPI Edisi April 2026",
-    excerpt:
-      "Liputan perjalanan pelayanan di wilayah pedalaman dan profil tokoh jemaat yang menginspirasi banyak jiwa.",
-    date: "15 April 2026",
-    category: "Majalah",
-  },
-  {
-    title: "Panduan Ibadah Keluarga — Triwulan II",
-    excerpt:
-      "Panduan ibadah mingguan bagi keluarga Kristen untuk mempererat hubungan dengan Tuhan di rumah masing-masing.",
-    date: "12 April 2026",
-    category: "Panduan",
-  },
-];
-
 const misiPoints = [
   "Koinonia",
   "Marturia",
@@ -59,25 +36,33 @@ const misiPoints = [
 ];
 
 const partners = [
-  { name: "PGI", logo: "/mitra/desain/1.jpg" },
-  { name: "UEM", logo: "/mitra/desain/2.jpg" },
-  { name: "LWF", logo: "/mitra/desain/3.jpg" },
-  { name: "WCC", logo: "/mitra/desain/4.jpg" },
-  { name: "CCA", logo: "/mitra/desain/5.jpg" },
-  { name: "ELCA", logo: "/mitra/desain/6.jpg" },
-  { name: "LCA", logo: "/mitra/desain/7.jpg" },
-  { name: "PCK", logo: "/mitra/desain/8.jpg" },
-  { name: "Abdi Sabda", logo: "/mitra/desain/9.jpg" },
-  { name: "Yasuma", logo: "/mitra/desain/10.jpg" },
-  { name: "KN-LWF", logo: "/mitra/desain/11.jpg" },
-  { name: "LNM", logo: "/mitra/desain/12.jpg" },
-  { name: "Kleve", logo: "/mitra/desain/13.jpg" },
-  { name: "EMW", logo: "/mitra/desain/14.jpg" },
+  { name: "STT ABDI SABDA", logo: "/mitra/desain/abdi-sabda.png" },
+  { name: "CCA", logo: "/mitra/desain/CCA.png" },
+  { name: "ELCA", logo: "/mitra/desain/ELCA.png" },
+  { name: "EGB", logo: "/mitra/desain/EGB.png" },
+  { name: "EKK", logo: "/mitra/desain/EKK.png" },
+  { name: "KN-LWF", logo: "/mitra/desain/KNLWF.png" },
+  { name: "LNM", logo: "/mitra/desain/LNM.png" },
+  { name: "LCA", logo: "/mitra/desain/LCA.png" },
+  { name: "LFW", logo: "/mitra/desain/LFW.png" },
+  { name: "Yasuma", logo: "/mitra/desain/yasuma.png" },
+  { name: "PGI", logo: "/mitra/desain/PGI.png" },
+  { name: "PCK", logo: "/mitra/desain/PCK.png" },
+  { name: "UEM", logo: "/mitra/desain/uem.png" },
+  { name: "WCC", logo: "/mitra/desain/WCC.png" },
 ];
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function Home() {
+export default async function Home() {
+  const latestPublications = await getLatestPublications(3);
+  const publications = latestPublications.map((item) => ({
+    title: item.title,
+    excerpt: item.excerpt,
+    date: formatDateID(item.date),
+    category: item.category,
+  }));
+
   return (
     <main>
       <Navbar />
@@ -195,6 +180,7 @@ export default function Home() {
                 src={assets.aboutImg}
                 alt="Pelayanan GKPI"
                 fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-background/40 to-transparent" />
@@ -272,7 +258,7 @@ export default function Home() {
         </div>
         <div className="mt-16 text-center">
           <Link
-            href="#"
+            href="/publikasi"
             className="inline-flex items-center gap-2 text-sm text-accent font-bold hover:underline underline-offset-8 transition-all"
           >
             Lihat semua publikasi

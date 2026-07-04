@@ -1,8 +1,8 @@
 export const assets = {
   logo: "/logo.png",
   heroBg: "/hero-bg.png",
-  slide1: "/hero_slide_1.jpg",
-  slide2: "/hero_slide_2.jpg",
+  slide1: "/hero_slide_1.png",
+  slide2: "/hero_slide_2.png",
   slide3: "/hero_slide_3.png",
   slide4: "/hero_slide_4.png",
   slide5: "/hero_slide_5.png",

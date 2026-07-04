@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
+import { getAllPublications, formatDateID, formatViewsID } from "@/lib/publications";
+import type { Publication } from "@/lib/types";
 import {
   Search,
   Calendar,
@@ -24,134 +26,6 @@ import {
   Bookmark,
   CalendarDays,
 } from "lucide-react";
-
-// ─── Data Publikasi (Placeholder) ─────────────────────────────────────────────
-
-interface PublikasiItem {
-  id: number;
-  title: string;
-  excerpt: string;
-  content: string;
-  category: "Berita" | "Pengumuman" | "Kegiatan" | "Dokumen" | "Renungan Harian";
-  date: string;
-  author: string;
-  image: string;
-  readTime: string;
-  views: string;
-  isFeatured?: boolean;
-}
-
-const publicationsData: PublikasiItem[] = [
-  {
-    id: 1,
-    title: "Renungan Harian: Bertumbuh dalam Pengharapan",
-    excerpt: "Bacaan rohani singkat untuk menolong jemaat memulai hari dengan firman, doa, dan pengharapan.",
-    content: "Renungan harian ini disiapkan sebagai ruang teduh bagi jemaat untuk membaca firman Tuhan, merenungkan panggilan iman, dan membawa semangat pelayanan ke dalam kehidupan sehari-hari.",
-    category: "Renungan Harian",
-    date: "03 Juli 2026",
-    author: "Tim Renungan GKPI",
-    image: "/hero_slide_1.jpg",
-    readTime: "4 menit",
-    views: "1.248",
-    isFeatured: true,
-  },
-  {
-    id: 2,
-    title: "Jadwal Ibadah Minggu dan Pelayanan Resort",
-    excerpt: "Informasi jadwal ibadah, pelayanan kategorial, dan kegiatan resort yang dapat diikuti jemaat minggu ini.",
-    content: "Pengumuman ini memuat jadwal ibadah minggu, pelayanan kategorial, serta agenda resort yang dapat menjadi panduan jemaat dalam mengikuti persekutuan dan pelayanan gereja.",
-    category: "Pengumuman",
-    date: "01 Juli 2026",
-    author: "Sekretariat Sinode",
-    image: "/hero_slide_2.jpg",
-    readTime: "3 menit",
-    views: "986",
-  },
-  {
-    id: 3,
-    title: "Kegiatan Pembinaan Pelayan Jemaat",
-    excerpt: "Rangkuman kegiatan pembinaan pelayan jemaat untuk memperkuat pelayanan pastoral dan administrasi gereja.",
-    content: "Kegiatan pembinaan pelayan jemaat dilaksanakan untuk memperkuat kapasitas pelayanan, memperjelas tata kelola, dan membangun koordinasi antar pelayan di tingkat jemaat, resort, dan sinode.",
-    category: "Kegiatan",
-    date: "28 Juni 2026",
-    author: "Bidang Pelayanan",
-    image: "/hero_slide_3.png",
-    readTime: "5 menit",
-    views: "742",
-  },
-  {
-    id: 4,
-    title: "Dokumen Tata Gereja dan Panduan Pelayanan",
-    excerpt: "Kumpulan dokumen dasar yang membantu jemaat memahami tata gereja, pelayanan, dan administrasi GKPI.",
-    content: "Dokumen ini berisi rujukan dasar mengenai tata gereja, pedoman pelayanan, dan ketentuan administratif yang digunakan dalam kehidupan bergereja di lingkungan GKPI.",
-    category: "Dokumen",
-    date: "24 Juni 2026",
-    author: "Biro Administrasi",
-    image: "/hero_slide_4.png",
-    readTime: "7 menit",
-    views: "1.104",
-  },
-  {
-    id: 5,
-    title: "Berita Pelayanan Diakonia Wilayah",
-    excerpt: "Kabar pelayanan diakonia di beberapa wilayah sebagai wujud kepedulian gereja bagi jemaat dan masyarakat.",
-    content: "Pelayanan diakonia wilayah menjadi ruang bagi gereja untuk hadir secara nyata melalui kunjungan, dukungan sosial, dan kerja bersama dengan jemaat setempat.",
-    category: "Berita",
-    date: "20 Juni 2026",
-    author: "Tim Publikasi",
-    image: "/resort-hero-bg.png",
-    readTime: "4 menit",
-    views: "653",
-  },
-  {
-    id: 6,
-    title: "Pengumuman Rapat Koordinasi Pelayanan",
-    excerpt: "Undangan rapat koordinasi pelayanan bagi pengurus resort, komisi, dan bidang pelayanan terkait.",
-    content: "Rapat koordinasi pelayanan akan membahas evaluasi program berjalan, agenda pelayanan mendatang, serta pembagian tugas untuk memperkuat kesinambungan pelayanan.",
-    category: "Pengumuman",
-    date: "18 Juni 2026",
-    author: "Sekretariat Sinode",
-    image: "/hero_slide_1.jpg",
-    readTime: "2 menit",
-    views: "521",
-  },
-  {
-    id: 7,
-    title: "Pelatihan Musik Gerejawi dan Liturgi",
-    excerpt: "Kegiatan pelatihan musik gerejawi untuk mendukung pelayanan ibadah yang tertib, hangat, dan partisipatif.",
-    content: "Pelatihan musik gerejawi dan liturgi berfokus pada penguatan pemahaman ibadah, pengaturan musik, dan kerja sama antar pelayan ibadah.",
-    category: "Kegiatan",
-    date: "15 Juni 2026",
-    author: "Komisi Liturgi",
-    image: "/hero_slide_2.jpg",
-    readTime: "4 menit",
-    views: "612",
-  },
-  {
-    id: 8,
-    title: "Panduan Administrasi Jemaat",
-    excerpt: "Panduan ringkas untuk membantu pengurus jemaat mengelola surat, data pelayanan, dan arsip gereja.",
-    content: "Panduan administrasi jemaat disusun untuk membantu pengurus menjaga kerapian data, mempercepat layanan administratif, dan memastikan arsip pelayanan terdokumentasi dengan baik.",
-    category: "Dokumen",
-    date: "12 Juni 2026",
-    author: "Biro Administrasi",
-    image: "/hero_slide_3.png",
-    readTime: "6 menit",
-    views: "899",
-  },
-  {
-    id: 9,
-    title: "Kabar Kemitraan Pelayanan GKPI",
-    excerpt: "Catatan perkembangan kerja sama pelayanan bersama mitra gereja dan lembaga Kristen di dalam dan luar negeri.",
-    content: "Kemitraan pelayanan GKPI terus diarahkan untuk memperluas dukungan pendidikan, penginjilan, sosial, dan penguatan kapasitas pelayan gereja.",
-    category: "Berita",
-    date: "08 Juni 2026",
-    author: "Tim Kemitraan",
-    image: "/hero_slide_4.png",
-    readTime: "5 menit",
-    views: "734",
-  },
-];
 
 const categories: ("Semua" | "Berita" | "Pengumuman" | "Kegiatan" | "Dokumen" | "Renungan Harian")[] = [
   "Semua",
@@ -180,11 +54,29 @@ const getCategoryIcon = (category: string) => {
 };
 
 export default function PublikasiPage() {
+  const [publicationsData, setPublicationsData] = useState<Publication[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("Semua");
-  const [selectedPost, setSelectedPost] = useState<PublikasiItem | null>(null);
+  const [selectedPost, setSelectedPost] = useState<Publication | null>(null);
   const [visibleCount, setVisibleCount] = useState(6);
   const [isCopied, setIsCopied] = useState(false);
+
+  // Ambil data publikasi dari Supabase saat halaman dibuka.
+  // Setiap kali admin menambah/mengubah data di panel admin, data ini
+  // akan otomatis terbaru pada kunjungan berikutnya.
+  useEffect(() => {
+    let isMounted = true;
+    getAllPublications().then((data) => {
+      if (isMounted) {
+        setPublicationsData(data);
+        setIsLoading(false);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Filtered publications
   const filteredPublications = publicationsData.filter((post) => {
@@ -199,8 +91,8 @@ export default function PublikasiPage() {
 
   // Featured daily devotion post (first featured post in the selected category, or first post)
   const featuredPost =
-    activeCategory === "Semua" && searchQuery === ""
-      ? publicationsData.find((p) => p.isFeatured) || publicationsData[0]
+    activeCategory === "Semua" && searchQuery === "" && publicationsData.length > 0
+      ? publicationsData.find((p) => p.is_featured) || publicationsData[0]
       : null;
 
   // Grid posts (excluding the featured daily devotion post if it is shown)
@@ -358,11 +250,11 @@ export default function PublikasiPage() {
                     <div className="flex items-center gap-4 text-xs text-text-secondary">
                       <span className="flex items-center gap-1">
                         <Calendar size={14} className="text-accent" />
-                        {featuredPost.date}
+                        {formatDateID(featuredPost.date)}
                       </span>
                       <span className="flex items-center gap-1">
                         <Clock size={14} className="text-accent" />
-                        {featuredPost.readTime}
+                        {featuredPost.read_time}
                       </span>
                     </div>
                     <h2
@@ -400,7 +292,7 @@ export default function PublikasiPage() {
         )}
 
         {/* ── Grid List ── */}
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className={`grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 ${isLoading ? "hidden" : ""}`}>
           {gridPublications.slice(0, visibleCount).map((post) => (
             <ScrollReveal key={post.id}>
               <article
@@ -430,11 +322,11 @@ export default function PublikasiPage() {
                   <div className="mb-3.5 flex items-center gap-4 text-xs text-text-secondary">
                     <span className="flex items-center gap-1">
                       <Calendar size={13} className="text-accent" />
-                      {post.date}
+                      {formatDateID(post.date)}
                     </span>
                     <span className="flex items-center gap-1">
                       <Clock size={13} className="text-accent" />
-                      {post.readTime}
+                      {post.read_time}
                     </span>
                   </div>
 
@@ -470,8 +362,16 @@ export default function PublikasiPage() {
           ))}
         </div>
 
+        {/* Loading State */}
+        {isLoading && (
+          <div className="my-20 flex flex-col items-center justify-center text-center p-8">
+            <div className="h-10 w-10 rounded-full border-2 border-accent/30 border-t-accent animate-spin" />
+            <p className="text-sm text-text-secondary mt-4">Memuat publikasi...</p>
+          </div>
+        )}
+
         {/* Empty State */}
-        {filteredPublications.length === 0 && (
+        {!isLoading && filteredPublications.length === 0 && (
           <ScrollReveal>
             <div className="my-20 flex flex-col items-center justify-center text-center p-8 rounded-3xl border border-border/40 bg-surface/20">
               <FileText size={48} className="text-text-secondary mb-4 opacity-50" />
@@ -557,7 +457,7 @@ export default function PublikasiPage() {
                 <div className="flex flex-wrap gap-4 text-xs text-text-secondary border-b border-border/30 pb-4">
                   <span className="flex items-center gap-1">
                     <Calendar size={13} className="text-accent" />
-                    {selectedPost.date}
+                    {formatDateID(selectedPost.date)}
                   </span>
                   <span className="flex items-center gap-1">
                     <User size={13} className="text-accent" />
@@ -565,11 +465,11 @@ export default function PublikasiPage() {
                   </span>
                   <span className="flex items-center gap-1">
                     <Clock size={13} className="text-accent" />
-                    {selectedPost.readTime}
+                    {selectedPost.read_time}
                   </span>
                   <span className="flex items-center gap-1">
                     <Eye size={13} className="text-accent" />
-                    {selectedPost.views}
+                    {formatViewsID(selectedPost.views)}
                   </span>
                 </div>
               </div>

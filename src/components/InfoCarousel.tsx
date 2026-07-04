@@ -10,13 +10,13 @@ const slides = [
     title: "Persiapan Perayaan Pentakosta 2026",
     excerpt:
       "Rangkaian kegiatan jemaat menyambut Pentakosta akan dimulai pada minggu pertama bulan Mei.",
-    image: "/hero_slide_1.jpg",
+    image: "/hero_slide_1.png",
   },
   {
     title: "Pelatihan Kepemimpinan Pemuda GKPI",
     excerpt:
       "Pendaftaran pelatihan wilayah untuk pemuda GKPI kini dibuka secara daring.",
-    image: "/hero_slide_2.jpg",
+    image: "/hero_slide_2.g",
   },
   {
     title: "Update Renovasi Kantor Sinode",
