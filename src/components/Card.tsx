@@ -50,7 +50,7 @@ export default function Card({
       <div className="px-8 pb-8">
         <div className="pt-6 border-t border-border/50">
           <Link
-            href={href}
+            href="/publikasi"
             className="inline-flex items-center gap-2 text-sm text-accent font-bold hover:gap-3 transition-all duration-200"
           >
             Baca Selengkapnya
