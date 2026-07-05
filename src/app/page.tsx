@@ -84,7 +84,7 @@ export default async function Home() {
                 icon: Bell,
                 title: "Info",
                 desc: "Informasi terkait GKPI.",
-                href: "info",
+                href: "profil-gkpi",
               },
               {
                 icon: Newspaper,
@@ -165,7 +165,7 @@ export default async function Home() {
               </div>
             </div>
             <Link
-              href="/tentang-gkpi"
+              href="/profil-gkpi"
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-bold rounded-full hover:bg-primary-dark shadow-lg transition-all duration-300"
             >
               Selengkapnya

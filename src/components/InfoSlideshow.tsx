@@ -13,7 +13,7 @@ const slides = [
     image: "/hero_slide_3.png",
     meta: "Dokumen Profil",
     date: "Diperbarui 2026",
-    href: "/info",
+    href: "/profil-gkpi",
   },
   {
     id: 2,
@@ -22,7 +22,7 @@ const slides = [
     image: "/hero_slide_1.png",
     meta: "Visi & Misi",
     date: "Renstra GKPI",
-    href: "/info#visi-misi",
+    href: "/profil-gkpi#visi-misi",
   },
   {
     id: 3,
@@ -31,7 +31,7 @@ const slides = [
     image: "/resort-hero-bg.png",
     meta: "Tata Gereja",
     date: "Referensi Resmi",
-    href: "/info#dokumen",
+    href: "/profil-gkpi#dokumen",
   },
 ];
 
@@ -116,7 +116,7 @@ export default function InfoSlideshow() {
                       <ChevronRight size={16} />
                     </Link>
                     <Link
-                      href="/info"
+                      href="/profil-gkpi"
                       className="inline-flex min-h-12 items-center justify-center rounded-full border border-border bg-surface/50 px-7 text-sm font-bold text-text-primary transition-all duration-300 hover:border-accent/40 hover:bg-surface"
                     >
                       Lihat Semua

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "GKPI Sinode | Beranda",
+  title: "GKPI Sinode - Gereja Kristen Protestan Indonesia",
   description: "Selamat Datang di GKPI - Komunitas yang bertumbuh dalam iman, melayani dengan kasih, dan berdampak bagi sesama.",
 };
 

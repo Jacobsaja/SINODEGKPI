@@ -9,10 +9,9 @@ import { assets } from "@/lib/assets";
 
 const navLinks = [
   { name: "Beranda", href: "/" },
-  { name: "Tentang", href: "/tentang-gkpi" },
+  { name: "Profil GKPI", href: "/profil-gkpi" },
   { name: "Pengurus", href: "/pengurus" },
   { name: "Resort dan Wilayah", href: "/wilayah-resort" },
-  { name: "Info", href: "/info" },
   { name: "Publikasi", href: "/publikasi" },
   { name: "Mitra", href: "/mitra" },
   { name: "Toko", href: "/toko" },
