@@ -1,6 +1,8 @@
 import { supabase } from "@/lib/supabase";
 import type { Product } from "@/lib/types";
 
+export type { Product };
+
 /**
  * Semua produk untuk halaman /toko (client component, filter & search
  * dilakukan di sisi client setelah data ini dimuat) dan untuk dashboard admin.
