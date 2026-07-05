@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
+import { getAllProducts, formatRupiah } from "@/lib/products";
+import type { Product } from "@/lib/types";
 import {
   Search,
   ChevronRight,
@@ -20,153 +22,38 @@ import {
   ExternalLink,
 } from "lucide-react";
 
-// ─── Data Produk (Placeholder) ─────────────────────────────────────────────
-
-interface ProductItem {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  category: string;
-  image: string;
-  tokopediaUrl: string;
-  shopeeUrl: string;
-  isFeatured?: boolean;
-}
-
-const productsData: ProductItem[] = [
-  {
-    id: 1,
-    name: "Alkitab Edisi Cetak Besar",
-    description:
-      "Alkitab dengan huruf cetak besar, sampul hardcover, cocok untuk ibadah harian maupun hadiah.",
-    price: 185000,
-    category: "Alkitab & Buku Rohani",
-    image:
-      "https://images.unsplash.com/photo-1544816155-12df9643f363?q=80&w=800&auto=format&fit=crop",
-    tokopediaUrl: "https://www.tokopedia.com/",
-    shopeeUrl: "https://shopee.co.id/",
-    isFeatured: true,
-  },
-  {
-    id: 2,
-    name: "Kaos Rohani GKPI",
-    description:
-      "Kaos katun combed 30s dengan sablon logo GKPI, tersedia ukuran S sampai XL.",
-    price: 95000,
-    category: "Merchandise",
-    image:
-      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=800&auto=format&fit=crop",
-    tokopediaUrl: "https://www.tokopedia.com/",
-    shopeeUrl: "https://shopee.co.id/",
-  },
-  {
-    id: 3,
-    name: "Buku Renungan 40 Hari",
-    description:
-      "Kumpulan renungan harian selama 40 hari untuk menemani perjalanan iman sehari-hari.",
-    price: 65000,
-    category: "Alkitab & Buku Rohani",
-    image:
-      "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop",
-    tokopediaUrl: "https://www.tokopedia.com/",
-    shopeeUrl: "https://shopee.co.id/",
-  },
-  {
-    id: 4,
-    name: "Gantungan Kunci Salib",
-    description:
-      "Gantungan kunci berbahan logam dengan bentuk salib, cocok sebagai buah tangan.",
-    price: 25000,
-    category: "Aksesoris",
-    image:
-      "https://images.unsplash.com/photo-1602751584547-91a70df0d5c9?q=80&w=800&auto=format&fit=crop",
-    tokopediaUrl: "https://www.tokopedia.com/",
-    shopeeUrl: "https://shopee.co.id/",
-  },
-  {
-    id: 5,
-    name: "Mug Keramik Motif GKPI",
-    description:
-      "Mug keramik 300ml dengan cetakan motif gereja, aman untuk microwave dan dishwasher.",
-    price: 55000,
-    category: "Merchandise",
-    image:
-      "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?q=80&w=800&auto=format&fit=crop",
-    tokopediaUrl: "https://www.tokopedia.com/",
-    shopeeUrl: "https://shopee.co.id/",
-  },
-  {
-    id: 6,
-    name: "Buku Nyanyian Jemaat",
-    description:
-      "Kumpulan lagu-lagu jemaat lengkap dengan notasi, digunakan dalam ibadah minggu.",
-    price: 45000,
-    category: "Alkitab & Buku Rohani",
-    image:
-      "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=800&auto=format&fit=crop",
-    tokopediaUrl: "https://www.tokopedia.com/",
-    shopeeUrl: "https://shopee.co.id/",
-  },
-  {
-    id: 7,
-    name: "Tas Kanvas Tote Bag",
-    description:
-      "Tas kanvas serbaguna dengan sablon logo, kuat dan cocok dipakai sehari-hari.",
-    price: 75000,
-    category: "Merchandise",
-    image:
-      "https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=800&auto=format&fit=crop",
-    tokopediaUrl: "https://www.tokopedia.com/",
-    shopeeUrl: "https://shopee.co.id/",
-  },
-  {
-    id: 8,
-    name: "Kalender Rohani Meja 2026",
-    description:
-      "Kalender meja bertema renungan harian, dilengkapi ayat-ayat pilihan tiap bulan.",
-    price: 40000,
-    category: "Aksesoris",
-    image:
-      "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=800&auto=format&fit=crop",
-    tokopediaUrl: "https://www.tokopedia.com/",
-    shopeeUrl: "https://shopee.co.id/",
-  },
-];
-
-const categories = [
-  "Semua",
-  ...Array.from(new Set(productsData.map((p) => p.category))),
-];
-
 const categoryIcons = [ShoppingBag, Package, Gift, Tag, Sparkles];
 
-const getCategoryIcon = (category: string) => {
-  if (category === "Semua") return <Sparkles size={14} />;
-  const index = categories.indexOf(category) % categoryIcons.length;
-  const Icon = categoryIcons[index] ?? Tag;
-  return <Icon size={14} />;
-};
-
-function formatRupiah(value: number): string {
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(value || 0);
-}
-
 export default function TokoPage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("Semua");
-  const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(
-    null
-  );
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [visibleCount, setVisibleCount] = useState(6);
   const [isCopied, setIsCopied] = useState(false);
 
+  // Ambil data produk dari Supabase saat halaman dibuka.
+  useEffect(() => {
+    getAllProducts()
+      .then(setProducts)
+      .finally(() => setIsLoading(false));
+  }, []);
+
+  const categories = useMemo(
+    () => ["Semua", ...Array.from(new Set(products.map((p) => p.category)))],
+    [products]
+  );
+
+  const getCategoryIcon = (category: string) => {
+    if (category === "Semua") return <Sparkles size={14} />;
+    const index = categories.indexOf(category) % categoryIcons.length;
+    const Icon = categoryIcons[index] ?? Tag;
+    return <Icon size={14} />;
+  };
+
   // Filtered products
-  const filteredProducts = productsData.filter((item) => {
+  const filteredProducts = products.filter((item) => {
     const matchesCategory =
       activeCategory === "Semua" || item.category === activeCategory;
     const matchesSearch =
@@ -179,7 +66,7 @@ export default function TokoPage() {
   // Featured product (only shown when no filter/search active)
   const featuredProduct =
     activeCategory === "Semua" && searchQuery === ""
-      ? productsData.find((p) => p.isFeatured) || productsData[0]
+      ? products.find((p) => p.is_featured) || products[0] || null
       : null;
 
   const gridProducts = featuredProduct
@@ -303,8 +190,16 @@ export default function TokoPage() {
           </div>
         </ScrollReveal>
 
+        {/* ── Loading State ── */}
+        {isLoading && (
+          <div className="my-20 flex flex-col items-center justify-center text-center">
+            <div className="mb-4 h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+            <p className="text-sm text-text-secondary">Memuat produk...</p>
+          </div>
+        )}
+
         {/* ── Featured Product ── */}
-        {featuredProduct && (
+        {!isLoading && featuredProduct && (
           <ScrollReveal>
             <div className="mb-14">
               <p className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent">
@@ -362,60 +257,62 @@ export default function TokoPage() {
         )}
 
         {/* ── Grid List ── */}
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {gridProducts.slice(0, visibleCount).map((product) => (
-            <ScrollReveal key={product.id}>
-              <article
-                onClick={() => setSelectedProduct(product)}
-                className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-[2rem] border border-border bg-surface/40 shadow-lg shadow-black/5 transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/30 hover:bg-surface/60 hover:shadow-2xl hover:shadow-accent/5"
-                style={{ backdropFilter: "blur(12px)" }}
-              >
-                {/* Card Thumbnail */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
-                  <span className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-background/55 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur">
-                    {getCategoryIcon(product.category)}
-                    {product.category}
-                  </span>
-                </div>
-
-                {/* Card Body */}
-                <div className="flex flex-1 flex-col p-6">
-                  <h3
-                    className="mb-2 font-serif text-lg font-bold leading-snug text-white transition-colors group-hover:text-accent"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
-                  >
-                    {product.name}
-                  </h3>
-                  <p className="mb-6 line-clamp-2 text-sm leading-relaxed text-text-secondary">
-                    {product.description}
-                  </p>
-
-                  <div className="mt-auto flex items-center justify-between border-t border-border/40 pt-4">
-                    <span className="text-base font-bold text-white">
-                      {formatRupiah(product.price)}
-                    </span>
-                    <span className="flex items-center gap-1 text-xs font-semibold text-accent group-hover:underline">
-                      <span>Lihat</span>
-                      <ChevronRight
-                        size={14}
-                        className="transition-transform group-hover:translate-x-0.5"
-                      />
+        {!isLoading && (
+          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {gridProducts.slice(0, visibleCount).map((product) => (
+              <ScrollReveal key={product.id}>
+                <article
+                  onClick={() => setSelectedProduct(product)}
+                  className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-[2rem] border border-border bg-surface/40 shadow-lg shadow-black/5 transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/30 hover:bg-surface/60 hover:shadow-2xl hover:shadow-accent/5"
+                  style={{ backdropFilter: "blur(12px)" }}
+                >
+                  {/* Card Thumbnail */}
+                  <div className="relative aspect-[16/10] w-full overflow-hidden">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
+                    <span className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-background/55 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur">
+                      {getCategoryIcon(product.category)}
+                      {product.category}
                     </span>
                   </div>
-                </div>
-              </article>
-            </ScrollReveal>
-          ))}
-        </div>
+
+                  {/* Card Body */}
+                  <div className="flex flex-1 flex-col p-6">
+                    <h3
+                      className="mb-2 font-serif text-lg font-bold leading-snug text-white transition-colors group-hover:text-accent"
+                      style={{ fontFamily: "'Playfair Display', serif" }}
+                    >
+                      {product.name}
+                    </h3>
+                    <p className="mb-6 line-clamp-2 text-sm leading-relaxed text-text-secondary">
+                      {product.description}
+                    </p>
+
+                    <div className="mt-auto flex items-center justify-between border-t border-border/40 pt-4">
+                      <span className="text-base font-bold text-white">
+                        {formatRupiah(product.price)}
+                      </span>
+                      <span className="flex items-center gap-1 text-xs font-semibold text-accent group-hover:underline">
+                        <span>Lihat</span>
+                        <ChevronRight
+                          size={14}
+                          className="transition-transform group-hover:translate-x-0.5"
+                        />
+                      </span>
+                    </div>
+                  </div>
+                </article>
+              </ScrollReveal>
+            ))}
+          </div>
+        )}
 
         {/* Empty State */}
-        {filteredProducts.length === 0 && (
+        {!isLoading && filteredProducts.length === 0 && (
           <ScrollReveal>
             <div className="my-20 flex flex-col items-center justify-center rounded-3xl border border-border/40 bg-surface/20 p-8 text-center">
               <ShoppingBag
@@ -433,7 +330,7 @@ export default function TokoPage() {
         )}
 
         {/* Load More Button */}
-        {filteredProducts.length > visibleCount && (
+        {!isLoading && filteredProducts.length > visibleCount && (
           <ScrollReveal>
             <div className="mt-16 text-center">
               <button
@@ -529,7 +426,7 @@ export default function TokoPage() {
               {/* Buy Buttons */}
               <div className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-2">
                 <Link
-                  href={selectedProduct.tokopediaUrl}
+                  href={selectedProduct.tokopedia_url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#03AC0E]/40 bg-[#03AC0E]/10 px-5 py-3.5 text-sm font-bold text-[#4ADE80] transition-all hover:bg-[#03AC0E]/20"
@@ -538,7 +435,7 @@ export default function TokoPage() {
                   <ExternalLink size={14} />
                 </Link>
                 <Link
-                  href={selectedProduct.shopeeUrl}
+                  href={selectedProduct.shopee_url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#EE4D2D]/40 bg-[#EE4D2D]/10 px-5 py-3.5 text-sm font-bold text-[#FB923C] transition-all hover:bg-[#EE4D2D]/20"

@@ -22,3 +22,22 @@ export interface Publication {
   created_at: string;
   updated_at: string;
 }
+
+// Kategori bersifat bebas (text) karena daftar produk toko bisa terus
+// bertambah kategorinya seiring waktu, tidak seketat kategori publikasi.
+export type ProductCategory = string;
+
+// Bentuk data persis seperti kolom di tabel `products` pada Supabase.
+export interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  category: ProductCategory;
+  image: string;
+  tokopedia_url: string;
+  shopee_url: string;
+  is_featured: boolean;
+  created_at: string;
+  updated_at: string;
+}

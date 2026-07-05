@@ -1,32 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import type { Publication, PublicationCategory } from "@/lib/types";
-
-const CATEGORIES: PublicationCategory[] = [
-  "Renungan Harian",
-  "Berita",
-  "Pengumuman",
-  "Kegiatan",
-  "Dokumen",
-];
+import type { Product } from "@/lib/types";
+import { formatRupiah } from "@/lib/products";
 
 const emptyForm = {
-  title: "",
-  excerpt: "",
-  content: "",
-  category: "Berita" as PublicationCategory,
-  date: new Date().toISOString().slice(0, 10),
-  author: "",
+  name: "",
+  description: "",
+  price: 0,
+  category: "",
   image: "",
-  read_time: "3 menit",
-  views: 0,
+  tokopedia_url: "https://www.tokopedia.com/",
+  shopee_url: "https://shopee.co.id/",
   is_featured: false,
 };
 
-export default function AdminPublikasiPage() {
-  const [items, setItems] = useState<Publication[]>([]);
+export default function AdminTokoPage() {
+  const [items, setItems] = useState<Product[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
@@ -39,13 +30,20 @@ export default function AdminPublikasiPage() {
 
   async function loadItems() {
     const { data, error } = await supabase
-      .from("publications")
+      .from("products")
       .select("*")
-      .order("date", { ascending: false });
+      .order("created_at", { ascending: false });
     if (!error) setItems(data ?? []);
   }
 
-  // Upload file gambar yang dipilih admin ke Supabase Storage (bucket "publications"),
+  // Kategori yang sudah pernah dipakai, ditawarkan sebagai saran (datalist)
+  // supaya admin tetap konsisten menamai kategori tapi bebas menambah baru.
+  const existingCategories = useMemo(
+    () => Array.from(new Set(items.map((p) => p.category))).sort(),
+    [items]
+  );
+
+  // Upload file gambar produk ke Supabase Storage (bucket "products"),
   // lalu simpan URL publiknya ke form.image.
   async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -58,7 +56,7 @@ export default function AdminPublikasiPage() {
     const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
 
     const { error } = await supabase.storage
-      .from("publications")
+      .from("products")
       .upload(fileName, file, { upsert: false });
 
     if (error) {
@@ -67,23 +65,21 @@ export default function AdminPublikasiPage() {
       return;
     }
 
-    const { data } = supabase.storage.from("publications").getPublicUrl(fileName);
+    const { data } = supabase.storage.from("products").getPublicUrl(fileName);
     setForm((prev) => ({ ...prev, image: data.publicUrl }));
     setUploading(false);
   }
 
-  function startEdit(item: Publication) {
+  function startEdit(item: Product) {
     setEditingId(item.id);
     setForm({
-      title: item.title,
-      excerpt: item.excerpt,
-      content: item.content,
+      name: item.name,
+      description: item.description,
+      price: item.price,
       category: item.category,
-      date: item.date,
-      author: item.author,
       image: item.image,
-      read_time: item.read_time,
-      views: item.views,
+      tokopedia_url: item.tokopedia_url,
+      shopee_url: item.shopee_url,
       is_featured: item.is_featured,
     });
   }
@@ -98,9 +94,9 @@ export default function AdminPublikasiPage() {
     e.preventDefault();
     setSaving(true);
     if (editingId) {
-      await supabase.from("publications").update(form).eq("id", editingId);
+      await supabase.from("products").update(form).eq("id", editingId);
     } else {
-      await supabase.from("publications").insert(form);
+      await supabase.from("products").insert(form);
     }
     setSaving(false);
     resetForm();
@@ -108,25 +104,23 @@ export default function AdminPublikasiPage() {
   }
 
   async function handleDelete(id: number) {
-    if (!confirm("Hapus publikasi ini?")) return;
-    await supabase.from("publications").delete().eq("id", id);
+    if (!confirm("Hapus produk ini?")) return;
+    await supabase.from("products").delete().eq("id", id);
     loadItems();
   }
 
   return (
     <div className="space-y-10">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-widest text-accent">
-            Kelola Konten
-          </p>
-          <h1
-            className="text-2xl font-bold text-white"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Publikasi
-          </h1>
-        </div>
+      <div>
+        <p className="text-xs font-bold uppercase tracking-widest text-accent">
+          Kelola Konten
+        </p>
+        <h1
+          className="text-2xl font-bold text-white"
+          style={{ fontFamily: "'Playfair Display', serif" }}
+        >
+          Toko
+        </h1>
       </div>
 
       {/* Form tambah/edit */}
@@ -135,48 +129,56 @@ export default function AdminPublikasiPage() {
         className="space-y-4 p-6 rounded-3xl border border-border bg-surface/40"
       >
         <h2 className="font-bold text-white">
-          {editingId ? "Edit Publikasi" : "Tambah Publikasi Baru"}
+          {editingId ? "Edit Produk" : "Tambah Produk Baru"}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
-            placeholder="Judul"
-            value={form.title}
-            onChange={(e) => setForm({ ...form, title: e.target.value })}
+            placeholder="Nama Produk"
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
             className="rounded-xl border border-border bg-background/50 px-4 py-3 text-sm"
             required
           />
           <input
-            placeholder="Penulis"
-            value={form.author}
-            onChange={(e) => setForm({ ...form, author: e.target.value })}
-            className="rounded-xl border border-border bg-background/50 px-4 py-3 text-sm"
-            required
-          />
-          <select
-            value={form.category}
-            onChange={(e) =>
-              setForm({ ...form, category: e.target.value as PublicationCategory })
-            }
-            className="rounded-xl border border-border bg-background/50 px-4 py-3 text-sm"
-          >
-            {CATEGORIES.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
-          <input
-            type="date"
-            value={form.date}
-            onChange={(e) => setForm({ ...form, date: e.target.value })}
+            type="number"
+            min={0}
+            placeholder="Harga (Rp)"
+            value={form.price}
+            onChange={(e) => setForm({ ...form, price: Number(e.target.value) })}
             className="rounded-xl border border-border bg-background/50 px-4 py-3 text-sm"
             required
           />
 
+          {/* Kategori: bebas ketik, dengan saran dari kategori yang sudah ada */}
+          <div>
+            <input
+              list="product-categories"
+              placeholder="Kategori (mis. Merchandise)"
+              value={form.category}
+              onChange={(e) => setForm({ ...form, category: e.target.value })}
+              className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm"
+              required
+            />
+            <datalist id="product-categories">
+              {existingCategories.map((c) => (
+                <option key={c} value={c} />
+              ))}
+            </datalist>
+          </div>
+
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={form.is_featured}
+              onChange={(e) => setForm({ ...form, is_featured: e.target.checked })}
+            />
+            Jadikan produk unggulan
+          </label>
+
           {/* Upload gambar ke Supabase Storage */}
           <div className="md:col-span-2 space-y-2">
             <label className="text-xs font-semibold text-text-secondary">
-              Gambar Publikasi
+              Gambar Produk
             </label>
             <input
               type="file"
@@ -196,34 +198,26 @@ export default function AdminPublikasiPage() {
           </div>
 
           <input
-            placeholder="Estimasi baca (mis. 4 menit)"
-            value={form.read_time}
-            onChange={(e) => setForm({ ...form, read_time: e.target.value })}
+            placeholder="Link Tokopedia"
+            value={form.tokopedia_url}
+            onChange={(e) => setForm({ ...form, tokopedia_url: e.target.value })}
             className="rounded-xl border border-border bg-background/50 px-4 py-3 text-sm"
+            required
           />
-          <label className="flex items-center gap-2 text-sm">
-            <input
-              type="checkbox"
-              checked={form.is_featured}
-              onChange={(e) => setForm({ ...form, is_featured: e.target.checked })}
-            />
-            Jadikan renungan unggulan
-          </label>
+          <input
+            placeholder="Link Shopee"
+            value={form.shopee_url}
+            onChange={(e) => setForm({ ...form, shopee_url: e.target.value })}
+            className="rounded-xl border border-border bg-background/50 px-4 py-3 text-sm"
+            required
+          />
         </div>
         <textarea
-          placeholder="Ringkasan singkat"
-          value={form.excerpt}
-          onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
+          placeholder="Deskripsi produk"
+          value={form.description}
+          onChange={(e) => setForm({ ...form, description: e.target.value })}
           className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm"
-          rows={2}
-          required
-        />
-        <textarea
-          placeholder="Isi lengkap"
-          value={form.content}
-          onChange={(e) => setForm({ ...form, content: e.target.value })}
-          className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm"
-          rows={5}
+          rows={3}
           required
         />
         <div className="flex gap-3">
@@ -232,7 +226,7 @@ export default function AdminPublikasiPage() {
             disabled={saving || uploading}
             className="px-6 py-3 bg-primary text-white text-sm font-bold rounded-xl hover:bg-primary-dark transition-all disabled:opacity-50"
           >
-            {saving ? "Menyimpan..." : editingId ? "Simpan Perubahan" : "Tambah Publikasi"}
+            {saving ? "Menyimpan..." : editingId ? "Simpan Perubahan" : "Tambah Produk"}
           </button>
           {editingId && (
             <button
@@ -246,7 +240,7 @@ export default function AdminPublikasiPage() {
         </div>
       </form>
 
-      {/* Daftar publikasi */}
+      {/* Daftar produk */}
       <div className="space-y-3">
         {items.map((item) => (
           <div
@@ -258,14 +252,21 @@ export default function AdminPublikasiPage() {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={item.image}
-                  alt={item.title}
+                  alt={item.name}
                   className="h-12 w-12 rounded-lg object-cover border border-border"
                 />
               )}
               <div>
-                <p className="font-semibold text-white">{item.title}</p>
+                <p className="font-semibold text-white">
+                  {item.name}
+                  {item.is_featured && (
+                    <span className="ml-2 rounded-full border border-accent/30 bg-accent/10 px-2 py-0.5 text-[10px] font-bold text-accent">
+                      Unggulan
+                    </span>
+                  )}
+                </p>
                 <p className="text-xs text-text-secondary">
-                  {item.category} · {item.date}
+                  {item.category} · {formatRupiah(item.price)}
                 </p>
               </div>
             </div>
@@ -286,7 +287,7 @@ export default function AdminPublikasiPage() {
           </div>
         ))}
         {items.length === 0 && (
-          <p className="text-sm text-text-secondary">Belum ada publikasi.</p>
+          <p className="text-sm text-text-secondary">Belum ada produk.</p>
         )}
       </div>
     </div>

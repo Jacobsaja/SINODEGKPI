@@ -15,6 +15,7 @@ const navLinks = [
   { name: "Info", href: "/info" },
   { name: "Publikasi", href: "/publikasi" },
   { name: "Mitra", href: "/mitra" },
+  { name: "Toko", href: "/toko" },
   { name: "Kontak", href: "/kontak" },
 ];
 
