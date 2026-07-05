@@ -39,7 +39,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
           <div className="grid grid-cols-2 gap-2">
             <a
-              href={product.tokopediaUrl}
+              href={product.tokopedia_url}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-1.5 rounded-lg border border-[#03AC0E]/40 bg-[#03AC0E]/10 px-3 py-2 text-sm font-semibold text-[#4ADE80] transition-colors hover:bg-[#03AC0E]/20"
@@ -47,7 +47,7 @@ export default function ProductCard({ product }: { product: Product }) {
               Tokopedia
             </a>
             <a
-              href={product.shopeeUrl}
+              href={product.shopee_url}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-1.5 rounded-lg border border-[#EE4D2D]/40 bg-[#EE4D2D]/10 px-3 py-2 text-sm font-semibold text-[#FB923C] transition-colors hover:bg-[#EE4D2D]/20"
