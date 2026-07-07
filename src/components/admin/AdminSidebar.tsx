@@ -6,6 +6,7 @@ import {
   LayoutDashboard,
   Newspaper,
   ShoppingBag,
+  Users,
   LogOut,
   ExternalLink,
   X,
@@ -15,6 +16,7 @@ const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { href: "/admin/publikasi", label: "Publikasi", icon: Newspaper, exact: false },
   { href: "/admin/toko", label: "Toko", icon: ShoppingBag, exact: false },
+  { href: "/admin/pengurus", label: "Pengurus", icon: Users, exact: false },
 ];
 
 interface AdminSidebarProps {
