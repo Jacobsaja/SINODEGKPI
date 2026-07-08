@@ -105,7 +105,7 @@ export default function AdminLayout({
                 placeholder="nama@email.com"
                 value={loginEmail}
                 onChange={(e) => setLoginEmail(e.target.value)}
-                className="w-full rounded-xl border border-border bg-background/40 px-4 py-3.5 text-sm text-white placeholder-text-secondary/50 outline-none transition-all focus:border-accent/50 focus:bg-background/80 focus:ring-4 focus:ring-accent/10"
+                className="w-full rounded-xl border border-border bg-background/40 px-4 py-3.5 text-sm text-text-primary placeholder-text-secondary/50 outline-none transition-all focus:border-accent/50 focus:bg-background/80 focus:ring-4 focus:ring-accent/10"
                 required
               />
             </div>
@@ -117,7 +117,7 @@ export default function AdminLayout({
                 placeholder="••••••••"
                 value={loginPassword}
                 onChange={(e) => setLoginPassword(e.target.value)}
-                className="w-full rounded-xl border border-border bg-background/40 px-4 py-3.5 text-sm text-white placeholder-text-secondary/50 outline-none transition-all focus:border-accent/50 focus:bg-background/80 focus:ring-4 focus:ring-accent/10"
+                className="w-full rounded-xl border border-border bg-background/40 px-4 py-3.5 text-sm text-text-primary placeholder-text-secondary/50 outline-none transition-all focus:border-accent/50 focus:bg-background/80 focus:ring-4 focus:ring-accent/10"
                 required
               />
             </div>

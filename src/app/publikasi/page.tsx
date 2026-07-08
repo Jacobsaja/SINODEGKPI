@@ -204,7 +204,7 @@ export default function PublikasiPage() {
                       ${
                         isActive
                           ? "bg-accent text-background shadow-lg shadow-accent/25"
-                          : "border border-border bg-surface/60 text-text-secondary hover:border-accent/20 hover:text-white"
+                          : "border border-border bg-surface/60 text-text-secondary hover:border-accent/20 hover:text-accent"
                       }`}
                   >
                     {getCategoryIcon(cat)}
@@ -406,29 +406,29 @@ export default function PublikasiPage() {
 
           {/* Modal Box */}
           <div
-            className="relative flex h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-[2rem] border border-accent/20 shadow-2xl animate-slide-up md:h-[80vh]"
+            className="relative flex h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-[2rem] border border-border/50 shadow-2xl animate-slide-up md:h-[80vh]"
             style={{
-              background: "linear-gradient(160deg, rgba(22,42,64,0.98) 0%, rgba(8,17,30,0.98) 100%)",
-              boxShadow: "0 28px 90px rgba(0,0,0,0.45), 0 0 50px rgba(111,168,220,0.12)",
+              background: "linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)",
+              boxShadow: "0 28px 90px rgba(0,0,0,0.25)",
             }}
           >
             {/* Header / Top controls */}
-            <div className="flex items-center justify-between p-6 border-b border-border/40 shrink-0">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-accent/15 px-3 py-1 text-xs font-bold text-accent border border-accent/25">
+            <div className="flex items-center justify-between p-6 border-b border-border/40 shrink-0 bg-white">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold text-primary border border-primary/20">
                 {getCategoryIcon(selectedPost.category)}
                 {selectedPost.category}
               </span>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <button
                   onClick={handleCopyLink}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-border/60 text-text-secondary hover:text-white transition-colors bg-surface/30 cursor-pointer"
+                  className="flex h-11 w-11 items-center justify-center rounded-xl border border-border text-text-secondary hover:text-primary hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 bg-surface cursor-pointer"
                   title="Salin Tautan"
                 >
                   <Share2 size={16} />
                 </button>
                 <button
                   onClick={() => setSelectedPost(null)}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-border/60 text-text-secondary hover:text-white transition-colors bg-surface/30 cursor-pointer"
+                  className="flex h-11 w-11 items-center justify-center rounded-xl border border-border text-text-secondary hover:text-red-500 hover:border-red-500/40 hover:bg-red-500/5 transition-all duration-300 bg-surface cursor-pointer"
                   aria-label="Tutup"
                 >
                   <X size={18} />
@@ -446,48 +446,48 @@ export default function PublikasiPage() {
               )}
 
               {/* Title & Meta */}
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <h2
-                  className="text-2xl md:text-3xl font-bold text-text-primary leading-tight"
+                  className="text-3xl md:text-4xl font-bold text-text-primary leading-tight tracking-tight"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   {selectedPost.title}
                 </h2>
-                <div className="flex flex-wrap gap-4 text-xs text-text-secondary border-b border-border/30 pb-4">
-                  <span className="flex items-center gap-1">
-                    <Calendar size={13} className="text-accent" />
+                <div className="flex flex-wrap gap-4 text-xs text-text-secondary border-b border-border/30 pb-5">
+                  <span className="flex items-center gap-2">
+                    <Calendar size={14} className="text-primary" />
                     {formatDateID(selectedPost.date)}
                   </span>
-                  <span className="flex items-center gap-1">
-                    <User size={13} className="text-accent" />
+                  <span className="flex items-center gap-2">
+                    <User size={14} className="text-primary" />
                     {selectedPost.author}
                   </span>
-                  <span className="flex items-center gap-1">
-                    <Clock size={13} className="text-accent" />
+                  <span className="flex items-center gap-2">
+                    <Clock size={14} className="text-primary" />
                     {selectedPost.read_time}
                   </span>
-                  <span className="flex items-center gap-1">
-                    <Eye size={13} className="text-accent" />
+                  <span className="flex items-center gap-2">
+                    <Eye size={14} className="text-primary" />
                     {formatViewsID(selectedPost.views)}
                   </span>
                 </div>
               </div>
 
               {/* Large Image */}
-              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border/40">
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border/40 shadow-2xl">
                 <Image
                   src={selectedPost.image}
                   alt={selectedPost.title}
                   fill
                   sizes="600px"
-                  className="object-cover"
+                  className="object-cover hover:scale-105 transition-transform duration-700"
                 />
               </div>
 
               {/* Content Body */}
-              <div className="text-text-secondary leading-relaxed space-y-4 text-base md:text-lg">
-                <p>{selectedPost.content}</p>
-                <p>
+              <div className="text-text-primary leading-relaxed space-y-5 text-base md:text-lg">
+                <p className="first-letter:text-5xl first-letter:font-bold first-letter:text-primary first-letter:float-left first-letter:mr-3 first-letter:mt-1">{selectedPost.content}</p>
+                <p className="text-sm text-text-secondary italic border-l-2 border-primary/20 pl-4 py-2 bg-surface/50 rounded-r-lg">
                   Informasi ini akan diperbarui mengikuti materi resmi dari
                   pengurus dan bidang pelayanan terkait.
                 </p>

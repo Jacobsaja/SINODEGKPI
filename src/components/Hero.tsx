@@ -138,7 +138,7 @@ export default function Hero() {
                         priority
                       />
                     </div>
-                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-sans font-bold text-text-primary tracking-wide mb-6">
+                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-sans font-black text-white tracking-wide mb-6 drop-shadow-2xl">
                       {slide.title}
                     </h1>
                     <p className="text-sm md:text-lg text-accent/80 tracking-[0.2em] uppercase">

@@ -22,6 +22,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const isHomePage = pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 24);
@@ -57,7 +58,7 @@ export default function Navbar() {
                 priority
               />
             </div>
-            <span className="text-xl font-sans font-bold tracking-tight text-text-primary">
+            <span className={`text-xl font-sans font-bold tracking-tight transition-colors duration-300 ${isScrolled || !isHomePage ? "text-text-primary" : "text-white"}`}>
               GKPI
             </span>
           </Link>
@@ -71,8 +72,8 @@ export default function Navbar() {
                   key={link.name}
                   href={link.href}
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative group ${isActive
-                    ? "text-text-primary"
-                    : "text-text-secondary hover:text-text-primary hover:bg-white/5"
+                    ? (isScrolled || !isHomePage ? "text-text-primary" : "text-white")
+                    : (isScrolled || !isHomePage ? "text-text-secondary hover:text-text-primary" : "text-white/70 hover:text-white") + " hover:bg-white/5"
                     }`}
                 >
                   {link.name}
@@ -95,7 +96,7 @@ export default function Navbar() {
 
           {/* Mobile Hamburger */}
           <button
-            className="lg:hidden p-2.5 rounded-xl text-text-primary hover:bg-white/10 transition-colors duration-200"
+            className={`lg:hidden p-2.5 rounded-xl transition-colors duration-200 ${isScrolled || !isHomePage ? "text-text-primary hover:bg-white/10" : "text-white hover:bg-white/10"}`}
             onClick={() => setIsOpen(true)}
             aria-label="Buka menu"
             aria-expanded={isOpen}
@@ -135,7 +136,7 @@ export default function Navbar() {
                   className="object-contain"
                 />
               </div>
-              <span className="text-xl font-sans font-bold text-text-primary">GKPI</span>
+              <span className="text-xl font-sans font-bold text-white">GKPI</span>
             </Link>
             <button
               className="p-2.5 rounded-xl text-text-secondary hover:text-text-primary transition-colors"

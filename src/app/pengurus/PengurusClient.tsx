@@ -68,7 +68,7 @@ function ProfileCard({
           </p>
         )}
         <h3
-          className={`font-bold text-white leading-tight ${
+          className={`font-bold text-black leading-tight ${
             isLeader ? "text-2xl md:text-3xl" : isCompact ? "text-sm" : "text-lg"
           }`}
         >

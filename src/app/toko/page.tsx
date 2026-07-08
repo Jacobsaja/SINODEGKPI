@@ -177,7 +177,7 @@ export default function TokoPage() {
                       ${
                         isActive
                           ? "bg-accent text-background shadow-lg shadow-accent/25"
-                          : "border border-border bg-surface/60 text-text-secondary hover:border-accent/20 hover:text-white"
+                          : "border border-border bg-surface/60 text-text-secondary hover:border-accent/20 hover:text-accent"
                       }`}
                   >
                     {getCategoryIcon(cat)}
@@ -354,31 +354,29 @@ export default function TokoPage() {
 
           {/* Modal Box */}
           <div
-            className="relative flex h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-[2rem] border border-accent/20 shadow-2xl animate-slide-up md:h-[80vh]"
+            className="relative flex h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-[2rem] border border-border/50 shadow-2xl animate-slide-up md:h-[80vh]"
             style={{
-              background:
-                "linear-gradient(160deg, rgba(22,42,64,0.98) 0%, rgba(8,17,30,0.98) 100%)",
-              boxShadow:
-                "0 28px 90px rgba(0,0,0,0.45), 0 0 50px rgba(111,168,220,0.12)",
+              background: "linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)",
+              boxShadow: "0 28px 90px rgba(0,0,0,0.25)",
             }}
           >
             {/* Header / Top controls */}
-            <div className="flex shrink-0 items-center justify-between border-b border-border/40 p-6">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/25 bg-accent/15 px-3 py-1 text-xs font-bold text-accent">
+            <div className="flex shrink-0 items-center justify-between border-b border-border/40 p-6 bg-white">
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-xs font-bold text-primary">
                 {getCategoryIcon(selectedProduct.category)}
                 {selectedProduct.category}
               </span>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
                 <button
                   onClick={handleCopyLink}
-                  className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-border/60 bg-surface/30 text-text-secondary transition-colors hover:text-white"
+                  className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl border border-border bg-surface text-text-secondary transition-all hover:text-primary hover:border-primary/40 hover:bg-primary/5"
                   title="Salin Tautan"
                 >
                   <Share2 size={16} />
                 </button>
                 <button
                   onClick={() => setSelectedProduct(null)}
-                  className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-border/60 bg-surface/30 text-text-secondary transition-colors hover:text-white"
+                  className="flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl border border-border bg-surface text-text-secondary transition-all hover:text-red-500 hover:border-red-500/40 hover:bg-red-500/5"
                   aria-label="Tutup"
                 >
                   <X size={18} />
@@ -390,45 +388,45 @@ export default function TokoPage() {
             <div className="no-scrollbar flex-1 space-y-6 overflow-y-auto p-6 md:p-8">
               {/* Copy success alert */}
               {isCopied && (
-                <div className="animate-fade-in rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3 text-center text-xs font-bold text-emerald-400">
+                <div className="animate-fade-in rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3 text-center text-xs font-bold text-emerald-600">
                   Tautan disalin ke papan klip!
                 </div>
               )}
 
               {/* Title */}
               <h2
-                className="text-2xl font-bold leading-tight text-text-primary md:text-3xl"
+                className="text-3xl font-bold leading-tight text-text-primary md:text-4xl tracking-tight"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 {selectedProduct.name}
               </h2>
 
               {/* Large Image */}
-              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border/40">
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border/40 shadow-lg">
                 <img
                   src={selectedProduct.image}
                   alt={selectedProduct.name}
-                  className="absolute inset-0 h-full w-full object-cover"
+                  className="absolute inset-0 h-full w-full object-cover hover:scale-105 transition-transform duration-700"
                 />
               </div>
 
               {/* Price */}
-              <p className="text-3xl font-bold text-white">
+              <p className="text-4xl font-bold text-primary">
                 {formatRupiah(selectedProduct.price)}
               </p>
 
               {/* Description */}
-              <div className="space-y-4 text-base leading-relaxed text-text-secondary md:text-lg">
+              <div className="space-y-4 text-base leading-relaxed text-text-primary md:text-lg">
                 <p>{selectedProduct.description}</p>
               </div>
 
               {/* Buy Buttons */}
-              <div className="grid grid-cols-1 gap-3 pt-2 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-2">
                 <Link
                   href={selectedProduct.tokopedia_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#03AC0E]/40 bg-[#03AC0E]/10 px-5 py-3.5 text-sm font-bold text-[#4ADE80] transition-all hover:bg-[#03AC0E]/20"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-[#03AC0E] bg-[#03AC0E] px-5 py-4 text-sm font-bold text-white transition-all hover:bg-[#02A00D] hover:border-[#02A00D] hover:shadow-lg hover:shadow-green-500/25"
                 >
                   Beli di Tokopedia
                   <ExternalLink size={14} />
@@ -437,13 +435,13 @@ export default function TokoPage() {
                   href={selectedProduct.shopee_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#EE4D2D]/40 bg-[#EE4D2D]/10 px-5 py-3.5 text-sm font-bold text-[#FB923C] transition-all hover:bg-[#EE4D2D]/20"
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-[#EE4D2D] bg-[#EE4D2D] px-5 py-4 text-sm font-bold text-white transition-all hover:bg-[#D64520] hover:border-[#D64520] hover:shadow-lg hover:shadow-orange-500/25"
                 >
                   Beli di Shopee
                   <ExternalLink size={14} />
                 </Link>
               </div>
-              <p className="text-center text-xs text-text-secondary">
+              <p className="text-center text-sm text-text-secondary/70">
                 Pembelian diproses sepenuhnya di marketplace pilihan kamu.
               </p>
             </div>
