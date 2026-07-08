@@ -39,7 +39,7 @@ export default function Footer() {
                   className="object-contain drop-shadow-lg transition-transform duration-300 group-hover:scale-110"
                 />
               </div>
-              <span className="text-2xl font-sans font-bold tracking-tight text-white">GKPI</span>
+              <span className="text-2xl font-sans font-bold tracking-tight text-text-primary">GKPI</span>
             </Link>
             <p className="text-sm text-text-secondary leading-relaxed max-w-xs">
               Membangun komunitas yang bertumbuh dalam iman, melayani dengan kasih, dan berdampak bagi sesama melalui Injil Kristus.
@@ -55,7 +55,7 @@ export default function Footer() {
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="w-10 h-10 rounded-xl border border-border flex items-center justify-center text-text-secondary hover:text-white hover:border-accent/40 hover:bg-accent/5 transition-all duration-300 shadow-sm"
+                  className="w-10 h-10 rounded-xl border border-border flex items-center justify-center text-text-secondary hover:text-text-primary hover:border-accent/40 hover:bg-accent/5 transition-all duration-300 shadow-sm"
                 >
                  
                   <Icon size={18} />
@@ -72,7 +72,7 @@ export default function Footer() {
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-sm text-text-secondary hover:text-white transition-colors duration-200 inline-block"
+                    className="text-sm text-text-secondary hover:text-text-primary transition-colors duration-200 inline-block"
                   >
                     {item.name}
                   </Link>
@@ -89,7 +89,7 @@ export default function Footer() {
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-sm text-text-secondary hover:text-white transition-colors duration-200 inline-block"
+                    className="text-sm text-text-secondary hover:text-text-primary transition-colors duration-200 inline-block"
                   >
                     {item.name}
                   </Link>
@@ -110,13 +110,13 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-4">
                 <Phone size={18} className="text-accent shrink-0" />
-                <a href="tel:+621234567890" className="text-sm text-text-secondary hover:text-white transition-colors font-medium">
+                <a href="tel:+621234567890" className="text-sm text-text-secondary hover:text-text-primary transition-colors font-medium">
                   +62 123 4567 890
                 </a>
               </li>
               <li className="flex items-center gap-4">
                 <Mail size={18} className="text-accent shrink-0" />
-                <a href="mailto:info@gkpi.or.id" className="text-sm text-text-secondary hover:text-white transition-colors font-medium">
+                <a href="mailto:info@gkpi.or.id" className="text-sm text-text-secondary hover:text-text-primary transition-colors font-medium">
                   info@gkpi.or.id
                 </a>
               </li>
@@ -134,7 +134,7 @@ export default function Footer() {
               <Link
                 key={item}
                 href="#"
-                className="text-xs text-text-secondary/60 hover:text-white transition-colors duration-200"
+                className="text-xs text-text-secondary/60 hover:text-text-primary transition-colors duration-200"
               >
                 {item}
               </Link>

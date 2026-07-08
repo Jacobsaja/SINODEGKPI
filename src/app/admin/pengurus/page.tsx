@@ -62,11 +62,11 @@ function Modal({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-bold text-white">{title}</h3>
+          <h3 className="text-lg font-bold text-text-primary">{title}</h3>
           <button
             type="button"
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background/50 text-text-secondary hover:text-white hover:border-accent/40 transition-all cursor-pointer"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background/50 text-text-secondary hover:text-primary hover:border-accent/40 transition-all cursor-pointer"
             aria-label="Tutup"
           >
             <X size={15} />
@@ -94,7 +94,7 @@ function Field({
 }
 
 const inputClass =
-  "w-full rounded-xl border border-border bg-background/40 px-4 py-3 text-sm text-white placeholder-text-secondary/50 outline-none transition-all focus:border-accent/50 focus:bg-background/80 focus:ring-4 focus:ring-accent/10";
+  "w-full rounded-xl border border-border bg-background/40 px-4 py-3 text-sm text-text-primary placeholder-text-secondary/50 outline-none transition-all focus:border-accent/50 focus:bg-background/80 focus:ring-4 focus:ring-accent/10";
 
 const btnPrimary =
   "inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-white shadow-lg shadow-primary/20 transition-all hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer";
@@ -621,7 +621,7 @@ function AnggotaRow({
           )}
         </div>
         <div className="min-w-0">
-          <p className="truncate text-sm font-bold text-white">{anggota.name}</p>
+          <p className="truncate text-sm font-bold text-text-primary">{anggota.name}</p>
           {anggota.role && <p className="text-[11px] text-text-secondary truncate">{anggota.role}</p>}
         </div>
       </div>
@@ -630,7 +630,7 @@ function AnggotaRow({
           type="button"
           disabled={busy || idx <= 0}
           onClick={() => move(-1)}
-          className="h-7 w-7 flex items-center justify-center rounded-lg text-text-secondary hover:text-white hover:bg-surface/60 disabled:opacity-25 transition-all cursor-pointer"
+          className="h-7 w-7 flex items-center justify-center rounded-lg text-text-secondary hover:text-primary hover:bg-surface/60 disabled:opacity-25 transition-all cursor-pointer"
           aria-label="Naikkan urutan"
         >
           <ChevronUp size={14} />
@@ -639,7 +639,7 @@ function AnggotaRow({
           type="button"
           disabled={busy || idx >= siblings.length - 1}
           onClick={() => move(1)}
-          className="h-7 w-7 flex items-center justify-center rounded-lg text-text-secondary hover:text-white hover:bg-surface/60 disabled:opacity-25 transition-all cursor-pointer"
+          className="h-7 w-7 flex items-center justify-center rounded-lg text-text-secondary hover:text-primary hover:bg-surface/60 disabled:opacity-25 transition-all cursor-pointer"
           aria-label="Turunkan urutan"
         >
           <ChevronDown size={14} />
@@ -742,7 +742,7 @@ export default function AdminPengurusPage() {
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/40 pb-6">
         <div>
           <p className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-accent">Struktur Organisasi</p>
-          <h1 className="text-3xl font-extrabold text-white mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <h1 className="text-3xl font-extrabold text-text-primary mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>
             Kelola Pengurus
           </h1>
           <p className="mt-1.5 text-sm text-text-secondary">
@@ -788,7 +788,7 @@ export default function AdminPengurusPage() {
                   />
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h2 className="font-bold text-white text-base truncate">{seksi.title}</h2>
+                      <h2 className="font-bold text-text-primary text-base truncate">{seksi.title}</h2>
                       <span className="shrink-0 rounded-md border border-accent/20 bg-accent/10 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-accent">
                         {LAYOUT_TYPE_LABELS[seksi.layout_type].split(" (")[0]}
                       </span>
@@ -804,7 +804,7 @@ export default function AdminPengurusPage() {
                     type="button"
                     disabled={sIdx === 0}
                     onClick={() => moveSeksi(seksi, -1)}
-                    className="h-8 w-8 flex items-center justify-center rounded-lg text-text-secondary hover:text-white hover:bg-background/50 disabled:opacity-25 transition-all cursor-pointer"
+                    className="h-8 w-8 flex items-center justify-center rounded-lg text-text-secondary hover:text-primary hover:bg-background/50 disabled:opacity-25 transition-all cursor-pointer"
                     aria-label="Naikkan urutan seksi"
                   >
                     <ChevronUp size={15} />
@@ -813,7 +813,7 @@ export default function AdminPengurusPage() {
                     type="button"
                     disabled={sIdx === seksiList.length - 1}
                     onClick={() => moveSeksi(seksi, 1)}
-                    className="h-8 w-8 flex items-center justify-center rounded-lg text-text-secondary hover:text-white hover:bg-background/50 disabled:opacity-25 transition-all cursor-pointer"
+                    className="h-8 w-8 flex items-center justify-center rounded-lg text-text-secondary hover:text-primary hover:bg-background/50 disabled:opacity-25 transition-all cursor-pointer"
                     aria-label="Turunkan urutan seksi"
                   >
                     <ChevronDown size={15} />
@@ -898,7 +898,7 @@ export default function AdminPengurusPage() {
                               <div className="flex items-center justify-between mb-3">
                                 <div className="flex items-center gap-2">
                                   <Layers size={14} className="text-accent" />
-                                  <p className="text-sm font-bold text-white">{grup.name}</p>
+                                  <p className="text-sm font-bold text-text-primary">{grup.name}</p>
                                 </div>
                                 <div className="flex items-center gap-1">
                                   <button

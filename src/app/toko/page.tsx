@@ -99,9 +99,9 @@ export default function TokoPage() {
             className="object-cover object-center"
             quality={90}
           />
-          <div className="absolute inset-0 bg-primary/75 mix-blend-multiply" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-primary/35 to-background" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/20 to-background/80" />
+          <div className="absolute inset-0 bg-primary-dark/20 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-primary-dark/10 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/90" />
         </div>
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-8">
@@ -122,8 +122,7 @@ export default function TokoPage() {
               Toko Resmi
             </p>
             <h1
-              className="mb-5 max-w-3xl text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              className="mb-5 max-w-3xl text-4xl font-bold leading-tight text-text-primary sm:text-5xl lg:text-6xl"
             >
               Toko
             </h1>
@@ -219,7 +218,7 @@ export default function TokoPage() {
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-[6000ms] group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-background/30 md:to-background/95" />
-                  <div className="absolute left-6 top-6 rounded-xl border border-white/10 bg-background/55 px-3 py-1.5 text-xs font-bold text-white backdrop-blur">
+                  <div className="absolute left-6 top-6 rounded-xl border border-border bg-surface/80 px-3 py-1.5 text-xs font-bold text-text-primary backdrop-blur">
                     {featuredProduct.category}
                   </div>
                 </div>
@@ -228,7 +227,7 @@ export default function TokoPage() {
                 <div className="flex flex-col justify-between p-8 md:col-span-5 md:p-10">
                   <div className="space-y-4">
                     <h2
-                      className="font-serif text-2xl font-bold text-white transition-colors group-hover:text-accent md:text-3xl lg:text-4xl"
+                      className="font-serif text-2xl font-bold text-text-primary transition-colors group-hover:text-accent md:text-3xl lg:text-4xl"
                       style={{ fontFamily: "'Playfair Display', serif" }}
                     >
                       {featuredProduct.name}
@@ -274,7 +273,7 @@ export default function TokoPage() {
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
-                    <span className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-background/55 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur">
+                    <span className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full border border-border bg-surface/80 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-text-primary backdrop-blur">
                       {getCategoryIcon(product.category)}
                       {product.category}
                     </span>
@@ -283,7 +282,7 @@ export default function TokoPage() {
                   {/* Card Body */}
                   <div className="flex flex-1 flex-col p-6">
                     <h3
-                      className="mb-2 font-serif text-lg font-bold leading-snug text-white transition-colors group-hover:text-accent"
+                      className="mb-2 font-serif text-lg font-bold leading-snug text-text-primary transition-colors group-hover:text-accent"
                       style={{ fontFamily: "'Playfair Display', serif" }}
                     >
                       {product.name}
@@ -293,7 +292,7 @@ export default function TokoPage() {
                     </p>
 
                     <div className="mt-auto flex items-center justify-between border-t border-border/40 pt-4">
-                      <span className="text-base font-bold text-white">
+                      <span className="text-base font-bold text-text-primary">
                         {formatRupiah(product.price)}
                       </span>
                       <span className="flex items-center gap-1 text-xs font-semibold text-accent group-hover:underline">
@@ -398,7 +397,7 @@ export default function TokoPage() {
 
               {/* Title */}
               <h2
-                className="text-2xl font-bold leading-tight text-white md:text-3xl"
+                className="text-2xl font-bold leading-tight text-text-primary md:text-3xl"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 {selectedProduct.name}

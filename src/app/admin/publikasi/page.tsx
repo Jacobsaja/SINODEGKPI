@@ -334,7 +334,7 @@ function PublikasiAdminContent() {
                               </div>
                             )}
                             <div className="min-w-0">
-                              <p className="font-bold text-white group-hover:text-accent transition-colors truncate">
+                              <p className="font-bold text-text-primary group-hover:text-accent transition-colors truncate">
                                 {item.title}
                               </p>
                               <p className="text-xs text-text-secondary flex items-center gap-1 mt-0.5">

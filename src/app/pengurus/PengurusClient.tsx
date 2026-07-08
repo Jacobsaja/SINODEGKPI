@@ -232,7 +232,7 @@ export default function PengurusClient({ seksiList }: { seksiList: PengurusSeksi
         <div className="relative z-10 max-w-4xl mx-auto px-5 text-center space-y-4">
           <ScrollReveal>
             <p className="text-xs font-bold uppercase tracking-[0.24em] text-accent">Struktur Organisasi</p>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-sans font-bold text-white tracking-tight mt-3">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-sans font-bold text-text-primary tracking-tight mt-3">
               Kepengurusan GKPI
             </h1>
             <p className="text-base md:text-lg text-text-secondary mt-5 max-w-2xl mx-auto leading-relaxed">

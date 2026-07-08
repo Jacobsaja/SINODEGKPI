@@ -4,7 +4,11 @@ import Navbar from "@/components/Navbar";
 import ResortHero from "@/components/ResortHero";
 import Footer from "@/components/Footer";
 import MapExplorer from "@/components/wilayah/MapExplorer";
-import { jemaatData } from "@/data/jemaat";
+import { getAllJemaat } from "@/data/jemaat";
+
+// Always fetch fresh data so churches added/edited in the admin panel show
+// up immediately on the public page.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Resort & Wilayah | GKPI Sinode",
@@ -17,7 +21,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function WilayahResortPage() {
+export default async function WilayahResortPage() {
+  const jemaatData = await getAllJemaat();
   const total = jemaatData.length;
 
   return (
@@ -44,7 +49,7 @@ export default function WilayahResortPage() {
 
       {/* Map Explorer — full viewport height */}
       <Suspense fallback={<MapExplorerFallback />}>
-        <MapExplorer />
+        <MapExplorer initialChurches={jemaatData} />
       </Suspense>
 
       <Footer />

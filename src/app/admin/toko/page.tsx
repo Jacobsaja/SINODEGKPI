@@ -308,7 +308,7 @@ function TokoAdminContent() {
                               </div>
                             )}
                             <div className="min-w-0">
-                              <p className="font-bold text-white group-hover:text-accent transition-colors truncate">
+                              <p className="font-bold text-text-primary group-hover:text-accent transition-colors truncate">
                                 {item.name}
                               </p>
                               <p className="text-xs text-text-secondary truncate mt-0.5 max-w-[240px]">

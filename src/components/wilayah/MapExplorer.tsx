@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Map, List } from "lucide-react";
-import { jemaatData, Jemaat } from "@/data/jemaat";
+import { Jemaat } from "@/data/jemaat";
 import { JemaatWithDistance } from "@/lib/haversine";
 import ChurchListPanel from "./ChurchListPanel";
 import ChurchDetailPanel from "./ChurchDetailPanel";
@@ -25,9 +25,17 @@ const MapView = dynamic(() => import("./MapView"), {
 
 type MobileTab = "map" | "list";
 
-export default function MapExplorer() {
+interface MapExplorerProps {
+  /** Church data fetched server-side from Supabase (replaces the old static import). */
+  initialChurches: Jemaat[];
+}
+
+export default function MapExplorer({ initialChurches }: MapExplorerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  // Data now comes from the server-fetched prop rather than a static import.
+  const jemaatData = initialChurches;
 
   // ── State ────────────────────────────────────────────────────────────────────
   const [selectedJemaat, setSelectedJemaat] = useState<Jemaat | null>(null);
@@ -45,16 +53,16 @@ export default function MapExplorer() {
   const availableCities = useMemo(() => {
     const cities = new Set(jemaatData.map((j) => j.kota));
     return Array.from(cities).sort();
-  }, []);
+  }, [jemaatData]);
 
   // Compute filtered list
   const filteredChurches = useMemo(() => {
     let result = jemaatData;
-    
+
     if (activeCity) {
       result = result.filter((j) => j.kota === activeCity);
     }
-    
+
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       result = result.filter(
@@ -64,16 +72,16 @@ export default function MapExplorer() {
           j.pendeta.toLowerCase().includes(q)
       );
     }
-    
+
     return result;
-  }, [searchQuery, activeCity]);
+  }, [jemaatData, searchQuery, activeCity]);
 
   // Sync state to URL
   useEffect(() => {
     const params = new URLSearchParams();
     if (searchQuery) params.set("search", searchQuery);
     if (activeCity) params.set("city", activeCity);
-    
+
     const newUrl = params.toString() ? `?${params.toString()}` : window.location.pathname;
     router.replace(newUrl, { scroll: false });
   }, [searchQuery, activeCity, router]);

@@ -89,7 +89,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative h-screen min-h-[600px] w-full overflow-hidden bg-[#0a111a]">
+    <section className="relative h-screen min-h-[600px] w-full overflow-hidden bg-background">
       {/* ── Slides ── */}
       <div className="absolute inset-0 flex items-center justify-center">
         {slides.map((slide, index) => {
@@ -119,8 +119,8 @@ export default function Hero() {
                 </div>
 
                 {/* Soft dark blue overlay for contrast and spiritual calmness */}
-                <div className="absolute inset-0 bg-[#0F1E2E]/80 mix-blend-multiply" />
-                <div className="absolute inset-0 bg-gradient-to-b from-[#0F1E2E]/50 via-transparent to-[#0F1E2E]" />
+                <div className="absolute inset-0 bg-primary-dark/60 mix-blend-multiply" />
+                <div className="absolute inset-0 bg-gradient-to-b from-primary-dark/30 via-transparent to-primary-dark/50" />
               </div>
 
               {/* Content Container */}
@@ -138,7 +138,7 @@ export default function Hero() {
                         priority
                       />
                     </div>
-                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-sans font-bold text-white tracking-wide mb-6">
+                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-sans font-bold text-text-primary tracking-wide mb-6">
                       {slide.title}
                     </h1>
                     <p className="text-sm md:text-lg text-accent/80 tracking-[0.2em] uppercase">
@@ -155,7 +155,7 @@ export default function Hero() {
                     </p>
                     <Link
                       href={slide.href!}
-                      className="px-10 py-4 bg-transparent border border-white/30 text-white text-sm uppercase tracking-widest hover:bg-white hover:text-[#0F1E2E] transition-all duration-500 rounded-sm"
+                      className="px-10 py-4 bg-transparent border border-white/30 text-white text-sm uppercase tracking-widest hover:bg-white hover:text-primary-dark transition-all duration-500 rounded-sm"
                     >
                       {slide.cta}
                     </Link>

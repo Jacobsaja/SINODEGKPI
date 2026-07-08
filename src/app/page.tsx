@@ -346,8 +346,8 @@ export default async function Home() {
           </div>
 
           {/* Contact form */}
-          <div className="lg:col-span-3 rounded-[2.5rem] p-10 md:p-14 shadow-2xl border border-border" style={{ background: "linear-gradient(135deg, #162A40 0%, #0F1E2E 100%)" }}>
-            <h3 className="text-3xl font-sans font-bold text-white mb-8">Kirim Pesan</h3>
+          <div className="lg:col-span-3 rounded-[2.5rem] p-10 md:p-14 shadow-2xl border border-border" style={{ background: "linear-gradient(135deg, #F8FAFC 0%, #FFFFFF 100%)", boxShadow: "0 20px 50px rgba(14, 99, 233, 0.15)" }}>
+            <h3 className="text-3xl font-sans font-bold text-text-primary mb-8">Kirim Pesan</h3>
             <form className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="space-y-2">

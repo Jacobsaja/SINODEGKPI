@@ -47,14 +47,14 @@ const createPinIcon = (
 };
 
 const icons = {
-  default: createPinIcon("#2C5F8A"),
-  selected: createPinIcon("#6FA8DC", 40),
-  nearest: createPinIcon("#6FA8DC", 38, true),
+  default: createPinIcon("#0E63E9"),
+  selected: createPinIcon("#0A3D91", 40),
+  nearest: createPinIcon("#0A3D91", 38, true),
   user: L.divIcon({
     html: `<div style="
       width:16px; height:16px; border-radius:50%;
-      background:#2C5F8A; border:3px solid white;
-      box-shadow:0 0 0 4px rgba(44,95,138,0.3);
+      background:#0E63E9; border:3px solid white;
+      box-shadow:0 0 0 4px rgba(14,99,233,0.3);
     "></div>`,
     className: "",
     iconSize: [16, 16],
@@ -138,8 +138,8 @@ export default function MapView({
           z-index: 10;
         }
         .leaflet-popup-content-wrapper {
-          background: #162A40;
-          border: 1px solid #2A3F57;
+          background: #FFFFFF;
+          border: 1px solid #E5E7EB;
           border-radius: 16px;
           box-shadow: 0 8px 32px rgba(0,0,0,0.4);
           padding: 0;
@@ -148,7 +148,7 @@ export default function MapView({
         .leaflet-popup-tip-container { display: none; }
         .leaflet-popup-content { margin: 0; }
         .cluster-icon {
-          background: #2C5F8A;
+          background: #0E63E9;
           border: 2px solid white;
           border-radius: 50%;
           color: white;
@@ -164,7 +164,7 @@ export default function MapView({
       <MapContainer
         center={[-2.5, 118.0]}
         zoom={5}
-        style={{ height: "100%", width: "100%", background: "#0F1E2E" }}
+        style={{ height: "100%", width: "100%", background: "#F8FAFC" }}
         zoomControl={false}
       >
         <TileLayer
@@ -230,7 +230,7 @@ function PopupCard({
     <div style={{ minWidth: 220, maxWidth: 260 }}>
       <div
         style={{
-          background: "linear-gradient(135deg, #2C5F8A 0%, #1E3F5A 100%)",
+          background: "linear-gradient(135deg, #0E63E9 0%, #0A3D91 100%)",
           padding: "12px 16px 10px",
         }}
       >
@@ -241,7 +241,7 @@ function PopupCard({
             fontWeight: 700,
             letterSpacing: "0.1em",
             textTransform: "uppercase",
-            color: "#6FA8DC",
+            color: "#0E63E9",
           }}
         >
           {jemaat.kota} · {jemaat.provinsi}
@@ -258,17 +258,17 @@ function PopupCard({
           {jemaat.nama}
         </p>
       </div>
-      <div style={{ padding: "10px 16px 12px", background: "#162A40" }}>
+      <div style={{ padding: "10px 16px 12px", background: "#F8FAFC" }}>
         <p
           style={{
             margin: "0 0 2px",
             fontSize: 12,
-            color: "#94A3B8",
+            color: "#374151",
           }}
         >
           {jemaat.pendeta}
         </p>
-        <p style={{ margin: "0 0 10px", fontSize: 11, color: "#64748B" }}>
+        <p style={{ margin: "0 0 10px", fontSize: 11, color: "#6B7280" }}>
           {jemaat.alamat}
         </p>
         <button
@@ -276,7 +276,7 @@ function PopupCard({
           style={{
             width: "100%",
             padding: "7px 0",
-            background: "#6FA8DC",
+            background: "#0E63E9",
             color: "white",
             border: "none",
             borderRadius: 8,

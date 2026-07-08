@@ -257,7 +257,7 @@ export default function MitraPage() {
               <p className="text-xs font-bold uppercase tracking-[0.24em] text-accent">
                 Mitra Pelayanan
               </p>
-              <h1 className="text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl">
+              <h1 className="text-4xl font-bold leading-tight text-text-primary sm:text-5xl md:text-6xl">
                 Bersama Mewujudkan{" "}
                 <span className="text-accent">Pelayanan Kristus.</span>
               </h1>
@@ -340,7 +340,7 @@ export default function MitraPage() {
                     Nasional
                   </p>
                 </div>
-                <h2 className="text-3xl font-bold text-white md:text-4xl">
+                <h2 className="text-3xl font-bold text-text-primary md:text-4xl">
                   Mitra Nasional
                 </h2>
               </div>
@@ -373,7 +373,7 @@ export default function MitraPage() {
               <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent">
                 Bergabung Bersama Kami
               </p>
-              <h2 className="mt-4 text-3xl font-bold text-white md:text-4xl">
+              <h2 className="mt-4 text-3xl font-bold text-text-primary md:text-4xl">
                 Ingin bermitra dengan GKPI?
               </h2>
               <p className="mx-auto mt-5 max-w-xl text-text-secondary leading-relaxed">
@@ -391,7 +391,7 @@ export default function MitraPage() {
                 </Link>
                 <Link
                   href="/"
-                  className="inline-flex items-center gap-2 rounded-full border border-border px-8 py-3.5 text-sm font-medium text-text-secondary transition-all hover:border-accent/30 hover:text-white"
+                  className="inline-flex items-center gap-2 rounded-full border border-border px-8 py-3.5 text-sm font-medium text-text-secondary transition-all hover:border-accent/30 hover:text-text-primary"
                 >
                   Kembali ke Beranda
                 </Link>
@@ -434,7 +434,7 @@ export default function MitraPage() {
                     <span className="inline-block rounded-full border border-accent/20 bg-accent/10 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent">
                       {selectedMitra.region}
                     </span>
-                    <h2 className="mt-0.5 text-lg font-bold text-white md:text-xl">
+                    <h2 className="mt-0.5 text-lg font-bold text-text-primary md:text-xl">
                       Detail Mitra
                     </h2>
                   </div>
@@ -442,7 +442,7 @@ export default function MitraPage() {
                 <button
                   type="button"
                   onClick={() => setSelectedMitra(null)}
-                  className="rounded-full p-2 text-text-secondary hover:bg-white/5 hover:text-white transition-colors duration-200"
+                  className="rounded-full p-2 text-text-secondary hover:bg-white/5 hover:text-text-primary transition-colors duration-200"
                 >
                   <X size={20} />
                 </button>
@@ -464,7 +464,7 @@ export default function MitraPage() {
                     </div>
                   </div>
                   <div className="text-center sm:text-left space-y-2">
-                    <h3 className="text-xl font-bold text-white leading-tight">
+                    <h3 className="text-xl font-bold text-text-primary leading-tight">
                       {selectedMitra.name}
                     </h3>
                     <p className="text-sm text-text-secondary leading-relaxed">
@@ -482,13 +482,13 @@ export default function MitraPage() {
                     <div
                       className="space-y-4 text-text-secondary text-sm leading-relaxed
                         [&>p]:leading-relaxed [&>p]:text-text-secondary/90
-                        [&>h1]:text-white [&>h1]:text-xl [&>h1]:font-bold [&>h1]:mt-6 [&>h1]:mb-2
-                        [&>h2]:text-white [&>h2]:text-lg [&>h2]:font-bold [&>h2]:mt-6 [&>h2]:mb-2
-                        [&>h3]:text-white [&>h3]:text-md [&>h3]:font-semibold [&>h3]:mt-4 [&>h3]:mb-2
+                        [&>h1]:text-text-primary [&>h1]:text-xl [&>h1]:font-bold [&>h1]:mt-6 [&>h1]:mb-2
+                        [&>h2]:text-text-primary [&>h2]:text-lg [&>h2]:font-bold [&>h2]:mt-6 [&>h2]:mb-2
+                        [&>h3]:text-text-primary [&>h3]:text-md [&>h3]:font-semibold [&>h3]:mt-4 [&>h3]:mb-2
                         [&_a]:text-accent [&_a]:underline [&_a]:font-medium [&_a]:hover:text-accent/80 [&_a]:transition-colors
                         [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1
                         [&_li]:text-text-secondary
-                        [&_strong]:text-white [&_strong]:font-semibold
+                        [&_strong]:text-text-primary [&_strong]:font-semibold
                         [&_span]:inline"
                       dangerouslySetInnerHTML={{
                         __html: mitraDetails[selectedMitra.name] || "",
@@ -522,7 +522,7 @@ export default function MitraPage() {
                 <button
                   type="button"
                   onClick={() => setSelectedMitra(null)}
-                  className="inline-flex w-full sm:w-auto items-center justify-center rounded-full border border-border px-6 py-2.5 text-xs font-semibold text-text-secondary hover:border-white/20 hover:text-white transition-all duration-200"
+                  className="inline-flex w-full sm:w-auto items-center justify-center rounded-full border border-border px-6 py-2.5 text-xs font-semibold text-text-secondary hover:border-border/20 hover:text-text-primary transition-all duration-200"
                 >
                   Tutup
                 </button>
@@ -580,7 +580,7 @@ function MitraCard({
         </span>
 
         {/* Name */}
-        <h3 className="text-base font-bold leading-snug text-white group-hover:text-accent transition-colors duration-200">
+        <h3 className="text-base font-bold leading-snug text-text-primary group-hover:text-accent transition-colors duration-200">
           {mitra.name}
         </h3>
 

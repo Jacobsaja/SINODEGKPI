@@ -83,9 +83,9 @@ export default function KontakPage() {
             className="object-cover object-center"
             quality={90}
           />
-          <div className="absolute inset-0 bg-primary/75 mix-blend-multiply" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-primary/35 to-background" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/20 to-background/80" />
+          <div className="absolute inset-0 bg-primary-dark/20 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-primary-dark/10 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/90" />
         </div>
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-8">
@@ -106,8 +106,7 @@ export default function KontakPage() {
               Hubungi Kami
             </p>
             <h1
-              className="mb-5 max-w-3xl text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              className="mb-5 max-w-3xl text-4xl font-bold leading-tight text-text-primary sm:text-5xl lg:text-6xl"
             >
               Kontak
             </h1>
@@ -127,7 +126,7 @@ export default function KontakPage() {
           <div className="lg:col-span-2 space-y-8">
             <ScrollReveal>
               <div className="space-y-4">
-                <h2 className="text-2xl font-bold text-white tracking-wide">
+                <h2 className="text-2xl font-bold text-text-primary tracking-wide">
                   Informasi Kontak
                 </h2>
                 <p className="text-sm text-text-secondary leading-relaxed">
@@ -181,7 +180,7 @@ export default function KontakPage() {
                 className="p-6 rounded-3xl border border-border/80 bg-surface/30 space-y-4"
                 style={{ backdropFilter: "blur(12px)" }}
               >
-                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                <h3 className="text-lg font-bold text-text-primary flex items-center gap-2">
                   <Clock size={18} className="text-accent" />
                   Jam Operasional
                 </h3>
@@ -192,7 +191,7 @@ export default function KontakPage() {
                       className="flex justify-between items-center py-2 border-b border-border/30 last:border-b-0"
                     >
                       <span className="text-text-secondary font-medium">{op.day}</span>
-                      <span className="text-white font-bold">{op.hours}</span>
+                      <span className="text-text-primary font-bold">{op.hours}</span>
                     </div>
                   ))}
                 </div>
@@ -206,11 +205,11 @@ export default function KontakPage() {
               <div
                 className="rounded-[2rem] p-8 md:p-12 shadow-2xl border border-border"
                 style={{
-                  background: "linear-gradient(135deg, #162A40 0%, #0F1E2E 100%)",
-                  boxShadow: "0 20px 50px rgba(0,0,0,0.35)",
+                  background: "linear-gradient(135deg, #F8FAFC 0%, #FFFFFF 100%)",
+                  boxShadow: "0 20px 50px rgba(14, 99, 233, 0.15)",
                 }}
               >
-                <h3 className="text-2xl font-bold text-white mb-6">Kirim Pesan</h3>
+                <h3 className="text-2xl font-bold text-text-primary mb-6">Kirim Pesan</h3>
 
                 {isSubmitted ? (
                   <div className="flex flex-col items-center justify-center py-12 space-y-4 animate-fade-in text-center">
@@ -218,7 +217,7 @@ export default function KontakPage() {
                       <CheckCircle size={32} />
                     </div>
                     <div>
-                      <h4 className="text-lg font-bold text-white">Pesan Terkirim</h4>
+                      <h4 className="text-lg font-bold text-text-primary">Pesan Terkirim</h4>
                       <p className="text-sm text-text-secondary mt-1 max-w-sm">
                         Terima kasih! Pesan Anda telah kami terima. Kami akan segera menghubungi Anda kembali secepatnya.
                       </p>
@@ -296,7 +295,7 @@ export default function KontakPage() {
         {/* ── Lokasi Peta Mock ── */}
         <ScrollReveal>
           <div className="mt-16 space-y-6">
-            <h2 className="text-2xl font-bold text-white tracking-wide flex items-center gap-2">
+            <h2 className="text-2xl font-bold text-text-primary tracking-wide flex items-center gap-2">
               <MapPin size={22} className="text-accent" />
               Peta Lokasi Kantor Pusat
             </h2>
@@ -305,20 +304,20 @@ export default function KontakPage() {
               style={{ backdropFilter: "blur(12px)" }}
             >
               {/* Dark Map Mockup */}
-              <div className="absolute inset-0 bg-[#0c1421] opacity-90" />
+              <div className="absolute inset-0 bg-[#F8FAFC] opacity-90" />
 
               {/* Map grid lines / decorative elements */}
               <div className="absolute inset-0 opacity-10"
                 style={{
-                  backgroundImage: "radial-gradient(#6FA8DC 1px, transparent 1px)",
+                  backgroundImage: "radial-gradient(#0E63E9 1px, transparent 1px)",
                   backgroundSize: "24px 24px"
                 }}
               />
 
               {/* Map mockup elements */}
               <svg className="absolute inset-0 w-full h-full opacity-20 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 0,100 L 800,120 M 100,0 L 150,400 M 400,0 L 450,400 M 0,250 L 800,200" stroke="#6FA8DC" strokeWidth="2" fill="none" />
-                <path d="M 200,80 C 300,100 450,50 600,150" stroke="#2C5F8A" strokeWidth="3" fill="none" />
+                <path d="M 0,100 L 800,120 M 100,0 L 150,400 M 400,0 L 450,400 M 0,250 L 800,200" stroke="#0E63E9" strokeWidth="2" fill="none" />
+                <path d="M 200,80 C 300,100 450,50 600,150" stroke="#0A3D91" strokeWidth="3" fill="none" />
               </svg>
 
               {/* Pulsing Pin marker */}
@@ -327,7 +326,7 @@ export default function KontakPage() {
                 <div className="relative w-12 h-12 bg-accent rounded-full border border-white flex items-center justify-center shadow-lg shadow-accent/40">
                   <MapPin size={20} className="text-background" />
                 </div>
-                <div className="mt-4 px-4 py-2 bg-surface/90 border border-border rounded-xl text-xs font-bold text-white shadow-xl max-w-xs text-center backdrop-blur">
+                <div className="mt-4 px-4 py-2 bg-surface/90 border border-border rounded-xl text-xs font-bold text-text-primary shadow-xl max-w-xs text-center backdrop-blur">
                   <p className="text-accent uppercase tracking-widest text-[9px] mb-0.5">Kantor Pusat</p>
                   <p>Alamat</p>
                 </div>
@@ -340,7 +339,7 @@ export default function KontakPage() {
         <ScrollReveal>
           <div className="mt-20 max-w-3xl mx-auto space-y-6">
             <div className="text-center space-y-2">
-              <h2 className="text-2xl font-bold text-white flex items-center justify-center gap-2">
+              <h2 className="text-2xl font-bold text-text-primary flex items-center justify-center gap-2">
                 <Info size={20} className="text-accent" />
                 Pertanyaan Umum
               </h2>
@@ -362,7 +361,7 @@ export default function KontakPage() {
                       onClick={() => toggleFaq(idx)}
                       className="w-full text-left p-5 flex items-center justify-between cursor-pointer"
                     >
-                      <h4 className="font-semibold text-white text-base leading-snug pr-4">
+                      <h4 className="font-semibold text-text-primary text-base leading-snug pr-4">
                         {faq.question}
                       </h4>
                       <ChevronDown

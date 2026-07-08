@@ -28,7 +28,7 @@ export default function Section({
         !pattern && !dark ? "bg-background" : ""
       } ${className}`}
       style={pattern ? {
-        background: "linear-gradient(135deg, #0F1E2E 0%, #162A40 40%, #1A3A5C 70%, #0F1E2E 100%)",
+        background: "linear-gradient(135deg, #0E63E9 0%, #0A3D91 40%, #0E63E9 70%, #0A3D91 100%)",
       } : {}}
     >
       {pattern && (

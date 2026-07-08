@@ -7,6 +7,7 @@ import {
   Newspaper,
   ShoppingBag,
   Users,
+  Church,
   LogOut,
   ExternalLink,
   X,
@@ -17,6 +18,7 @@ const NAV_ITEMS = [
   { href: "/admin/publikasi", label: "Publikasi", icon: Newspaper, exact: false },
   { href: "/admin/toko", label: "Toko", icon: ShoppingBag, exact: false },
   { href: "/admin/pengurus", label: "Pengurus", icon: Users, exact: false },
+  { href: "/admin/jemaat", label: "Jemaat & Resort", icon: Church, exact: false },
 ];
 
 interface AdminSidebarProps {
@@ -48,8 +50,7 @@ export default function AdminSidebar({ email, onLogout, isOpen, onClose }: Admin
       <div className="flex items-center justify-between border-b border-border/60 p-6">
         <div>
           <p
-            className="text-xl font-bold text-white tracking-tight"
-            style={{ fontFamily: "'Playfair Display', serif" }}
+            className="text-xl font-bold text-text-primary tracking-tight"
           >
             GKPI Sinode
           </p>
@@ -60,7 +61,7 @@ export default function AdminSidebar({ email, onLogout, isOpen, onClose }: Admin
         {/* Tombol Close Mobile */}
         <button
           onClick={onClose}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background/50 text-text-secondary hover:text-white md:hidden cursor-pointer"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background/50 text-text-secondary hover:text-primary md:hidden cursor-pointer"
           aria-label="Tutup Menu"
         >
           <X size={18} />
@@ -80,7 +81,7 @@ export default function AdminSidebar({ email, onLogout, isOpen, onClose }: Admin
               className={`group relative flex items-center gap-3.5 rounded-xl border px-4 py-3.5 text-sm font-semibold transition-all ${
                 active
                   ? "border-accent/20 bg-accent/10 text-white shadow-inner"
-                  : "border-transparent text-text-secondary hover:border-border/60 hover:bg-background/40 hover:text-white"
+                  : "border-transparent text-text-secondary hover:border-border/60 hover:bg-background/40 hover:text-primary"
               }`}
             >
               {/* Active Indicator Bar */}
@@ -90,7 +91,7 @@ export default function AdminSidebar({ email, onLogout, isOpen, onClose }: Admin
               <Icon
                 size={18}
                 className={`transition-colors ${
-                  active ? "text-accent" : "text-text-secondary group-hover:text-white"
+                  active ? "text-accent" : "text-text-secondary group-hover:text-primary"
                 }`}
               />
               <span>{item.label}</span>
@@ -104,7 +105,7 @@ export default function AdminSidebar({ email, onLogout, isOpen, onClose }: Admin
         <Link
           href="/"
           target="_blank"
-          className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-text-secondary transition-colors hover:text-white hover:bg-background/20"
+          className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-text-secondary transition-colors hover:text-primary hover:bg-background/20"
         >
           <ExternalLink size={18} />
           <span>Lihat Situs</span>

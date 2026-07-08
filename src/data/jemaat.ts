@@ -1,9 +1,22 @@
-// ─── Jemaat Data Schema ───────────────────────────────────────────────────────
-// Future-proof: wilayah_id and resort_id are optional for Phase 2 expansion.
-// Phase 1 uses all fields EXCEPT wilayah_id and resort_id.
+// ─── Jemaat Data Layer ─────────────────────────────────────────────────────
+// This file replaces the old hardcoded array with a Supabase-backed data
+// layer, following the same pattern used for publikasi / toko / pengurus.
+//
+// IMPORTANT: the `Jemaat` interface and the import path "@/data/jemaat" are
+// kept exactly the same on purpose, so every existing component
+// (ChurchDetailPanel, ChurchListItem, ChurchListPanel, MapView,
+// NearestChurchFinder, page.tsx, etc.) keeps working without any changes to
+// their imports.
+//
+// ASSUMPTION: this file imports the Supabase client from "@/lib/supabase"
+// (the same convention used for the publikasi/toko/pengurus features). If
+// your project's client lives at a different path, just update the single
+// import line below.
+
+import { supabase } from "@/lib/supabase";
 
 export interface Jemaat {
-  // ── Core (Phase 1) ──────────────────────────────────────────────────────────
+  // ── Core (Phase 1) ──────────────────────────────────────────────────────
   id: string;
   nama: string;        // Full church name
   pendeta: string;     // Lead pastor / pelayan
@@ -12,234 +25,121 @@ export interface Jemaat {
   lat: number;         // Latitude
   lng: number;         // Longitude
   foto: string;        // Image URL (relative or absolute)
-  kota: string;        // City name (used for display in Phase 1)
+  kota: string;        // City name
   provinsi: string;    // Province name
 
-  // ── Phase 2 (optional, added later) ─────────────────────────────────────────
+  // ── Phase 2 (optional) ───────────────────────────────────────────────────
   resort_id?: string;
   wilayah_id?: string;
   jadwal_ibadah?: string[];
 }
 
-// ─── Sample Data ──────────────────────────────────────────────────────────────
-// Replace this array with your actual Jemaat dataset.
-// All entries follow the Jemaat interface above.
+// Fields an admin fills in when creating/editing a church. `id` is optional
+// on create — if left blank it's auto-generated (slugified) from `nama`.
+export type JemaatInput = Omit<Jemaat, "id"> & { id?: string };
 
-export const jemaatData: Jemaat[] = [
-  {
-    id: "jemaat-sion-medan",
-    nama: "GKPI Jemaat Sion Medan",
-    pendeta: "Pdt. Maruli Siahaan, S.Th",
-    alamat: "Jl. Letjen S. Parman No. 5, Medan",
-    telepon: "+62 61 4567 8901",
-    lat: 3.5916,
-    lng: 98.6658,
-    foto: "/churches/default.jpg",
-    kota: "Medan",
-    provinsi: "Sumatera Utara",
-  },
-  {
-    id: "jemaat-bethel-medan",
-    nama: "GKPI Jemaat Bethel Medan",
-    pendeta: "Pdt. Rikardo Saragih, M.Th",
-    alamat: "Jl. Gagak Hitam No. 12, Medan Petisah",
-    telepon: "+62 61 4512 3456",
-    lat: 3.6087,
-    lng: 98.6513,
-    foto: "/churches/default.jpg",
-    kota: "Medan",
-    provinsi: "Sumatera Utara",
-  },
-  {
-    id: "jemaat-immanuel-medan",
-    nama: "GKPI Jemaat Immanuel Medan",
-    pendeta: "Pdt. Lasma Sinaga, S.Th",
-    alamat: "Jl. Pancing No. 3, Medan Tembung",
-    telepon: "+62 61 7654 3210",
-    lat: 3.6211,
-    lng: 98.7104,
-    foto: "/churches/default.jpg",
-    kota: "Medan",
-    provinsi: "Sumatera Utara",
-  },
-  {
-    id: "jemaat-hosana-medan",
-    nama: "GKPI Jemaat Hosana Medan",
-    pendeta: "Pdt. Dina Purba, S.Th",
-    alamat: "Jl. Kapten Muslim No. 88, Medan Helvetia",
-    telepon: "+62 61 8901 2345",
-    lat: 3.6390,
-    lng: 98.6401,
-    foto: "/churches/default.jpg",
-    kota: "Medan",
-    provinsi: "Sumatera Utara",
-  },
-  {
-    id: "jemaat-getsemane-pematangsiantar",
-    nama: "GKPI Jemaat Getsemane Pematangsiantar",
-    pendeta: "Pdt. Benny Napitupulu, M.Div",
-    alamat: "Jl. Merdeka No. 17, Pematangsiantar",
-    telepon: "+62 622 2134 567",
-    lat: 2.9595,
-    lng: 99.0686,
-    foto: "/churches/default.jpg",
-    kota: "Pematangsiantar",
-    provinsi: "Sumatera Utara",
-  },
-  {
-    id: "jemaat-efrata-pematangsiantar",
-    nama: "GKPI Jemaat Efrata Pematangsiantar",
-    pendeta: "Pdt. Hendra Lumban Gaol, S.Th",
-    alamat: "Jl. Tentara Pelajar No. 9, Pematangsiantar",
-    telepon: "+62 622 2198 765",
-    lat: 2.9481,
-    lng: 99.0612,
-    foto: "/churches/default.jpg",
-    kota: "Pematangsiantar",
-    provinsi: "Sumatera Utara",
-  },
-  {
-    id: "jemaat-shalom-simalungun",
-    nama: "GKPI Jemaat Shalom Simalungun",
-    pendeta: "Pdt. Togap Damanik, S.Th",
-    alamat: "Jl. Haranggaol No. 4, Kabupaten Simalungun",
-    telepon: "+62 622 3456 789",
-    lat: 2.8631,
-    lng: 98.9847,
-    foto: "/churches/default.jpg",
-    kota: "Simalungun",
-    provinsi: "Sumatera Utara",
-  },
-  {
-    id: "jemaat-nazareth-tebing-tinggi",
-    nama: "GKPI Jemaat Nazareth Tebing Tinggi",
-    pendeta: "Pdt. Rosmaria Turnip, M.Th",
-    alamat: "Jl. Ahmad Yani No. 32, Tebing Tinggi",
-    telepon: "+62 621 2134 567",
-    lat: 3.3290,
-    lng: 99.1604,
-    foto: "/churches/default.jpg",
-    kota: "Tebing Tinggi",
-    provinsi: "Sumatera Utara",
-  },
-  {
-    id: "jemaat-zion-kisaran",
-    nama: "GKPI Jemaat Zion Kisaran",
-    pendeta: "Pdt. Samuel Sihombing, S.Th",
-    alamat: "Jl. A. Yani No. 11, Kisaran",
-    telepon: "+62 623 4128 901",
-    lat: 2.9939,
-    lng: 99.6039,
-    foto: "/churches/default.jpg",
-    kota: "Kisaran",
-    provinsi: "Sumatera Utara",
-  },
-  {
-    id: "jemaat-maranatha-rantauprapat",
-    nama: "GKPI Jemaat Maranatha Rantauprapat",
-    pendeta: "Pdt. Friska Manurung, S.Th",
-    alamat: "Jl. SM Raja No. 7, Rantauprapat",
-    telepon: "+62 624 2234 567",
-    lat: 2.1003,
-    lng: 99.8332,
-    foto: "/churches/default.jpg",
-    kota: "Rantauprapat",
-    provinsi: "Sumatera Utara",
-  },
-  {
-    id: "jemaat-bukit-sion-balige",
-    nama: "GKPI Jemaat Bukit Sion Balige",
-    pendeta: "Pdt. Jhonatan Sinambela, M.Th",
-    alamat: "Jl. Gereja No. 2, Balige",
-    telepon: "+62 632 3210 987",
-    lat: 2.3341,
-    lng: 99.0659,
-    foto: "/churches/default.jpg",
-    kota: "Balige",
-    provinsi: "Sumatera Utara",
-  },
-  {
-    id: "jemaat-golgota-doloksanggul",
-    nama: "GKPI Jemaat Golgota Doloksanggul",
-    pendeta: "Pdt. Reinhard Hutajulu, S.Th",
-    alamat: "Jl. Sisingamangaraja No. 5, Doloksanggul",
-    telepon: "+62 633 4123 456",
-    lat: 2.0341,
-    lng: 98.8452,
-    foto: "/churches/default.jpg",
-    kota: "Doloksanggul",
-    provinsi: "Sumatera Utara",
-  },
-  {
-    id: "jemaat-kasih-jakarta",
-    nama: "GKPI Jemaat Kasih Jakarta",
-    pendeta: "Pdt. Ester Tambunan, M.Th",
-    alamat: "Jl. Cipinang Muara No. 45, Jakarta Timur",
-    telepon: "+62 21 8765 4321",
-    lat: -6.2298,
-    lng: 106.8951,
-    foto: "/churches/default.jpg",
-    kota: "Jakarta",
-    provinsi: "DKI Jakarta",
-  },
-  {
-    id: "jemaat-anugrah-jakarta-barat",
-    nama: "GKPI Jemaat Anugerah Jakarta Barat",
-    pendeta: "Pdt. Wilson Panggabean, S.Th",
-    alamat: "Jl. Panjang No. 23, Kebon Jeruk, Jakarta Barat",
-    telepon: "+62 21 5678 9012",
-    lat: -6.1968,
-    lng: 106.7630,
-    foto: "/churches/default.jpg",
-    kota: "Jakarta",
-    provinsi: "DKI Jakarta",
-  },
-  {
-    id: "jemaat-koinonia-bandung",
-    nama: "GKPI Jemaat Koinonia Bandung",
-    pendeta: "Pdt. Nelly Sibuea, M.Div",
-    alamat: "Jl. Pasirkaliki No. 67, Bandung",
-    telepon: "+62 22 6123 4567",
-    lat: -6.9000,
-    lng: 107.6106,
-    foto: "/churches/default.jpg",
-    kota: "Bandung",
-    provinsi: "Jawa Barat",
-  },
-  {
-    id: "jemaat-filadelfia-batam",
-    nama: "GKPI Jemaat Filadelfia Batam",
-    pendeta: "Pdt. Agus Tambunan, S.Th",
-    alamat: "Jl. Raja Ali Haji No. 14, Batam Centre",
-    telepon: "+62 778 4567 890",
-    lat: 1.1301,
-    lng: 104.0529,
-    foto: "/churches/default.jpg",
-    kota: "Batam",
-    provinsi: "Kepulauan Riau",
-  },
-  {
-    id: "jemaat-bethlehem-pekanbaru",
-    nama: "GKPI Jemaat Betlehem Pekanbaru",
-    pendeta: "Pdt. Lestari Simbolon, S.Th",
-    alamat: "Jl. Nangka No. 88, Pekanbaru",
-    telepon: "+62 761 3456 789",
-    lat: 0.5071,
-    lng: 101.4478,
-    foto: "/churches/default.jpg",
-    kota: "Pekanbaru",
-    provinsi: "Riau",
-  },
-  {
-    id: "jemaat-immanuel-surabaya",
-    nama: "GKPI Jemaat Immanuel Surabaya",
-    pendeta: "Pdt. Hakim Siregar, M.Th",
-    alamat: "Jl. Embong Malang No. 36, Surabaya",
-    telepon: "+62 31 5432 1234",
-    lat: -7.2575,
-    lng: 112.7521,
-    foto: "/churches/default.jpg",
-    kota: "Surabaya",
-    provinsi: "Jawa Timur",
-  },
-];
+// ── Read ─────────────────────────────────────────────────────────────────────
+
+/**
+ * Fetch every jemaat, ordered by name. Used by the public map/list page and
+ * by the admin panel. Returns [] (and logs) on error rather than throwing,
+ * so the public page never crashes if Supabase is briefly unavailable.
+ */
+export async function getAllJemaat(): Promise<Jemaat[]> {
+  const { data, error } = await supabase
+    .from("jemaat")
+    .select("*")
+    .order("nama", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching jemaat:", error.message);
+    return [];
+  }
+
+  return (data ?? []) as Jemaat[];
+}
+
+export async function getJemaatById(id: string): Promise<Jemaat | null> {
+  const { data, error } = await supabase
+    .from("jemaat")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error("Error fetching jemaat by id:", error.message);
+    return null;
+  }
+
+  return data as Jemaat;
+}
+
+// ── Write (admin only — protected by RLS "authenticated" policies) ─────────
+
+export async function createJemaat(input: JemaatInput): Promise<Jemaat> {
+  const id = input.id?.trim() || slugify(input.nama);
+
+  const { data, error } = await supabase
+    .from("jemaat")
+    .insert([{ ...input, id }])
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message);
+  return data as Jemaat;
+}
+
+export async function updateJemaat(
+  id: string,
+  updates: Partial<JemaatInput>
+): Promise<Jemaat> {
+  const { data, error } = await supabase
+    .from("jemaat")
+    .update(updates)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message);
+  return data as Jemaat;
+}
+
+export async function deleteJemaat(id: string): Promise<void> {
+  const { error } = await supabase.from("jemaat").delete().eq("id", id);
+  if (error) throw new Error(error.message);
+}
+
+// ── Storage: church photo upload ────────────────────────────────────────────
+
+const PHOTO_BUCKET = "jemaat-photos";
+
+/**
+ * Uploads a photo file to the `jemaat-photos` bucket and returns its public
+ * URL. Mirrors the pattern used for products/publications image uploads.
+ */
+export async function uploadJemaatPhoto(file: File, jemaatId: string): Promise<string> {
+  const ext = file.name.split(".").pop() || "jpg";
+  const path = `${jemaatId}-${Date.now()}.${ext}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from(PHOTO_BUCKET)
+    .upload(path, file, { upsert: true });
+
+  if (uploadError) throw new Error(uploadError.message);
+
+  const { data } = supabase.storage.from(PHOTO_BUCKET).getPublicUrl(path);
+  return data.publicUrl;
+}
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+export function slugify(nama: string): string {
+  const base = nama
+    .toLowerCase()
+    .replace(/^gkpi\s+jemaat\s+/i, "")
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+  return `jemaat-${base || Date.now()}`;
+}

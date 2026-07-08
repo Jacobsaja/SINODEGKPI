@@ -130,14 +130,14 @@ export default function InfoSlideshow() {
 
         <button
           onClick={prevSlide}
-          className="absolute left-4 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-background/35 text-white backdrop-blur transition-all hover:bg-background/80 md:flex"
+          className="absolute left-4 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-surface/80 text-text-primary backdrop-blur transition-all hover:bg-background/80 md:flex"
           aria-label="Previous slide"
         >
           <ChevronLeft size={20} />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-4 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-background/35 text-white backdrop-blur transition-all hover:bg-background/80 md:flex"
+          className="absolute right-4 top-1/2 z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-surface/80 text-text-primary backdrop-blur transition-all hover:bg-background/80 md:flex"
           aria-label="Next slide"
         >
           <ChevronRight size={20} />

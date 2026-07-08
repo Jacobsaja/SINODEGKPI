@@ -57,7 +57,7 @@ export default function Navbar() {
                 priority
               />
             </div>
-            <span className="text-xl font-sans font-bold tracking-tight text-white">
+            <span className="text-xl font-sans font-bold tracking-tight text-text-primary">
               GKPI
             </span>
           </Link>
@@ -71,8 +71,8 @@ export default function Navbar() {
                   key={link.name}
                   href={link.href}
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 relative group ${isActive
-                    ? "text-white"
-                    : "text-text-secondary hover:text-white hover:bg-white/5"
+                    ? "text-text-primary"
+                    : "text-text-secondary hover:text-text-primary hover:bg-white/5"
                     }`}
                 >
                   {link.name}
@@ -95,7 +95,7 @@ export default function Navbar() {
 
           {/* Mobile Hamburger */}
           <button
-            className="lg:hidden p-2.5 rounded-xl text-white hover:bg-white/10 transition-colors duration-200"
+            className="lg:hidden p-2.5 rounded-xl text-text-primary hover:bg-white/10 transition-colors duration-200"
             onClick={() => setIsOpen(true)}
             aria-label="Buka menu"
             aria-expanded={isOpen}
@@ -135,10 +135,10 @@ export default function Navbar() {
                   className="object-contain"
                 />
               </div>
-              <span className="text-xl font-sans font-bold text-white">GKPI</span>
+              <span className="text-xl font-sans font-bold text-text-primary">GKPI</span>
             </Link>
             <button
-              className="p-2.5 rounded-xl text-text-secondary hover:text-white transition-colors"
+              className="p-2.5 rounded-xl text-text-secondary hover:text-text-primary transition-colors"
               onClick={() => setIsOpen(false)}
               aria-label="Tutup menu"
             >
@@ -153,7 +153,7 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`py-4 text-xl font-sans border-b border-border/30 transition-colors duration-200 ${isActive ? "text-accent font-bold" : "text-text-secondary hover:text-white"
+                  className={`py-4 text-xl font-sans border-b border-border/30 transition-colors duration-200 ${isActive ? "text-accent font-bold" : "text-text-secondary hover:text-text-primary"
                     }`}
                   style={{ transitionDelay: isOpen ? `${i * 30}ms` : "0ms" }}
                   onClick={() => setIsOpen(false)}

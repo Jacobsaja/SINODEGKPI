@@ -126,9 +126,9 @@ export default function PublikasiPage() {
             className="object-cover object-center"
             quality={90}
           />
-          <div className="absolute inset-0 bg-primary/75 mix-blend-multiply" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-primary/35 to-background" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/20 to-background/80" />
+          <div className="absolute inset-0 bg-primary-dark/20 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-primary-dark/10 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/90" />
         </div>
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-8">
@@ -149,8 +149,7 @@ export default function PublikasiPage() {
               Portal Informasi
             </p>
             <h1
-              className="mb-5 max-w-3xl text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              className="mb-5 max-w-3xl text-4xl font-bold leading-tight text-text-primary sm:text-5xl lg:text-6xl"
             >
               Publikasi
             </h1>
@@ -239,7 +238,7 @@ export default function PublikasiPage() {
                     className="object-cover transition-transform duration-[6000ms] group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-background/30 md:to-background/95" />
-                  <div className="absolute left-6 top-6 rounded-xl border border-white/10 bg-background/55 px-3 py-1.5 text-xs font-bold text-white backdrop-blur">
+                  <div className="absolute left-6 top-6 rounded-xl border border-border bg-surface/80 px-3 py-1.5 text-xs font-bold text-text-primary backdrop-blur">
                     {featuredPost.category}
                   </div>
                 </div>
@@ -258,7 +257,7 @@ export default function PublikasiPage() {
                       </span>
                     </div>
                     <h2
-                      className="font-serif text-2xl font-bold text-white transition-colors group-hover:text-accent md:text-3xl lg:text-4xl"
+                      className="font-serif text-2xl font-bold text-text-primary transition-colors group-hover:text-accent md:text-3xl lg:text-4xl"
                       style={{ fontFamily: "'Playfair Display', serif" }}
                     >
                       {featuredPost.title}
@@ -310,7 +309,7 @@ export default function PublikasiPage() {
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
-                  <span className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-background/55 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur">
+                  <span className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full border border-border bg-surface/80 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-text-primary backdrop-blur">
                     {getCategoryIcon(post.category)}
                     {post.category}
                   </span>
@@ -332,7 +331,7 @@ export default function PublikasiPage() {
 
                   {/* Title & Desc */}
                   <h3
-                    className="font-serif text-lg font-bold text-white mb-2 leading-snug group-hover:text-accent transition-colors"
+                    className="font-serif text-lg font-bold text-text-primary mb-2 leading-snug group-hover:text-accent transition-colors"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     {post.title}
@@ -449,7 +448,7 @@ export default function PublikasiPage() {
               {/* Title & Meta */}
               <div className="space-y-4">
                 <h2
-                  className="text-2xl md:text-3xl font-bold text-white leading-tight"
+                  className="text-2xl md:text-3xl font-bold text-text-primary leading-tight"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   {selectedPost.title}

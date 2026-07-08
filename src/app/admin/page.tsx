@@ -205,7 +205,7 @@ export default async function AdminDashboardPage() {
                     </div>
                   )}
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-bold text-white group-hover:text-accent transition-colors">
+                    <p className="truncate text-sm font-bold text-text-primary group-hover:text-accent transition-colors">
                       {item.title}
                     </p>
                     <div className="flex items-center gap-2 mt-1">
@@ -272,7 +272,7 @@ export default async function AdminDashboardPage() {
                     </div>
                   )}
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-bold text-white group-hover:text-accent transition-colors">
+                    <p className="truncate text-sm font-bold text-text-primary group-hover:text-accent transition-colors">
                       {item.name}
                     </p>
                     <div className="flex items-center gap-2 mt-1">

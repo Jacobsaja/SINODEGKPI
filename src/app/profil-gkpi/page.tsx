@@ -625,9 +625,9 @@ export default function ProfilGKPIPage() {
             className="object-cover object-center"
             quality={90}
           />
-          <div className="absolute inset-0 bg-primary/70 mix-blend-multiply" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/75 via-primary/45 to-background/95" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/25 to-background/70" />
+          <div className="absolute inset-0 bg-primary-dark/30 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/90 via-primary-dark/20 to-background/95" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/80 to-background/90" />
         </div>
 
         <div className="relative z-10 mx-auto w-full max-w-7xl px-5 sm:px-8">
@@ -652,8 +652,7 @@ export default function ProfilGKPIPage() {
                 Gereja Kristen Protestan Indonesia
               </p>
               <h1
-                className="mb-6 max-w-4xl text-5xl font-bold leading-[1.02] text-white drop-shadow-2xl sm:text-6xl lg:text-7xl"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                className="mb-6 max-w-4xl text-5xl font-bold leading-tight text-text-primary sm:text-6xl lg:text-7xl"
               >
                 Profil dan Identitas GKPI
               </h1>
@@ -674,7 +673,7 @@ export default function ProfilGKPIPage() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="inline-flex min-h-11 items-center justify-center rounded-full border border-white/20 bg-white/10 px-5 text-sm font-semibold text-white backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:border-accent/50 hover:bg-primary/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+                    className="inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-surface/80 px-5 text-sm font-semibold text-text-primary backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:border-accent/50 hover:bg-primary/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
                   >
                     {item.label}
                   </Link>
@@ -697,7 +696,7 @@ export default function ProfilGKPIPage() {
                       <p className="text-xs font-bold uppercase tracking-[0.18em] text-text-secondary">
                         {fact.label}
                       </p>
-                      <p className="mt-1 font-bold text-white">{fact.value}</p>
+                      <p className="mt-1 font-bold text-text-primary">{fact.value}</p>
                     </div>
                   </div>
                 ))}
@@ -741,7 +740,7 @@ export default function ProfilGKPIPage() {
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent">
               Sejarah Singkat
             </p>
-            <h2 className="text-3xl font-bold text-white md:text-4xl leading-tight">
+            <h2 className="text-3xl font-bold text-text-primary md:text-4xl leading-tight">
               Lahir dari semangat pembaruan.
             </h2>
             <p className="text-text-secondary leading-relaxed">
@@ -759,7 +758,7 @@ export default function ProfilGKPIPage() {
               >
                 <div>
                   <p className="text-sm font-bold text-accent">{item.year}</p>
-                  <h3 className="mt-3 text-lg font-bold text-white leading-snug">
+                  <h3 className="mt-3 text-lg font-bold text-text-primary leading-snug">
                     {item.title}
                   </h3>
                 </div>
@@ -823,7 +822,7 @@ export default function ProfilGKPIPage() {
               <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent">
                 Pokok Iman
               </p>
-              <h2 className="mt-3 text-3xl font-bold text-white md:text-4xl">
+              <h2 className="mt-3 text-3xl font-bold text-text-primary md:text-4xl">
                 Berakar pada Alkitab dan tradisi reformatoris.
               </h2>
               <p className="mt-5 leading-relaxed text-text-secondary">
@@ -878,7 +877,7 @@ export default function ProfilGKPIPage() {
             >
               <div
                 className="absolute top-0 right-0 w-48 h-48 rounded-full opacity-10 blur-2xl pointer-events-none"
-                style={{ background: "radial-gradient(circle, #D4AF37, transparent)" }}
+                style={{ background: "radial-gradient(circle, #F59E0B, transparent)" }}
               />
               <Star
                 size={32}
@@ -888,7 +887,7 @@ export default function ProfilGKPIPage() {
                 Visi GKPI 2015–2030
               </p>
               <blockquote
-                className="text-2xl md:text-3xl font-bold text-white leading-snug"
+                className="text-2xl md:text-3xl font-bold text-text-primary leading-snug"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 &ldquo;Menjadi Persekutuan Penyembahan dan Persembahan pada
@@ -1010,16 +1009,16 @@ export default function ProfilGKPIPage() {
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
               Pimpinan 2025-2030
             </p>
-            <h2 className="mt-3 text-2xl font-bold text-white">
+            <h2 className="mt-3 text-2xl font-bold text-text-primary">
               Kepemimpinan Sinode
             </h2>
             <div className="mt-6 space-y-4 text-sm text-text-secondary">
               <p>
-                <span className="font-bold text-white">Bishop:</span> Pdt. Dr.
+                <span className="font-bold text-text-primary">Bishop:</span> Pdt. Dr.
                 Humala Lumbantobing, M.Th
               </p>
               <p>
-                <span className="font-bold text-white">Sekjen:</span> Pdt.
+                <span className="font-bold text-text-primary">Sekjen:</span> Pdt.
                 Parsaoran Sinaga, M.Min, M.Th
               </p>
             </div>
@@ -1032,7 +1031,7 @@ export default function ProfilGKPIPage() {
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
               Lembaga Pelayanan
             </p>
-            <h2 className="mt-3 text-2xl font-bold text-white">
+            <h2 className="mt-3 text-2xl font-bold text-text-primary">
               Pelayanan yang hadir bagi gereja dan masyarakat.
             </h2>
             <div className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -1061,7 +1060,7 @@ export default function ProfilGKPIPage() {
                 <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent">
                   Wilayah Pelayanan
                 </p>
-                <h2 className="mt-3 text-3xl font-bold text-white">
+                <h2 className="mt-3 text-3xl font-bold text-text-primary">
                   Melayani dalam 12 wilayah.
                 </h2>
               </div>
@@ -1089,7 +1088,7 @@ export default function ProfilGKPIPage() {
               <div className="flex items-start gap-4">
                 <Users size={24} className="mt-1 shrink-0 text-accent" />
                 <div>
-                  <h3 className="text-xl font-bold text-white">
+                  <h3 className="text-xl font-bold text-text-primary">
                     Ingin mengenal pelayanan GKPI lebih lanjut?
                   </h3>
                   <p className="mt-1 text-sm text-text-secondary">
@@ -1201,7 +1200,7 @@ export default function ProfilGKPIPage() {
                     <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-accent/15 text-accent border border-accent/25">
                       {doc.tag}
                     </span>
-                    <h3 className="text-xl md:text-2xl font-bold text-white mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    <h3 className="text-xl md:text-2xl font-bold text-text-primary mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>
                       {doc.judul}
                     </h3>
                   </div>
@@ -1209,7 +1208,7 @@ export default function ProfilGKPIPage() {
 
                 <button
                   onClick={() => setSelectedDocIndex(null)}
-                  className="w-10 h-10 rounded-full border border-border/60 flex items-center justify-center text-text-secondary hover:text-white hover:border-white transition-all bg-surface/30 cursor-pointer"
+                  className="w-10 h-10 rounded-full border border-border/60 flex items-center justify-center text-text-secondary hover:text-text-primary hover:border-border transition-all bg-surface/30 cursor-pointer"
                   aria-label="Tutup"
                 >
                   <X size={18} />
@@ -1239,7 +1238,7 @@ export default function ProfilGKPIPage() {
 
                     {/* Section Content */}
                     <div className="md:col-span-3 space-y-4">
-                      <h4 className="text-lg font-bold text-white mb-2 pb-1 border-b border-border/20" style={{ fontFamily: "'Playfair Display', serif" }}>
+                      <h4 className="text-lg font-bold text-text-primary mb-2 pb-1 border-b border-border/20" style={{ fontFamily: "'Playfair Display', serif" }}>
                         {doc.sections[activeTab].title}
                       </h4>
                       <div className="text-text-secondary leading-relaxed space-y-4 text-base md:text-lg">
@@ -1304,9 +1303,9 @@ export default function ProfilGKPIPage() {
                           className="w-full h-1.5 rounded-lg bg-border/40 accent-accent cursor-pointer"
                         />
                         <div className="flex items-center justify-between pt-2">
-                          <p className="text-sm font-semibold text-white">Mars GKPI Audio</p>
+                          <p className="text-sm font-semibold text-text-primary">Mars GKPI Audio</p>
                           <div className="flex items-center gap-3">
-                            <button onClick={() => setIsMuted(!isMuted)} className="text-text-secondary hover:text-white cursor-pointer">
+                            <button onClick={() => setIsMuted(!isMuted)} className="text-text-secondary hover:text-text-primary cursor-pointer">
                               {isMuted || volume === 0 ? <VolumeX size={16} /> : <Volume2 size={16} />}
                             </button>
                             <input
@@ -1337,7 +1336,7 @@ export default function ProfilGKPIPage() {
 
                     {/* Lyrics Display */}
                     <div className="text-center space-y-6">
-                      <h4 className="text-lg font-bold text-white uppercase tracking-wider" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                      <h4 className="text-lg font-bold text-text-primary uppercase tracking-wider" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
                         Lirik Mars GKPI
                       </h4>
                       <div className="text-text-secondary leading-loose text-base md:text-lg italic space-y-6 bg-surface/20 p-6 md:p-8 rounded-2xl border border-border/40">
@@ -1356,7 +1355,7 @@ export default function ProfilGKPIPage() {
                   <div className="space-y-6">
                     {/* Mukadimah Card */}
                     <div className="p-6 md:p-8 rounded-2xl border border-border/40 bg-surface/20">
-                      <h4 className="text-lg font-bold text-white mb-4 uppercase tracking-widest text-center" style={{ fontFamily: "'Playfair Display', serif" }}>
+                      <h4 className="text-lg font-bold text-text-primary mb-4 uppercase tracking-widest text-center" style={{ fontFamily: "'Playfair Display', serif" }}>
                         Mukadimah
                       </h4>
                       <div className="text-text-secondary leading-relaxed text-sm md:text-base space-y-4">
@@ -1481,7 +1480,7 @@ export default function ProfilGKPIPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {doc.points.map((pt, idx) => (
                         <div key={idx} className="p-6 rounded-2xl border border-border/60 bg-surface/20 space-y-2">
-                          <h5 className="text-white font-bold font-serif text-lg">
+                          <h5 className="text-text-primary font-bold font-serif text-lg">
                             {pt.title}
                           </h5>
                           <p className="text-text-secondary leading-relaxed text-sm md:text-base">
@@ -1512,7 +1511,7 @@ export default function ProfilGKPIPage() {
             {/* Decorative glow */}
             <div
               className="absolute top-[-30%] right-[-5%] w-[400px] h-[400px] rounded-full opacity-15 blur-3xl pointer-events-none"
-              style={{ background: "radial-gradient(circle, #6FA8DC, transparent)" }}
+              style={{ background: "radial-gradient(circle, #0E63E9, transparent)" }}
             />
             <div className="relative flex flex-col md:flex-row items-center justify-between gap-8">
               <div>
@@ -1534,7 +1533,7 @@ export default function ProfilGKPIPage() {
                 <Link
                   href="/wilayah-resort"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent text-background text-sm font-bold rounded-2xl hover:bg-accent/90 shadow-lg shadow-accent/20 transition-all duration-300 whitespace-nowrap"
-                  style={{ backgroundColor: "#6FA8DC" }}
+                  style={{ backgroundColor: "#0E63E9" }}
                 >
                   <span>Cari Jemaat</span>
                   <ChevronRight size={18} />
