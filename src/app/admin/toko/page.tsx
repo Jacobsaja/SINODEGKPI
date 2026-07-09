@@ -196,7 +196,7 @@ function TokoAdminContent() {
             <span className="text-accent">Toko</span>
           </div>
           <h1
-            className="text-3xl font-extrabold text-white mt-1"
+            className="text-3xl font-extrabold text-text-primary mt-1"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             Kelola Toko
@@ -216,7 +216,7 @@ function TokoAdminContent() {
             className={`px-4 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
               activeTab === "list"
                 ? "bg-primary text-white shadow-md shadow-primary/20"
-                : "text-text-secondary hover:text-white"
+                : "text-text-secondary hover:text-accent"
             }`}
           >
             Daftar Produk
@@ -230,7 +230,7 @@ function TokoAdminContent() {
             className={`px-4 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
               activeTab === "form"
                 ? "bg-primary text-white shadow-md shadow-primary/20"
-                : "text-text-secondary hover:text-white"
+                : "text-text-secondary hover:text-accent"
             }`}
           >
             <Plus size={14} />
@@ -259,7 +259,7 @@ function TokoAdminContent() {
                   placeholder="Cari berdasarkan nama atau deskripsi produk..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-white placeholder-text-secondary/60 outline-none focus:border-accent/40 focus:bg-background"
+                  className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/60 outline-none focus:border-accent/40 focus:bg-background"
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -267,7 +267,7 @@ function TokoAdminContent() {
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="rounded-xl border border-border bg-background/50 px-3.5 py-2.5 text-sm text-white outline-none focus:border-accent/40 cursor-pointer"
+                  className="rounded-xl border border-border bg-background/50 px-3.5 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 cursor-pointer"
                 >
                   <option value="Semua">Semua Kategori</option>
                   {existingCategories.map((c) => (
@@ -363,7 +363,7 @@ function TokoAdminContent() {
                                 startEdit(item);
                                 router.replace(`/admin/toko?edit=${item.id}`);
                               }}
-                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-surface/50 text-text-secondary transition-all hover:border-accent/40 hover:text-white cursor-pointer"
+                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-surface/50 text-text-secondary transition-all hover:border-accent/40 hover:text-accent cursor-pointer"
                               title="Edit"
                             >
                               <Edit3 size={14} />
@@ -410,12 +410,12 @@ function TokoAdminContent() {
                   setActiveTab("list");
                   router.replace("/admin/toko");
                 }}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface/50 text-text-secondary hover:text-white transition-colors cursor-pointer"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface/50 text-text-secondary hover:text-accent transition-colors cursor-pointer"
               >
                 <ArrowLeft size={16} />
               </button>
               <div>
-                <h3 className="font-bold text-white text-sm">
+                <h3 className="font-bold text-text-primary text-sm">
                   {editingId ? "Edit Detail Produk" : "Tambah Produk Baru"}
                 </h3>
                 <p className="text-xs text-text-secondary mt-0.5">
@@ -434,7 +434,7 @@ function TokoAdminContent() {
                     placeholder="Masukkan nama merchandise atau buku..."
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-white outline-none focus:border-accent/40 focus:bg-background transition-all"
+                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all"
                     required
                   />
                 </div>
@@ -448,7 +448,7 @@ function TokoAdminContent() {
                       placeholder="Contoh: 150000"
                       value={form.price || ""}
                       onChange={(e) => setForm({ ...form, price: Number(e.target.value) })}
-                      className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-white outline-none focus:border-accent/40 focus:bg-background transition-all"
+                      className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-black outline-none focus:border-accent/40 focus:bg-background transition-all"
                       required
                     />
                   </div>
@@ -460,7 +460,7 @@ function TokoAdminContent() {
                       placeholder="Contoh: Buku, Merchandise, Pakaian"
                       value={form.category}
                       onChange={(e) => setForm({ ...form, category: e.target.value })}
-                      className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-white outline-none focus:border-accent/40 focus:bg-background transition-all"
+                      className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-black outline-none focus:border-accent/40 focus:bg-background transition-all"
                       required
                     />
                     <datalist id="product-categories">
@@ -477,7 +477,7 @@ function TokoAdminContent() {
                     placeholder="Masukkan spesifikasi produk, detail bahan, atau informasi penting lainnya..."
                     value={form.description}
                     onChange={(e) => setForm({ ...form, description: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-white outline-none focus:border-accent/40 focus:bg-background transition-all"
+                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all"
                     rows={8}
                     required
                   />
@@ -486,7 +486,7 @@ function TokoAdminContent() {
 
               {/* Right Column - Integrations & Media (1/3 width) */}
               <div className="space-y-5 rounded-3xl border border-border bg-surface/20 p-6 shadow-md">
-                <h4 className="font-bold text-white text-sm border-b border-border pb-3 flex items-center gap-1.5">
+                <h4 className="font-bold text-text-primary text-sm border-b border-border pb-3 flex items-center gap-1.5">
                   <Tag size={16} className="text-accent" />
                   Media & Integrasi E-Commerce
                 </h4>
@@ -498,7 +498,7 @@ function TokoAdminContent() {
                     placeholder="https://tokopedia.link/..."
                     value={form.tokopedia_url}
                     onChange={(e) => setForm({ ...form, tokopedia_url: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-xs text-white outline-none focus:border-accent/40 focus:bg-background transition-all"
+                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-xs text-black outline-none focus:border-accent/40 focus:bg-background transition-all"
                     required
                   />
                 </div>
@@ -510,7 +510,7 @@ function TokoAdminContent() {
                     placeholder="https://shopee.co.id/..."
                     value={form.shopee_url}
                     onChange={(e) => setForm({ ...form, shopee_url: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-xs text-white outline-none focus:border-accent/40 focus:bg-background transition-all"
+                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-xs text-black outline-none focus:border-accent/40 focus:bg-background transition-all"
                     required
                   />
                 </div>
@@ -560,7 +560,7 @@ function TokoAdminContent() {
                   <div className="flex items-center gap-2">
                     <Sparkles size={16} className="text-amber-400" />
                     <div>
-                      <p className="text-xs font-bold text-white">Produk Unggulan</p>
+                      <p className="text-xs font-bold text-text-primary">Produk Unggulan</p>
                       <p className="text-[10px] text-text-secondary mt-0.5">Sematkan di sorotan toko utama</p>
                     </div>
                   </div>
@@ -597,7 +597,7 @@ function TokoAdminContent() {
                       setActiveTab("list");
                       router.replace("/admin/toko");
                     }}
-                    className="w-full py-3 border border-border text-text-secondary text-xs font-bold rounded-xl hover:text-white hover:bg-background/40 transition-all cursor-pointer"
+                    className="w-full py-3 border border-border text-text-secondary text-xs font-bold rounded-xl hover:text-accent hover:bg-background/40 transition-all cursor-pointer"
                   >
                     Batal
                   </button>

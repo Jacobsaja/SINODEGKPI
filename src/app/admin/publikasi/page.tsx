@@ -222,7 +222,7 @@ function PublikasiAdminContent() {
             <span className="text-accent">Publikasi</span>
           </div>
           <h1
-            className="text-3xl font-extrabold text-white mt-1"
+            className="text-3xl font-extrabold text-text-primary mt-1"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             Kelola Publikasi
@@ -242,7 +242,7 @@ function PublikasiAdminContent() {
             className={`px-4 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
               activeTab === "list"
                 ? "bg-primary text-white shadow-md shadow-primary/20"
-                : "text-text-secondary hover:text-white"
+                : "text-text-secondary hover:text-accent"
             }`}
           >
             Daftar Publikasi
@@ -256,7 +256,7 @@ function PublikasiAdminContent() {
             className={`px-4 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
               activeTab === "form"
                 ? "bg-primary text-white shadow-md shadow-primary/20"
-                : "text-text-secondary hover:text-white"
+                : "text-text-secondary hover:text-accent"
             }`}
           >
             <Plus size={14} />
@@ -285,7 +285,7 @@ function PublikasiAdminContent() {
                   placeholder="Cari berdasarkan judul atau penulis..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-white placeholder-text-secondary/60 outline-none focus:border-accent/40 focus:bg-background"
+                  className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/60 outline-none focus:border-accent/40 focus:bg-background"
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -293,7 +293,7 @@ function PublikasiAdminContent() {
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="rounded-xl border border-border bg-background/50 px-3.5 py-2.5 text-sm text-white outline-none focus:border-accent/40 cursor-pointer"
+                  className="rounded-xl border border-border bg-background/50 px-3.5 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 cursor-pointer"
                 >
                   <option value="Semua">Semua Kategori</option>
                   {CATEGORIES.map((c) => (
@@ -371,7 +371,7 @@ function PublikasiAdminContent() {
                                 startEdit(item);
                                 router.replace(`/admin/publikasi?edit=${item.id}`);
                               }}
-                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-surface/50 text-text-secondary transition-all hover:border-accent/40 hover:text-white cursor-pointer"
+                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-surface/50 text-text-secondary transition-all hover:border-accent/40 hover:text-accent cursor-pointer"
                               title="Edit"
                             >
                               <Edit3 size={14} />
@@ -418,12 +418,12 @@ function PublikasiAdminContent() {
                   setActiveTab("list");
                   router.replace("/admin/publikasi");
                 }}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface/50 text-text-secondary hover:text-white transition-colors cursor-pointer"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface/50 text-text-secondary hover:text-accent transition-colors cursor-pointer"
               >
                 <ArrowLeft size={16} />
               </button>
               <div>
-                <h3 className="font-bold text-white text-sm">
+                <h3 className="font-bold text-text-primary text-sm">
                   {editingId ? "Edit Publikasi Terdaftar" : "Buat Publikasi Baru"}
                 </h3>
                 <p className="text-xs text-text-secondary mt-0.5">
@@ -442,7 +442,7 @@ function PublikasiAdminContent() {
                     placeholder="Masukkan judul publikasi yang menarik..."
                     value={form.title}
                     onChange={(e) => setForm({ ...form, title: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-white outline-none focus:border-accent/40 focus:bg-background transition-all"
+                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all"
                     required
                   />
                 </div>
@@ -453,7 +453,7 @@ function PublikasiAdminContent() {
                     placeholder="Berikan 1-2 kalimat ringkasan artikel sebagai pratinjau..."
                     value={form.excerpt}
                     onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-white outline-none focus:border-accent/40 focus:bg-background transition-all"
+                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all"
                     rows={3}
                     maxLength={300}
                     required
@@ -471,7 +471,7 @@ function PublikasiAdminContent() {
                     placeholder="Ketik konten artikel secara lengkap di sini..."
                     value={form.content}
                     onChange={(e) => setForm({ ...form, content: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-white outline-none focus:border-accent/40 focus:bg-background transition-all font-sans leading-relaxed"
+                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all font-sans leading-relaxed"
                     rows={12}
                     required
                   />
@@ -480,7 +480,7 @@ function PublikasiAdminContent() {
 
               {/* Right Column - Sidebar Metadata (1/3 width) */}
               <div className="space-y-5 rounded-3xl border border-border bg-surface/20 p-6 shadow-md">
-                <h4 className="font-bold text-white text-sm border-b border-border pb-3 flex items-center gap-1.5">
+                <h4 className="font-bold text-text-primary text-sm border-b border-border pb-3 flex items-center gap-1.5">
                   <BookOpen size={16} className="text-accent" />
                   Metadata & Media
                 </h4>
@@ -494,7 +494,7 @@ function PublikasiAdminContent() {
                       placeholder="Nama Penulis / Tim Media"
                       value={form.author}
                       onChange={(e) => setForm({ ...form, author: e.target.value })}
-                      className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-white outline-none focus:border-accent/40 focus:bg-background transition-all"
+                      className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all"
                       required
                     />
                   </div>
@@ -507,7 +507,7 @@ function PublikasiAdminContent() {
                     onChange={(e) =>
                       setForm({ ...form, category: e.target.value as PublicationCategory })
                     }
-                    className="w-full rounded-xl border border-border bg-background/50 px-3.5 py-2.5 text-sm text-white outline-none focus:border-accent/40 focus:bg-background transition-all cursor-pointer"
+                    className="w-full rounded-xl border border-border/60 bg-gradient-to-br from-background/60 to-background/40 px-4 py-3 text-sm text-text-primary outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 focus:bg-gradient-to-br focus:from-background/80 focus:to-background/60 transition-all cursor-pointer appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMiA0TDYgOEwxMCA0IiBzdHJva2U9IiM5Q0EzQUYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4')] bg-no-repeat bg-[right_14px_center] pr-10 hover:border-accent/40 hover:shadow-md hover:shadow-accent/5"
                   >
                     {CATEGORIES.map((c) => (
                       <option key={c} value={c}>{c}</option>
@@ -523,7 +523,7 @@ function PublikasiAdminContent() {
                       type="date"
                       value={form.date}
                       onChange={(e) => setForm({ ...form, date: e.target.value })}
-                      className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-white outline-none focus:border-accent/40 focus:bg-background transition-all cursor-pointer"
+                      className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all cursor-pointer"
                       required
                     />
                   </div>
@@ -538,7 +538,7 @@ function PublikasiAdminContent() {
                       placeholder="Contoh: 4 menit"
                       value={form.read_time}
                       onChange={(e) => setForm({ ...form, read_time: e.target.value })}
-                      className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-white outline-none focus:border-accent/40 focus:bg-background transition-all"
+                      className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all"
                     />
                   </div>
                 </div>
@@ -588,7 +588,7 @@ function PublikasiAdminContent() {
                   <div className="flex items-center gap-2">
                     <Sparkles size={16} className="text-amber-400" />
                     <div>
-                      <p className="text-xs font-bold text-white">Renungan Unggulan</p>
+                      <p className="text-xs font-bold text-text-primary">Renungan Unggulan</p>
                       <p className="text-[10px] text-text-secondary mt-0.5">Sematkan artikel di halaman utama</p>
                     </div>
                   </div>
@@ -625,7 +625,7 @@ function PublikasiAdminContent() {
                       setActiveTab("list");
                       router.replace("/admin/publikasi");
                     }}
-                    className="w-full py-3 border border-border text-text-secondary text-xs font-bold rounded-xl hover:text-white hover:bg-background/40 transition-all cursor-pointer"
+                    className="w-full py-3 border border-border text-text-secondary text-xs font-bold rounded-xl hover:text-accent hover:bg-background/40 transition-all cursor-pointer"
                   >
                     Batal
                   </button>
