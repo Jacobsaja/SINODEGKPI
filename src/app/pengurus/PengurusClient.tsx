@@ -87,7 +87,7 @@ function ProfileCard({
 function SectionHeading({ title }: { title: string }) {
   return (
     <div className="text-center mb-16 md:mb-20">
-      <h2 className="text-3xl md:text-4xl font-sans font-bold text-white">{title}</h2>
+      <h2 className="text-3xl md:text-4xl font-sans font-bold text-text-primary">{title}</h2>
       <div className="w-16 h-1 mx-auto mt-6 rounded-full bg-primary/40" />
     </div>
   );

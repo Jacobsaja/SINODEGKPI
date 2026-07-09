@@ -19,7 +19,7 @@ export default function ResortHero() {
       </div>
 
       <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-5 text-center text-text-primary sm:px-8">
-        <p className="mb-5 animate-fade-in-up text-xs font-semibold uppercase tracking-[0.28em] text-accent opacity-0 [animation-delay:120ms]">
+        <p className="mb-5 animate-fade-in-up text-xs font-bold uppercase tracking-[0.28em] text-accent opacity-0 [animation-delay:120ms]">
           Pelayanan dan Wilayah
         </p>
 
@@ -27,7 +27,7 @@ export default function ResortHero() {
           Resort & Jemaat Khusus GKPI
         </h1>
 
-        <p className="mt-6 max-w-2xl animate-fade-in-up text-base leading-8 text-text-primary/90 opacity-0 drop-shadow-lg sm:text-lg md:text-xl [animation-delay:360ms]">
+        <p className="mt-6 max-w-2xl animate-fade-in-up text-base font-semibold leading-8 text-text-primary/90 opacity-0 drop-shadow-lg sm:text-lg md:text-xl [animation-delay:360ms]">
           Temukan lokasi jemaat GKPI dan pahami struktur pelayanan di berbagai wilayah.
         </p>
 
