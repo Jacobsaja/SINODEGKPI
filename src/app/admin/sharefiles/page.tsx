@@ -361,7 +361,7 @@ export default function ShareFilesListPage() {
                       </div>
                     ) : (
                       <div className="flex items-center gap-2 group">
-                        <Link href={`/admin/sharefiles/${f.id}`} className="font-bold text-white hover:text-accent transition-colors">
+                        <Link href={`/admin/sharefiles/${f.id}`} className="font-bold text-text-primary hover:text-accent transition-colors">
                           {f.title}
                         </Link>
                         <button
