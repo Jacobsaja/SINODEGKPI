@@ -8,6 +8,7 @@ import {
   ShoppingBag,
   Users,
   Church,
+  FolderLock,
   LogOut,
   ExternalLink,
   X,
@@ -19,6 +20,7 @@ const NAV_ITEMS = [
   { href: "/admin/toko", label: "Toko", icon: ShoppingBag, exact: false },
   { href: "/admin/pengurus", label: "Pengurus", icon: Users, exact: false },
   { href: "/admin/jemaat", label: "Jemaat & Resort", icon: Church, exact: false },
+  { href: "/admin/sharefiles", label: "Share Files", icon: FolderLock, exact: false },
 ];
 
 interface AdminSidebarProps {
@@ -80,7 +82,7 @@ export default function AdminSidebar({ email, onLogout, isOpen, onClose }: Admin
               onClick={onClose}
               className={`group relative flex items-center gap-3.5 rounded-xl border px-4 py-3.5 text-sm font-semibold transition-all ${
                 active
-                  ? "border-accent/20 bg-accent/10 text-white shadow-inner"
+                  ? "border-accent/20 bg-accent/10 text-text-primary shadow-inner"
                   : "border-transparent text-text-secondary hover:border-border/60 hover:bg-background/40 hover:text-primary"
               }`}
             >
