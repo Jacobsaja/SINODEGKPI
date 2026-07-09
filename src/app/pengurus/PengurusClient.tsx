@@ -11,29 +11,67 @@ import { User } from "lucide-react";
 import { assets } from "@/lib/assets";
 import type { PengurusAnggota, PengurusGrup, PengurusSeksi } from "@/lib/pengurus";
 
+// Some existing rows in `pengurus_anggota` were never given
+// variant = "leader" when they were created (it defaults to "standard"
+// in createAnggota). To make Ketua/Sekretaris detection reliable even
+// for that legacy data, also treat a member as a leader if their `role`
+// text says so, not just the stored `variant` column.
+function isLeaderAnggota(anggota: PengurusAnggota): boolean {
+  return anggota.variant === "leader" || /ketua|sekretaris/i.test(anggota.role ?? "");
+}
+
 // ─── ProfileCard ─────────────────────────────────────────────────────────────
 
 function ProfileCard({
   anggota,
   onClick,
+  forceStandardSize = false,
 }: {
   anggota: PengurusAnggota;
   onClick: () => void;
+  /**
+   * The flat_grid layout (e.g. Koor. Wilayah) should always show the
+   * normal ~200px card, regardless of whatever `variant` happens to be
+   * saved on that row in the database. Pass true there so a
+   * stray/mistaken "compact" value never shrinks those cards.
+   */
+  forceStandardSize?: boolean;
 }) {
-  const isLeader = anggota.variant === "leader";
-  const isCompact = anggota.variant === "compact";
+  const isLeader = isLeaderAnggota(anggota);
+  const isCompact = !forceStandardSize && anggota.variant === "compact";
 
+  // Only Ketua/Sekretaris get the larger "leader" photo. Below that,
+  // there are two intentional tiers coming from the `variant` column:
+  // - "compact": explicitly set for tightly-packed member rows (e.g.
+  //   the "Anggota" row under Majelis Sinode) — smaller, 140px.
+  // - anything else ("standard"/default, e.g. department heads on the
+  //   Pimpinan Sinode page): the normal 200px size.
+  // Both get their own FIXED width below so the box size never depends
+  // on how long a person's name is.
   const sizeClass = isLeader
-    ? "max-w-[280px] md:max-w-[320px]"
+    ? "max-w-[200px] sm:max-w-[220px] md:max-w-[240px]"
     : isCompact
     ? "max-w-[140px]"
     : "max-w-[200px]";
+
+  // The button itself needs a FIXED width (not just max-width on its
+  // children). Without this, a flex/grid item's width shrink-wraps to
+  // its content — so a longer name below the photo makes that whole
+  // card (photo included) wider/narrower than a card with a short name,
+  // even though both used the same max-w class. Locking the width here
+  // keeps every photo box in the same tier identical, no matter how
+  // long the name text is.
+  const widthClass = isLeader
+    ? "w-[200px] sm:w-[220px] md:w-[240px]"
+    : isCompact
+    ? "w-[140px]"
+    : "w-[200px]";
 
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`flex flex-col items-center text-center group transition-all duration-300 hover:scale-105 cursor-pointer bg-transparent border-0 p-0 ${
+      className={`flex flex-shrink-0 flex-col items-center text-center group transition-all duration-300 hover:scale-105 cursor-pointer bg-transparent border-0 p-0 ${widthClass} ${
         isCompact ? "opacity-85 hover:opacity-100" : ""
       }`}
     >
@@ -50,7 +88,7 @@ function ProfileCard({
           />
         ) : (
           <User
-            size={isLeader ? 80 : isCompact ? 32 : 48}
+            size={isLeader ? 56 : isCompact ? 32 : 48}
             className="text-text-secondary/20"
             strokeWidth={1.5}
           />
@@ -61,7 +99,7 @@ function ProfileCard({
         {anggota.role && (
           <p
             className={`font-bold text-accent uppercase tracking-wider ${
-              isLeader ? "text-sm" : "text-[10px]"
+              isLeader ? "text-xs" : "text-[10px]"
             }`}
           >
             {anggota.role}
@@ -69,7 +107,7 @@ function ProfileCard({
         )}
         <h3
           className={`font-bold text-black leading-tight ${
-            isLeader ? "text-2xl md:text-3xl" : isCompact ? "text-sm" : "text-lg"
+            isLeader ? "text-lg md:text-xl" : isCompact ? "text-sm" : "text-lg"
           }`}
         >
           {anggota.name}
@@ -134,7 +172,7 @@ function GroupCard({
   return (
     <div className="bg-background/50 border border-border/60 rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
       {grup.name && (
-        <h3 className="text-2xl font-bold text-center text-white mb-12">{grup.name}</h3>
+        <h3 className="text-2xl font-bold text-center text-black mb-12">{grup.name}</h3>
       )}
 
       {top.length > 0 && (
@@ -285,8 +323,8 @@ export default function PengurusClient({ seksiList }: { seksiList: PengurusSeksi
 
           // ── leaders_grid: (Pimpinan Sinode) ──
           if (seksi.layout_type === "leaders_grid") {
-            const leaders = seksi.members.filter((m) => m.variant === "leader");
-            const others = seksi.members.filter((m) => m.variant !== "leader");
+            const leaders = seksi.members.filter(isLeaderAnggota);
+            const others = seksi.members.filter((m) => !isLeaderAnggota(m));
             return (
               <SectionWrapper key={seksi.id} id={seksi.slug} alt={alt} isLast={isLast}>
                 <SectionHeading title={seksi.title} />
@@ -296,7 +334,7 @@ export default function PengurusClient({ seksiList }: { seksiList: PengurusSeksi
                       <ProfileCard key={l.id} anggota={l} onClick={() => setSelectedPerson(l)} />
                     ))}
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-12 max-w-5xl mx-auto">
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-12 max-w-5xl mx-auto justify-items-center">
                     {others.map((d) => (
                       <ProfileCard key={d.id} anggota={d} onClick={() => setSelectedPerson(d)} />
                     ))}
@@ -327,9 +365,14 @@ export default function PengurusClient({ seksiList }: { seksiList: PengurusSeksi
             <SectionWrapper key={seksi.id} id={seksi.slug} alt={alt} isLast={isLast}>
               <SectionHeading title={seksi.title} />
               <ScrollReveal>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12 justify-items-center">
                   {seksi.members.map((m) => (
-                    <ProfileCard key={m.id} anggota={m} onClick={() => setSelectedPerson(m)} />
+                    <ProfileCard
+                      key={m.id}
+                      anggota={m}
+                      onClick={() => setSelectedPerson(m)}
+                      forceStandardSize
+                    />
                   ))}
                 </div>
               </ScrollReveal>
