@@ -868,10 +868,10 @@ export default function ProfilGKPIPage() {
 
             {/* Visi Card */}
             <div
-              className="relative rounded-3xl p-8 md:p-10 mb-4 overflow-hidden border border-amber-500/20"
+              className="relative rounded-3xl p-8 md:p-10 mb-4 overflow-hidden border border-amber-500/30"
               style={{
                 background:
-                  "linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(26,58,95,0.6) 100%)",
+                  "linear-gradient(135deg, rgba(245,158,11,0.08) 0%, rgba(248,250,252,0.95) 100%)",
                 backdropFilter: "blur(16px)",
               }}
             >
@@ -1179,14 +1179,14 @@ export default function ProfilGKPIPage() {
 
             {/* Modal Body */}
             <div
-              className="relative flex h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-accent/20 shadow-2xl animate-slide-up md:h-[80vh]"
+              className="relative flex h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-border/60 shadow-2xl animate-slide-up md:h-[80vh]"
               style={{
-                background: "linear-gradient(160deg, rgba(22,42,64,0.98) 0%, rgba(8,17,30,0.98) 100%)",
-                boxShadow: "0 28px 90px rgba(0,0,0,0.45), 0 0 50px rgba(111,168,220,0.12)",
+                background: "linear-gradient(160deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.98) 100%)",
+                boxShadow: "0 28px 90px rgba(15,23,42,0.16), 0 0 40px rgba(14,99,233,0.08)",
               }}
             >
               {/* Header */}
-              <div className="flex items-center justify-between p-6 md:p-8 border-b border-border/40 shrink-0">
+              <div className="flex items-center justify-between p-6 md:p-8 border-b border-border shrink-0">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-xl bg-primary/15 border border-accent/20 flex items-center justify-center">
                     {selectedDocIndex === 0 && <BookOpen className="text-accent" size={22} />}
@@ -1273,7 +1273,7 @@ export default function ProfilGKPIPage() {
                   <div className="max-w-2xl mx-auto space-y-8 pb-8">
                     {/* Beautiful Audio Player Card */}
                     <div className="p-6 rounded-3xl border border-accent/20 bg-surface/40 flex flex-col md:flex-row items-center gap-6"
-                         style={{ background: "linear-gradient(135deg, rgba(111,168,220,0.08) 0%, rgba(22,42,64,0.4) 100%)" }}>
+                         style={{ background: "linear-gradient(135deg, rgba(14,99,233,0.07) 0%, rgba(248,250,252,0.9) 100%)" }}>
                       <audio
                         ref={audioRef}
                         src="https://gkpisinode.org/wp-content/plugins/gkpi-library/music/music.mp3"
@@ -1367,7 +1367,7 @@ export default function ProfilGKPIPage() {
 
                     {/* Articles List */}
                     <div className="space-y-3">
-                      <h4 className="text-lg font-bold text-white mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+                      <h4 className="text-lg font-bold text-text-primary mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
                         Pasal-Pasal Tata Gereja
                       </h4>
                       {doc.articles.map((art, idx) => {
@@ -1386,7 +1386,7 @@ export default function ProfilGKPIPage() {
                                 <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-accent/15 text-accent">
                                   {art.pasal}
                                 </span>
-                                <h5 className="font-serif font-bold text-white text-base md:text-lg">
+                                <h5 className="font-serif font-bold text-text-primary text-base md:text-lg">
                                   {art.judul}
                                 </h5>
                               </div>
@@ -1432,7 +1432,7 @@ export default function ProfilGKPIPage() {
                                 <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-accent/15 text-accent">
                                   {chap.bab}
                                 </span>
-                                <h5 className="font-serif font-bold text-white text-base md:text-lg">
+                                <h5 className="font-serif font-bold text-text-primary text-base md:text-lg">
                                   {chap.judul}
                                 </h5>
                               </div>
@@ -1471,7 +1471,7 @@ export default function ProfilGKPIPage() {
                       <p className="text-text-secondary text-sm md:text-base leading-relaxed">
                         {doc.pengantar}
                       </p>
-                      <blockquote className="border-l-4 border-accent pl-4 py-1.5 italic text-white font-medium text-base md:text-lg leading-relaxed bg-accent/5 pr-4 rounded-r-lg">
+                      <blockquote className="border-l-4 border-accent pl-4 py-1.5 italic text-text-primary font-medium text-base md:text-lg leading-relaxed bg-accent/5 pr-4 rounded-r-lg">
                         {doc.isiConfession}
                       </blockquote>
                     </div>
@@ -1501,10 +1501,10 @@ export default function ProfilGKPIPage() {
       <section className="py-16 px-4 md:px-8 max-w-7xl mx-auto mb-16">
         <ScrollReveal>
           <div
-            className="relative rounded-[2rem] p-10 md:p-14 overflow-hidden border border-border/40"
+            className="relative rounded-[2rem] p-10 md:p-14 overflow-hidden border border-border"
             style={{
               background:
-                "linear-gradient(135deg, rgba(26,58,95,0.8) 0%, rgba(15,32,39,0.95) 100%)",
+                "linear-gradient(135deg, rgba(14,99,233,0.06) 0%, rgba(248,250,252,0.95) 100%)",
               backdropFilter: "blur(20px)",
             }}
           >
@@ -1519,7 +1519,7 @@ export default function ProfilGKPIPage() {
                   Bergabunglah dengan Kami
                 </p>
                 <h2
-                  className="text-3xl md:text-4xl font-bold text-white mb-3"
+                  className="text-3xl md:text-4xl font-bold text-text-primary mb-3"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   Temukan Jemaat GKPI Terdekat

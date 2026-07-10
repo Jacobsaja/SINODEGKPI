@@ -6,6 +6,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
+import { supabase } from "@/lib/supabase";
 import {
   MapPin,
   Phone,
@@ -50,11 +51,36 @@ export default function KontakPage() {
     message: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
+
+    setIsSending(true);
+    setSubmitError(null);
+
+    const { error } = await supabase.from("contact_messages").insert({
+      nama: formData.name,
+      email: formData.email,
+      subjek: formData.subject || "(Tanpa Subjek)",
+      pesan: formData.message,
+    });
+
+    setIsSending(false);
+
+    if (error) {
+      console.error("Gagal mengirim pesan:", {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+      });
+      setSubmitError("Gagal mengirim pesan. Silakan coba lagi beberapa saat.");
+      return;
+    }
 
     setIsSubmitted(true);
     setTimeout(() => {
@@ -278,12 +304,17 @@ export default function KontakPage() {
                         className="w-full bg-background/50 border border-border text-text-primary placeholder:text-text-secondary/35 text-sm rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 focus:bg-background/80 transition-all resize-none"
                       />
                     </div>
+                    {submitError && (
+                      <p className="text-sm font-medium text-accent -mt-2">{submitError}</p>
+                    )}
+
                     <button
                       type="submit"
-                      className="w-full py-4 bg-primary text-white text-sm font-bold rounded-2xl hover:bg-primary-dark shadow-xl hover:shadow-primary/20 transition-all duration-300 mt-4 flex items-center justify-center gap-2 cursor-pointer"
+                      disabled={isSending}
+                      className="w-full py-4 bg-primary text-white text-sm font-bold rounded-2xl hover:bg-primary-dark shadow-xl hover:shadow-primary/20 transition-all duration-300 mt-4 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                     >
                       <Send size={15} />
-                      Kirim Pesan
+                      {isSending ? "Mengirim..." : "Kirim Pesan"}
                     </button>
                   </form>
                 )}

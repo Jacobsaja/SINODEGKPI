@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 import {
   LayoutDashboard,
   Newspaper,
@@ -9,6 +11,7 @@ import {
   Users,
   Church,
   FolderLock,
+  Mail,
   LogOut,
   ExternalLink,
   X,
@@ -20,6 +23,7 @@ const NAV_ITEMS = [
   { href: "/admin/toko", label: "Toko", icon: ShoppingBag, exact: false },
   { href: "/admin/pengurus", label: "Pengurus", icon: Users, exact: false },
   { href: "/admin/jemaat", label: "Jemaat & Resort", icon: Church, exact: false },
+  { href: "/admin/kontak", label: "Pesan Masuk", icon: Mail, exact: false },
   { href: "/admin/sharefiles", label: "Share Files", icon: FolderLock, exact: false },
 ];
 
@@ -32,6 +36,18 @@ interface AdminSidebarProps {
 
 export default function AdminSidebar({ email, onLogout, isOpen, onClose }: AdminSidebarProps) {
   const pathname = usePathname();
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      const { count } = await supabase
+        .from("contact_messages")
+        .select("*", { count: "exact", head: true })
+        .eq("status", "unread");
+      setUnreadCount(count ?? 0);
+    };
+    fetchUnreadCount();
+  }, [pathname]);
 
   const isActive = (href: string, exact: boolean) =>
     exact ? pathname === href : pathname.startsWith(href);
@@ -97,6 +113,11 @@ export default function AdminSidebar({ email, onLogout, isOpen, onClose }: Admin
                 }`}
               />
               <span>{item.label}</span>
+              {item.href === "/admin/kontak" && unreadCount > 0 && (
+                <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1.5 text-[10px] font-bold text-white">
+                  {unreadCount}
+                </span>
+              )}
             </Link>
           );
         })}
