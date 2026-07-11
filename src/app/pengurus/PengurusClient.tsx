@@ -295,7 +295,7 @@ export default function PengurusClient({ seksiList }: { seksiList: PengurusSeksi
                       }}
                       onClick={() => scrollToSection(tab.id)}
                       className={`relative px-5 py-4 text-sm font-bold whitespace-nowrap transition-colors duration-300 ${
-                        isActive ? "text-accent" : "text-text-secondary hover:text-white"
+                        isActive ? "text-accent" : "text-text-secondary hover:text-accent"
                       }`}
                     >
                       {tab.label}
