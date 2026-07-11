@@ -141,7 +141,7 @@ export default function Hero() {
                     <h1 className="text-3xl md:text-5xl lg:text-6xl font-sans font-black text-white tracking-wide mb-6 drop-shadow-2xl">
                       {slide.title}
                     </h1>
-                    <p className="text-sm md:text-lg text-accent/80 tracking-[0.2em] uppercase">
+                    <p className="text-sm md:text-lg text-accent font-black tracking-[0.2em] uppercase [text-shadow:0_2px_10px_rgba(0,0,0,0.9)]">
                       {slide.subtitle}
                     </p>
                   </>
@@ -150,8 +150,8 @@ export default function Hero() {
                     <p className="text-2xl md:text-4xl lg:text-5xl font-serif italic text-white leading-relaxed mb-8 drop-shadow-lg">
                       &quot;{slide.verse}&quot;
                     </p>
-                    <p className="text-sm md:text-base text-accent font-medium tracking-[0.15em] uppercase mb-12">
-                      — {slide.reference}
+                    <p className="text-sm md:text-base text-accent font-black tracking-[0.15em] uppercase mb-12 [text-shadow:0_2px_10px_rgba(0,0,0,0.9)]">
+                     — {slide.reference}
                     </p>
                     <Link
                       href={slide.href!}
