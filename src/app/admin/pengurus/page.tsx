@@ -41,7 +41,7 @@ import {
   type CardVariant,
 } from "@/lib/pengurus";
 
-// ─── Small shared UI bits ───────────────────────────────────────────────────
+// ─── UI bersama untuk modal dan input ───────────────────────────────────────
 
 function Modal({
   title,
@@ -105,7 +105,7 @@ const btnGhost =
 const btnDanger =
   "inline-flex items-center gap-1.5 text-xs font-bold text-red-400 hover:text-red-300 px-2.5 py-1.5 rounded-lg hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all cursor-pointer";
 
-// ─── Seksi form (create / edit) ─────────────────────────────────────────────
+// ─── Form seksi (buat / edit) ─────────────────────────────────────────────
 
 type SeksiFormState = {
   title: string;
@@ -164,7 +164,7 @@ function SeksiFormModal({
           },
           existing
         );
-        // single_group butuh tepat satu grup (tanpa nama) supaya anggota bisa ditempel
+        // single_group memerlukan satu grup tanpa nama agar anggota bisa ditempel
         if (form.layout_type === "single_group" && created) {
           await createGrup({ seksi_id: created.id, name: null }, []);
         }
@@ -263,7 +263,7 @@ function SeksiFormModal({
   );
 }
 
-// ─── Grup (komisi) form ──────────────────────────────────────────────────────
+// ─── Form grup / komisi ─────────────────────────────────────────────────────
 
 function GrupFormModal({
   seksiId,
@@ -332,7 +332,7 @@ function GrupFormModal({
   );
 }
 
-// ─── Anggota form ────────────────────────────────────────────────────────────
+// ─── Form anggota ───────────────────────────────────────────────────────────
 
 type AnggotaFormState = {
   name: string;
@@ -568,7 +568,7 @@ function AnggotaFormModal({
   );
 }
 
-// ─── Anggota row (dipakai di dalam grup maupun langsung di bawah seksi) ─────
+// ─── Baris anggota untuk grup atau seksi ───────────────────────────────────
 
 function AnggotaRow({
   anggota,
@@ -655,7 +655,7 @@ function AnggotaRow({
   );
 }
 
-// ─── Main Page ───────────────────────────────────────────────────────────────
+// ─── Halaman utama ───────────────────────────────────────────────────────────
 
 type AnggotaCtx = { seksiId: string; grupId: string | null; layoutType: LayoutType };
 

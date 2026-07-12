@@ -62,9 +62,8 @@ export default function PublikasiPage() {
   const [visibleCount, setVisibleCount] = useState(6);
   const [isCopied, setIsCopied] = useState(false);
 
-  // Ambil data publikasi dari Supabase saat halaman dibuka.
-  // Setiap kali admin menambah/mengubah data di panel admin, data ini
-  // akan otomatis terbaru pada kunjungan berikutnya.
+  // Ambil data publikasi saat halaman dimuat.
+  // Data diperbarui saat admin mengubah konten pada kunjungan berikutnya.
   useEffect(() => {
     let isMounted = true;
     getAllPublications().then((data) => {
@@ -78,7 +77,7 @@ export default function PublikasiPage() {
     };
   }, []);
 
-  // Filtered publications
+  // Daftar publikasi hasil filter
   const filteredPublications = publicationsData.filter((post) => {
     const matchesCategory =
       activeCategory === "Semua" || post.category === activeCategory;
@@ -89,13 +88,13 @@ export default function PublikasiPage() {
     return matchesCategory && matchesSearch;
   });
 
-  // Featured daily devotion post (first featured post in the selected category, or first post)
+  // Postingan renungan unggulan dari kategori aktif atau data pertama
   const featuredPost =
     activeCategory === "Semua" && searchQuery === "" && publicationsData.length > 0
       ? publicationsData.find((p) => p.is_featured) || publicationsData[0]
       : null;
 
-  // Grid posts (excluding the featured daily devotion post if it is shown)
+  // Grid postingan, tanpa item unggulan yang sudah tampil
   const gridPublications = featuredPost
     ? filteredPublications.filter((p) => p.id !== featuredPost.id)
     : filteredPublications;

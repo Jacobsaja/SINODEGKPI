@@ -33,7 +33,7 @@ export default function TokoPage() {
   const [visibleCount, setVisibleCount] = useState(6);
   const [isCopied, setIsCopied] = useState(false);
 
-  // Ambil data produk dari Supabase saat halaman dibuka.
+  // Ambil data produk saat halaman dimuat.
   useEffect(() => {
     getAllProducts()
       .then(setProducts)
@@ -52,7 +52,7 @@ export default function TokoPage() {
     return <Icon size={14} />;
   };
 
-  // Filtered products
+  // Daftar produk hasil filter
   const filteredProducts = products.filter((item) => {
     const matchesCategory =
       activeCategory === "Semua" || item.category === activeCategory;
@@ -63,7 +63,7 @@ export default function TokoPage() {
     return matchesCategory && matchesSearch;
   });
 
-  // Featured product (only shown when no filter/search active)
+  // Produk unggulan hanya tampil saat filter dan pencarian tidak aktif
   const featuredProduct =
     activeCategory === "Semua" && searchQuery === ""
       ? products.find((p) => p.is_featured) || products[0] || null
@@ -354,7 +354,7 @@ export default function TokoPage() {
 
           {/* Modal Box */}
           <div
-            className="relative flex h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-[2rem] border border-border/50 shadow-2xl animate-slide-up md:h-[80vh]"
+            className="relative flex h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-[2rem] border border-border/50 shadow-2xl animate-slide-up md:h-[80vh]"
             style={{
               background: "linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)",
               boxShadow: "0 28px 90px rgba(0,0,0,0.25)",
@@ -384,66 +384,75 @@ export default function TokoPage() {
               </div>
             </div>
 
-            {/* Scroll Content */}
-            <div className="no-scrollbar flex-1 space-y-6 overflow-y-auto p-6 md:p-8">
-              {/* Copy success alert */}
-              {isCopied && (
-                <div className="animate-fade-in rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3 text-center text-xs font-bold text-emerald-600">
-                  Tautan disalin ke papan klip!
-                </div>
-              )}
-
-              {/* Title */}
-              <h2
-                className="text-3xl font-bold leading-tight text-text-primary md:text-4xl tracking-tight"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                {selectedProduct.name}
-              </h2>
-
-              {/* Large Image */}
-              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border/40 shadow-lg">
+            {/* Split Content Body */}
+            <div className="flex-1 flex flex-col md:flex-row overflow-hidden bg-white">
+              {/* Left Panel: Image */}
+              <div className="w-full h-44 sm:h-52 md:h-full md:w-[45%] flex-shrink-0 relative overflow-hidden bg-slate-50 border-b md:border-b-0 md:border-r border-border/40">
                 <img
                   src={selectedProduct.image}
                   alt={selectedProduct.name}
-                  className="absolute inset-0 h-full w-full object-cover hover:scale-105 transition-transform duration-700"
+                  className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />
               </div>
 
-              {/* Price */}
-              <p className="text-4xl font-bold text-primary">
-                {formatRupiah(selectedProduct.price)}
-              </p>
+              {/* Right Panel: Details */}
+              <div className="flex-1 flex flex-col p-6 md:p-8 overflow-hidden justify-between">
+                {/* Scrollable text details */}
+                <div className="flex-1 overflow-y-auto no-scrollbar space-y-4 pr-1 md:pr-2 pb-4">
+                  {/* Copy success alert */}
+                  {isCopied && (
+                    <div className="animate-fade-in rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-3 text-center text-xs font-bold text-emerald-600">
+                      Tautan disalin ke papan klip!
+                    </div>
+                  )}
 
-              {/* Description */}
-              <div className="space-y-4 text-base leading-relaxed text-text-primary md:text-lg">
-                <p>{selectedProduct.description}</p>
-              </div>
+                  {/* Title */}
+                  <h2
+                    className="text-2xl font-bold leading-tight text-text-primary md:text-3xl tracking-tight"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
+                  >
+                    {selectedProduct.name}
+                  </h2>
 
-              {/* Buy Buttons */}
-              <div className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-2">
-                <Link
-                  href={selectedProduct.tokopedia_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-[#03AC0E] bg-[#03AC0E] px-5 py-4 text-sm font-bold text-white transition-all hover:bg-[#02A00D] hover:border-[#02A00D] hover:shadow-lg hover:shadow-green-500/25"
-                >
-                  Beli di Tokopedia
-                  <ExternalLink size={14} />
-                </Link>
-                <Link
-                  href={selectedProduct.shopee_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 rounded-2xl border-2 border-[#EE4D2D] bg-[#EE4D2D] px-5 py-4 text-sm font-bold text-white transition-all hover:bg-[#D64520] hover:border-[#D64520] hover:shadow-lg hover:shadow-orange-500/25"
-                >
-                  Beli di Shopee
-                  <ExternalLink size={14} />
-                </Link>
+                  {/* Price */}
+                  <p className="text-3xl font-bold text-primary">
+                    {formatRupiah(selectedProduct.price)}
+                  </p>
+
+                  {/* Description */}
+                  <div className="space-y-4 text-sm md:text-base leading-relaxed text-text-secondary">
+                    <p>{selectedProduct.description}</p>
+                  </div>
+                </div>
+
+                {/* Bottom Action Area */}
+                <div className="shrink-0 border-t border-border/40 pt-4 mt-auto space-y-4 bg-white/80">
+                  {/* Buy Buttons */}
+                  <div className="grid grid-cols-2 gap-3.5">
+                    <Link
+                      href={selectedProduct.tokopedia_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-1.5 rounded-2xl border-2 border-[#03AC0E] bg-[#03AC0E] px-4 py-3 text-xs md:text-sm font-bold text-white transition-all hover:bg-[#02A00D] hover:border-[#02A00D] hover:shadow-lg hover:shadow-green-500/25 text-center"
+                    >
+                      <span className="hidden sm:inline">Beli di </span>Tokopedia
+                      <ExternalLink size={14} />
+                    </Link>
+                    <Link
+                      href={selectedProduct.shopee_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-1.5 rounded-2xl border-2 border-[#EE4D2D] bg-[#EE4D2D] px-4 py-3 text-xs md:text-sm font-bold text-white transition-all hover:bg-[#D64520] hover:border-[#D64520] hover:shadow-lg hover:shadow-orange-500/25 text-center"
+                    >
+                      <span className="hidden sm:inline">Beli di </span>Shopee
+                      <ExternalLink size={14} />
+                    </Link>
+                  </div>
+                  <p className="text-center text-xs text-text-secondary/70">
+                    Pembelian diproses sepenuhnya di marketplace pilihan kamu.
+                  </p>
+                </div>
               </div>
-              <p className="text-center text-sm text-text-secondary/70">
-                Pembelian diproses sepenuhnya di marketplace pilihan kamu.
-              </p>
             </div>
           </div>
         </div>

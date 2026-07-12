@@ -57,7 +57,7 @@ function PublikasiAdminContent() {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
 
-  // Search and filter states
+  // State pencarian dan filter
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("Semua");
 
@@ -65,7 +65,7 @@ function PublikasiAdminContent() {
     loadItems();
   }, []);
 
-  // Listen to searchParams changes for deep links
+  // Pantau perubahan searchParams untuk deep link
   useEffect(() => {
     const tabParam = searchParams.get("tab");
     const editParam = searchParams.get("edit");
@@ -77,12 +77,12 @@ function PublikasiAdminContent() {
     } else if (editParam) {
       const id = parseInt(editParam);
       if (!isNaN(id)) {
-        // Find item to edit
+        // Cari item yang akan diedit
         const itemToEdit = items.find((i) => i.id === id);
         if (itemToEdit) {
           startEdit(itemToEdit);
         } else {
-          // If items aren't loaded yet, load specifically
+          // Load item secara spesifik jika data belum tersedia
           loadSingleItemAndEdit(id);
         }
       }
@@ -109,7 +109,7 @@ function PublikasiAdminContent() {
     }
   }
 
-  // Upload file gambar ke Supabase Storage
+  // Upload gambar ke storage Supabase
   async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -170,7 +170,7 @@ function PublikasiAdminContent() {
     resetForm();
     loadItems();
     
-    // Clear URL params and return to list
+    // Bersihkan query params dan kembali ke daftar
     router.replace("/admin/publikasi");
     setActiveTab("list");
   }
@@ -181,7 +181,7 @@ function PublikasiAdminContent() {
     loadItems();
   }
 
-  // Filtered publications
+  // Daftar publikasi hasil filter
   const filteredItems = items.filter((item) => {
     const matchesSearch = 
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

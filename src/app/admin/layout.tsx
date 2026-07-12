@@ -17,8 +17,7 @@ export default function AdminLayout({
   const [loggingIn, setLoggingIn] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Cek status login sekali saat admin dibuka, lalu dengarkan perubahannya
-  // (login/logout) supaya semua halaman /admin/* langsung ikut ter-update.
+  // Inisialisasi status auth saat mount dan ikuti perubahan auth.
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       setSession(!!data.session);
@@ -47,12 +46,12 @@ export default function AdminLayout({
     await supabase.auth.signOut();
   }
 
-  // Masih memeriksa status login: hindari kedipan form login/dashboard.
+  // Tunggu resolusi auth agar UI tidak berkedip.
   if (session === null) {
     return <main className="min-h-screen bg-background" />;
   }
 
-  // Belum login: tampilkan gerbang login tunggal untuk seluruh area admin.
+  // Render gate auth saat sesi tidak aktif.
   if (!session) {
     return (
       <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 text-text-primary">
@@ -145,7 +144,7 @@ export default function AdminLayout({
     );
   }
 
-  // Sudah login: tampilkan chrome admin (sidebar) + konten halaman.
+  // Render shell admin saat sesi aktif.
   return (
     <div className="flex min-h-screen bg-background text-text-primary overflow-hidden">
       {/* Backdrop for mobile */}

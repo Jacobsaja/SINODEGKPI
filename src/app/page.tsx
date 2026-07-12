@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import type { Metadata } from "next";
 import Hero from "@/components/Hero";
 import Section from "@/components/Section";
 import Card from "@/components/Card";
@@ -53,6 +54,10 @@ const partners = [
 ];
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
+export const metadata: Metadata = {
+  title: "Beranda",
+  description: "GKPI (Gereja Kristen Protestan Indonesia) — berdiri sejak 1964 di Pematangsiantar. Bertumbuh dalam iman, melayani dengan kasih.",
+};
 
 export default async function Home() {
   const latestPublications = await getLatestPublications(3);
@@ -198,33 +203,33 @@ export default async function Home() {
       <Section pattern>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {/* Visi */}
-          <div className="bg-surface/50 backdrop-blur-sm border border-border rounded-3xl p-10 space-y-6">
+          <div className="bg-surface border border-border/80 rounded-[2rem] p-8 md:p-10 space-y-6 shadow-[0_20px_50px_rgba(10,61,145,0.12)] hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(10,61,145,0.2)] transition-all duration-300">
             <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center">
               <ShieldCheck size={28} className="text-accent" />
             </div>
             <div className="space-y-4">
               <h3 className="text-2xl font-sans font-bold text-text-primary">Visi</h3>
-              <p className="text-text-secondary leading-relaxed italic text-2xl sm:text-3xl font-medium">
+              <p className="text-text-secondary leading-relaxed italic text-2xl sm:text-3xl font-serif font-semibold text-primary-dark">
                 &quot;Menjadi Persekutuan Penyembahan dan Persembahan Pada Tahun 2030&quot;
               </p>
             </div>
           </div>
 
           {/* Misi */}
-          <div className="bg-surface/50 backdrop-blur-sm border border-border rounded-3xl p-10 space-y-6">
+          <div className="bg-surface border border-border/80 rounded-[2rem] p-8 md:p-10 space-y-6 shadow-[0_20px_50px_rgba(10,61,145,0.12)] hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(10,61,145,0.2)] transition-all duration-300">
             <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center">
               <HeartHandshake size={28} className="text-accent" />
             </div>
             <div className="space-y-4">
               <h3 className="text-2xl font-sans font-bold text-text-primary">Misi</h3>
-              <p className="text-text-secondary text-lg sm:text-xl mb-6 font-medium">
+              <p className="text-text-secondary text-base md:text-lg mb-6 leading-relaxed font-medium">
                 Dalam rangka mendukung Visi GKPI maka Misi GKPI dijabarkan dalam Panca Pelayanan GKPI:
               </p>
-              <ul className="space-y-5">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {misiPoints.map((point) => (
-                  <li key={point} className="flex items-center gap-5">
-                    <CheckCircle2 size={24} className="text-accent shrink-0" />
-                    <span className="text-text-secondary text-xl sm:text-2xl font-medium leading-tight">{point}</span>
+                  <li key={point} className="flex items-center gap-3.5 p-3 rounded-xl bg-slate-50 border border-border/40 hover:bg-slate-100/80 transition-colors">
+                    <CheckCircle2 size={20} className="text-success shrink-0" />
+                    <span className="text-text-primary text-base font-bold tracking-wide leading-tight">{point}</span>
                   </li>
                 ))}
               </ul>

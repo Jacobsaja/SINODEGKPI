@@ -47,7 +47,7 @@ function TokoAdminContent() {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
 
-  // Search and filter states
+  // State pencarian dan filter
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("Semua");
 
@@ -55,7 +55,7 @@ function TokoAdminContent() {
     loadItems();
   }, []);
 
-  // Listen to searchParams changes for deep links
+  // Pantau perubahan searchParams untuk deep link
   useEffect(() => {
     const tabParam = searchParams.get("tab");
     const editParam = searchParams.get("edit");
@@ -97,13 +97,13 @@ function TokoAdminContent() {
     }
   }
 
-  // Kategori yang sudah pernah dipakai ditawarkan sebagai saran (datalist)
+  // Tampilkan kategori yang sudah ada sebagai saran
   const existingCategories = useMemo(
     () => Array.from(new Set(items.map((p) => p.category))).sort(),
     [items]
   );
 
-  // Upload file gambar produk ke Supabase Storage
+  // Upload gambar produk ke storage Supabase
   async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -172,7 +172,7 @@ function TokoAdminContent() {
     loadItems();
   }
 
-  // Filtered products
+  // Daftar produk hasil filter
   const filteredItems = items.filter((item) => {
     const matchesSearch = 
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
