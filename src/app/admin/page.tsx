@@ -102,12 +102,12 @@ export default async function AdminDashboardPage() {
                 <div className={`flex h-12 w-12 items-center justify-center rounded-2xl border ${stat.colorClass}`}>
                   <Icon size={22} />
                 </div>
-                <span className="text-[10px] font-bold text-text-secondary/70 uppercase tracking-widest bg-background/50 px-2.5 py-1 rounded-lg border border-border/40 transition-colors group-hover:border-accent/30 group-hover:text-white">
+                <span className="text-[10px] font-bold text-text-secondary/70 uppercase tracking-widest bg-background/50 px-2.5 py-1 rounded-lg border border-border/40 transition-colors group-hover:border-accent/30 group-hover:text-accent">
                   Kelola
                 </span>
               </div>
               <div className="mt-4">
-                <p className="text-3xl font-extrabold text-white tracking-tight">{stat.value}</p>
+                <p className="text-3xl font-bold text-accent tracking-tight">{stat.value}</p>
                 <p className="mt-1 text-sm font-semibold text-text-primary">{stat.label}</p>
                 <p className="mt-2.5 text-xs text-text-secondary/80 flex items-center gap-1 font-medium">
                   <TrendingUp size={12} className="text-accent" />
@@ -131,7 +131,7 @@ export default async function AdminDashboardPage() {
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
             </div>
             <div>
-              <p className="text-sm font-bold text-white">Tulis Publikasi</p>
+              <p className="text-sm font-bold text-accent">Tulis Publikasi</p>
               <p className="text-xs text-text-secondary mt-0.5">Tambah warta, berita & renungan</p>
             </div>
           </Link>
@@ -143,7 +143,7 @@ export default async function AdminDashboardPage() {
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
             </div>
             <div>
-              <p className="text-sm font-bold text-white">Tambah Produk</p>
+              <p className="text-sm font-bold text-accent">Tambah Produk</p>
               <p className="text-xs text-text-secondary mt-0.5">Tambah merchandise & buku baru</p>
             </div>
           </Link>
@@ -157,7 +157,7 @@ export default async function AdminDashboardPage() {
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="m21 3-9 9" /><path d="M15 3h6v6" /></svg>
             </div>
             <div>
-              <p className="text-sm font-bold text-white">Lihat Website</p>
+              <p className="text-sm font-bold text-accent">Lihat Website</p>
               <p className="text-xs text-text-secondary mt-0.5">Buka halaman publik utama</p>
             </div>
           </a>
@@ -172,10 +172,10 @@ export default async function AdminDashboardPage() {
         {/* Publikasi terbaru */}
         <div className="rounded-2xl border border-border bg-surface/30 p-6 flex flex-col h-full">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="font-bold text-white text-base">Publikasi Terkini</h2>
+            <h2 className="font-bold text-accent text-base">Publikasi Terkini</h2>
             <Link
               href="/admin/publikasi"
-              className="flex items-center gap-1.5 text-xs font-bold text-accent hover:text-accent-light transition-colors"
+              className="flex items-center gap-1.5 text-xs font-bold text-accent hover:text-red-700 transition-colors"
             >
               Lihat Semua <ArrowRight size={14} />
             </Link>
@@ -226,7 +226,7 @@ export default async function AdminDashboardPage() {
                   )}
                   <Link
                     href={`/admin/publikasi?edit=${item.id}`}
-                    className="text-xs font-bold text-accent hover:text-accent-light px-2.5 py-1 rounded-lg hover:bg-accent/10 border border-transparent hover:border-accent/20 transition-all"
+                    className="text-xs font-bold text-accent hover:text-red-700 px-2.5 py-1 rounded-lg hover:bg-accent/10 border border-transparent hover:border-accent/20 transition-all"
                   >
                     Edit
                   </Link>
@@ -239,10 +239,10 @@ export default async function AdminDashboardPage() {
         {/* Produk terbaru */}
         <div className="rounded-2xl border border-border bg-surface/30 p-6 flex flex-col h-full">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="font-bold text-white text-base">Produk Terkini</h2>
+            <h2 className="font-bold text-accent text-base">Produk Terkini</h2>
             <Link
               href="/admin/toko"
-              className="flex items-center gap-1.5 text-xs font-bold text-accent hover:text-accent-light transition-colors"
+              className="flex items-center gap-1.5 text-xs font-bold text-accent hover:text-red-700 transition-colors"
             >
               Lihat Semua <ArrowRight size={14} />
             </Link>
@@ -293,7 +293,7 @@ export default async function AdminDashboardPage() {
                   )}
                   <Link
                     href={`/admin/toko?edit=${item.id}`}
-                    className="text-xs font-bold text-accent hover:text-accent-light px-2.5 py-1 rounded-lg hover:bg-accent/10 border border-transparent hover:border-accent/20 transition-all"
+                    className="text-xs font-bold text-accent hover:text-red-700 px-2.5 py-1 rounded-lg hover:bg-accent/10 border border-transparent hover:border-accent/20 transition-all"
                   >
                     Edit
                   </Link>

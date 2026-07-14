@@ -100,10 +100,10 @@ const btnPrimary =
   "inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-white shadow-lg shadow-primary/20 transition-all hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer";
 
 const btnGhost =
-  "inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:text-accent-light px-2.5 py-1.5 rounded-lg hover:bg-accent/10 border border-transparent hover:border-accent/20 transition-all cursor-pointer";
+  "inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:text-red-700 px-2.5 py-1.5 rounded-lg hover:bg-accent/15 border border-transparent hover:border-accent/30 transition-all cursor-pointer";
 
 const btnDanger =
-  "inline-flex items-center gap-1.5 text-xs font-bold text-red-400 hover:text-red-300 px-2.5 py-1.5 rounded-lg hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all cursor-pointer";
+  "inline-flex items-center gap-1.5 text-xs font-bold text-red-500 hover:text-red-700 px-2.5 py-1.5 rounded-lg hover:bg-red-500/10 border border-transparent hover:border-red-500/30 transition-all cursor-pointer";
 
 // ─── Form seksi (buat / edit) ─────────────────────────────────────────────
 
@@ -464,7 +464,7 @@ function AnggotaFormModal({
               <User size={30} className="text-text-secondary/30" strokeWidth={1.5} />
             )}
           </div>
-          <label className="inline-flex items-center gap-2 text-xs font-bold text-accent hover:text-accent-light px-3.5 py-2.5 rounded-xl border border-border hover:border-accent/30 bg-background/30 cursor-pointer transition-all">
+          <label className="inline-flex items-center gap-2 text-xs font-bold text-accent hover:text-red-700 px-3.5 py-2.5 rounded-xl border border-border hover:border-accent/40 hover:bg-accent/5 bg-background/30 cursor-pointer transition-all">
             {uploading ? <Loader2 size={14} className="animate-spin" /> : <ImagePlus size={14} />}
             {uploading ? "Mengunggah..." : "Unggah Foto"}
             <input type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} disabled={uploading} />
@@ -630,7 +630,7 @@ function AnggotaRow({
           type="button"
           disabled={busy || idx <= 0}
           onClick={() => move(-1)}
-          className="h-7 w-7 flex items-center justify-center rounded-lg text-text-secondary hover:text-primary hover:bg-surface/60 disabled:opacity-25 transition-all cursor-pointer"
+          className="h-7 w-7 flex items-center justify-center rounded-lg text-text-secondary hover:text-primary hover:bg-primary/10 disabled:opacity-25 transition-all cursor-pointer"
           aria-label="Naikkan urutan"
         >
           <ChevronUp size={14} />
@@ -639,7 +639,7 @@ function AnggotaRow({
           type="button"
           disabled={busy || idx >= siblings.length - 1}
           onClick={() => move(1)}
-          className="h-7 w-7 flex items-center justify-center rounded-lg text-text-secondary hover:text-primary hover:bg-surface/60 disabled:opacity-25 transition-all cursor-pointer"
+          className="h-7 w-7 flex items-center justify-center rounded-lg text-text-secondary hover:text-primary hover:bg-primary/10 disabled:opacity-25 transition-all cursor-pointer"
           aria-label="Turunkan urutan"
         >
           <ChevronDown size={14} />
@@ -804,7 +804,7 @@ export default function AdminPengurusPage() {
                     type="button"
                     disabled={sIdx === 0}
                     onClick={() => moveSeksi(seksi, -1)}
-                    className="h-8 w-8 flex items-center justify-center rounded-lg text-text-secondary hover:text-primary hover:bg-background/50 disabled:opacity-25 transition-all cursor-pointer"
+                    className="h-8 w-8 flex items-center justify-center rounded-lg text-text-secondary hover:text-primary hover:bg-primary/10 disabled:opacity-25 transition-all cursor-pointer"
                     aria-label="Naikkan urutan seksi"
                   >
                     <ChevronUp size={15} />
@@ -905,7 +905,7 @@ export default function AdminPengurusPage() {
                                     type="button"
                                     disabled={gIdx === 0}
                                     onClick={() => moveGrup(seksi, grup, -1)}
-                                    className="h-7 w-7 flex items-center justify-center rounded-lg text-text-secondary hover:text-white hover:bg-background/50 disabled:opacity-25 transition-all cursor-pointer"
+                                    className="h-7 w-7 flex items-center justify-center rounded-lg text-text-secondary hover:text-primary hover:bg-primary/10 disabled:opacity-25 transition-all cursor-pointer"
                                     aria-label="Naikkan urutan komisi"
                                   >
                                     <ChevronUp size={13} />
@@ -914,7 +914,7 @@ export default function AdminPengurusPage() {
                                     type="button"
                                     disabled={gIdx === seksi.groups.length - 1}
                                     onClick={() => moveGrup(seksi, grup, 1)}
-                                    className="h-7 w-7 flex items-center justify-center rounded-lg text-text-secondary hover:text-white hover:bg-background/50 disabled:opacity-25 transition-all cursor-pointer"
+                                    className="h-7 w-7 flex items-center justify-center rounded-lg text-text-secondary hover:text-primary hover:bg-primary/10 disabled:opacity-25 transition-all cursor-pointer"
                                     aria-label="Turunkan urutan komisi"
                                   >
                                     <ChevronDown size={13} />

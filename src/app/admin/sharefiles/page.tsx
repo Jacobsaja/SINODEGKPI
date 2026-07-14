@@ -273,7 +273,7 @@ export default function ShareFilesListPage() {
               <button
                 type="button"
                 onClick={() => setShowCreate(false)}
-                className="rounded-xl border border-border px-5 py-2.5 text-xs font-bold text-text-secondary hover:text-white transition-all cursor-pointer"
+                className="rounded-xl border border-border px-5 py-2.5 text-xs font-bold text-text-secondary hover:text-primary hover:border-primary/30 transition-all cursor-pointer"
               >
                 Batal
               </button>
@@ -310,13 +310,13 @@ export default function ShareFilesListPage() {
           <thead>
             <tr className="border-b border-border bg-surface/40 text-left text-[11px] font-bold uppercase tracking-wider text-text-secondary">
               <th className="px-5 py-3.5">
-                <button onClick={() => toggleSort("title")} className="flex items-center gap-1.5 cursor-pointer hover:text-white">
+                <button onClick={() => toggleSort("title")} className="flex items-center gap-1.5 cursor-pointer hover:text-primary">
                   Judul <ArrowUpDown size={12} />
                 </button>
               </th>
               <th className="px-5 py-3.5">Deskripsi</th>
               <th className="px-5 py-3.5">
-                <button onClick={() => toggleSort("created_at")} className="flex items-center gap-1.5 cursor-pointer hover:text-white">
+                <button onClick={() => toggleSort("created_at")} className="flex items-center gap-1.5 cursor-pointer hover:text-primary">
                   Dibuat <ArrowUpDown size={12} />
                 </button>
               </th>

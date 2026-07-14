@@ -79,7 +79,7 @@ export default function AdminSidebar({ email, onLogout, isOpen, onClose }: Admin
         {/* Tombol Close Mobile */}
         <button
           onClick={onClose}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background/50 text-text-secondary hover:text-primary md:hidden cursor-pointer"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background/50 text-text-secondary hover:text-accent hover:border-accent/40 md:hidden cursor-pointer"
           aria-label="Tutup Menu"
         >
           <X size={18} />
@@ -135,7 +135,7 @@ export default function AdminSidebar({ email, onLogout, isOpen, onClose }: Admin
         </Link>
         <button
           onClick={onLogout}
-          className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold text-red-400/90 transition-colors hover:bg-red-500/10 hover:text-red-300"
+          className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-semibold text-red-500 transition-colors hover:bg-red-500/10 hover:text-red-700"
         >
           <LogOut size={18} />
           <span>Keluar</span>

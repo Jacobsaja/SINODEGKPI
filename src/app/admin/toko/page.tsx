@@ -410,7 +410,7 @@ function TokoAdminContent() {
                   setActiveTab("list");
                   router.replace("/admin/toko");
                 }}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface/50 text-text-secondary hover:text-accent transition-colors cursor-pointer"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface/50 text-text-secondary hover:text-accent hover:bg-accent/5 transition-colors cursor-pointer"
               >
                 <ArrowLeft size={16} />
               </button>

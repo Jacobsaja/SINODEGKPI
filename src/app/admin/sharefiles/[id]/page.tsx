@@ -291,7 +291,7 @@ export default function ShareFolderDetailPage() {
     <div className="space-y-6">
       {/* Back + link */}
       <div className="space-y-3">
-        <Link href="/admin/sharefiles" className="inline-flex items-center gap-1.5 text-xs font-bold text-text-secondary hover:text-white transition-colors">
+        <Link href="/admin/sharefiles" className="inline-flex items-center gap-1.5 text-xs font-bold text-text-secondary hover:text-primary transition-colors">
           <ArrowLeft size={14} /> Kembali ke Share Files
         </Link>
 
@@ -405,7 +405,7 @@ export default function ShareFolderDetailPage() {
                     </button>
                   </div>
 
-                  <label className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-border px-3 py-2 text-xs font-semibold text-text-secondary hover:border-accent/40 hover:text-white transition-all cursor-pointer">
+                  <label className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-border px-3 py-2 text-xs font-semibold text-text-secondary hover:border-accent/40 hover:text-accent transition-all cursor-pointer">
                     <input type="file" className="hidden" onChange={(e) => handleFileUpload(e, f)} disabled={uploadingFileId === f.id} />
                     <Upload size={12} />
                     {uploadingFileId === f.id ? "Mengunggah..." : f.storage_path ? "Ganti Berkas" : "Unggah Berkas"}
@@ -420,7 +420,7 @@ export default function ShareFolderDetailPage() {
 
             <button
               onClick={addFileSlot}
-              className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-dashed border-border py-3 text-xs font-bold text-text-secondary hover:border-accent/40 hover:text-white transition-all cursor-pointer"
+              className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-dashed border-border py-3 text-xs font-bold text-text-secondary hover:border-accent/40 hover:text-accent transition-all cursor-pointer"
             >
               <Plus size={14} /> Tambah Dokumen
             </button>
@@ -530,7 +530,7 @@ export default function ShareFolderDetailPage() {
               <button type="submit" disabled={savingAccess} className="rounded-xl bg-primary px-5 py-2 text-xs font-bold text-white hover:bg-primary-dark transition-all disabled:opacity-50 cursor-pointer">
                 {savingAccess ? "Menyimpan..." : "Simpan Akses"}
               </button>
-              <button type="button" onClick={() => setShowAddAccess(false)} className="rounded-xl border border-border px-5 py-2 text-xs font-bold text-text-secondary hover:text-white transition-all cursor-pointer">
+              <button type="button" onClick={() => setShowAddAccess(false)} className="rounded-xl border border-border px-5 py-2 text-xs font-bold text-text-secondary hover:text-primary hover:border-primary/30 transition-all cursor-pointer">
                 Batal
               </button>
             </div>
