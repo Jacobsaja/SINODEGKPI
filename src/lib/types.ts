@@ -41,3 +41,43 @@ export interface Product {
   created_at: string;
   updated_at: string;
 }
+
+export type FinancialEntryType = "income" | "expense";
+
+export interface FinancialReportEntry {
+  type: FinancialEntryType;
+  category: string;
+  label: string;
+  amount: number;
+}
+
+// Bentuk data persis seperti kolom di tabel `financial_reports` pada Supabase.
+export interface FinancialReport {
+  id: number;
+  month: number;
+  year: number;
+  title: string;
+  summary: string | null;
+  file_url: string | null;
+  entries: FinancialReportEntry[];
+  total_income: number;
+  total_expense: number;
+  ending_balance: number;
+  status: "draft" | "published";
+  created_by: string | null;
+  updated_by: string | null;
+  created_at: string;
+  updated_at: string;
+  last_edited_by_name?: string | null;
+}
+
+export interface FinancialReportHistoryLog {
+  id: number;
+  report_id: number;
+  action: "created" | "updated";
+  snapshot: FinancialReport;
+  changed_by: string | null;
+  changed_by_email: string | null;
+  changed_at: string;
+  changed_by_name?: string | null;
+}

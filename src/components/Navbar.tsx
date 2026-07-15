@@ -15,6 +15,7 @@ const navLinks = [
   { name: "Publikasi", href: "/publikasi" },
   { name: "Mitra", href: "/mitra" },
   { name: "Toko", href: "/toko" },
+  { name: "Laporan Keuangan", href: "/laporan-keuangan" },
   { name: "Kontak", href: "/kontak" },
 ];
 

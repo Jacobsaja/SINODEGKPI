@@ -12,6 +12,7 @@ import {
   Church,
   FolderLock,
   Mail,
+  Wallet,
   LogOut,
   ExternalLink,
   X,
@@ -24,6 +25,7 @@ const NAV_ITEMS = [
   { href: "/admin/pengurus", label: "Pengurus", icon: Users, exact: false },
   { href: "/admin/jemaat", label: "Jemaat & Resort", icon: Church, exact: false },
   { href: "/admin/kontak", label: "Pesan Masuk", icon: Mail, exact: false },
+  { href: "/admin/laporan-keuangan", label: "Laporan Keuangan", icon: Wallet, exact: false },
   { href: "/admin/sharefiles", label: "Share Files", icon: FolderLock, exact: false },
 ];
 

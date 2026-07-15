@@ -11,10 +11,11 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.110.0",
     "@types/leaflet": "^1.9.21",
+    "browser-image-compression": "^2.0.2",
     "framer-motion": "^12.38.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.460.0",
-    "next": "16.2.4",
+    "next": "^16.2.10",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-leaflet": "^5.0.0",
@@ -26,8 +27,11 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.4",
+    "eslint-config-next": "^16.2.10",
     "tailwindcss": "^4",
     "typescript": "^5"
+  },
+  "overrides": {
+    "postcss": "^8.5.10"
   }
 }

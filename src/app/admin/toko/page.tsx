@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, Suspense } from "react";
 import { supabase } from "@/lib/supabase";
+import { compressBeforeUpload } from "@/lib/image-compress";
 import type { Product } from "@/lib/types";
 import { formatRupiah } from "@/lib/products";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -104,19 +105,27 @@ function TokoAdminContent() {
   );
 
   // Upload gambar produk ke storage Supabase
+  // Upload gambar produk ke storage Supabase (dengan kompresi otomatis)
   async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (file.size > 10 * 1024 * 1024) {
+      setUploadError("File terlalu besar (maks 10MB sebelum kompresi).");
+      return;
+    }
+
     setUploadError("");
     setUploading(true);
 
-    const fileExt = file.name.split(".").pop();
-    const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`;
+    const compressed = await compressBeforeUpload(file, "toko");
+
+    // Selalu .webp karena compressBeforeUpload konversi ke image/webp
+    const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.webp`;
 
     const { error } = await supabase.storage
       .from("products")
-      .upload(fileName, file, { upsert: false });
+      .upload(fileName, compressed, { upsert: false });
 
     if (error) {
       setUploadError("Gagal upload gambar: " + error.message);
@@ -528,7 +537,7 @@ function TokoAdminContent() {
                     />
                     <Upload size={22} className="text-text-secondary group-hover:text-accent transition-colors" />
                     <span className="text-xs font-semibold text-text-primary mt-2">Pilih Foto Produk</span>
-                    <span className="text-[10px] text-text-secondary/70 mt-1">Format PNG, JPG maks. 2MB</span>
+                    <span className="text-[10px] text-text-secondary/70 mt-1">PNG/JPG, otomatis dikompres ke ~300KB</span>
                   </div>
                   
                   {uploading && (

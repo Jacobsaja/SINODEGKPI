@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/mitra",
     "/pengurus",
     "/wilayah-resort",
+    "/laporan-keuangan",
   ].map((route) => ({
     url: `${BASE_URL}${route}`,
     lastModified: new Date(),
