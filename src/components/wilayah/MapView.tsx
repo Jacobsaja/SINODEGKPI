@@ -241,7 +241,7 @@ function PopupCard({
             fontWeight: 700,
             letterSpacing: "0.1em",
             textTransform: "uppercase",
-            color: "#0E63E9",
+            color: "black",
           }}
         >
           {jemaat.kota} · {jemaat.provinsi}
