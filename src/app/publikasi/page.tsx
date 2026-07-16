@@ -25,6 +25,7 @@ import {
   Sparkles,
   Bookmark,
   CalendarDays,
+  Maximize2,
 } from "lucide-react";
 
 const categories: ("Semua" | "Berita" | "Pengumuman" | "Kegiatan" | "Dokumen" | "Renungan Harian")[] = [
@@ -61,6 +62,7 @@ export default function PublikasiPage() {
   const [selectedPost, setSelectedPost] = useState<Publication | null>(null);
   const [visibleCount, setVisibleCount] = useState(6);
   const [isCopied, setIsCopied] = useState(false);
+  const [isImageZoomed, setIsImageZoomed] = useState(false);
 
   // Ambil data publikasi saat halaman dimuat.
   // Data diperbarui saat admin mengubah konten pada kunjungan berikutnya.
@@ -228,7 +230,15 @@ export default function PublikasiPage() {
                 style={{ backdropFilter: "blur(12px)" }}
               >
                 {/* Image side */}
-                <div className="relative min-h-[300px] md:col-span-7 md:min-h-[420px] overflow-hidden">
+                {/* <div className="relative min-h-[300px] md:col-span-7 md:min-h-[420px] overflow-hidden bg-surface">
+                  <Image
+                    src={featuredPost.image}
+                    alt={featuredPost.title}
+                    fill
+                    sizes="(min-width: 768px) 60vw, 100vw"
+                    className="object-contain transition-transform duration-[6000ms] group-hover:scale-105"
+                  /> */}
+                  <div className="relative min-h-[300px] md:col-span-7 md:min-h-[420px] overflow-hidden">
                   <Image
                     src={featuredPost.image}
                     alt={featuredPost.title}
@@ -299,13 +309,13 @@ export default function PublikasiPage() {
                 style={{ backdropFilter: "blur(12px)" }}
               >
                 {/* Card Thumbnail */}
-                <div className="relative aspect-[16/10] w-full overflow-hidden">
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-surface">
                   <Image
                     src={post.image}
                     alt={post.title}
                     fill
                     sizes="(min-width: 1024px) 30vw, 50vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="object-contain transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
                   <span className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full border border-border bg-surface/80 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-text-primary backdrop-blur">
@@ -434,7 +444,9 @@ export default function PublikasiPage() {
                 </button>
               </div>
             </div>
+            
 
+            
             {/* Scroll Content */}
             <div className="flex-1 overflow-y-auto p-6 md:p-8 no-scrollbar space-y-6">
               {/* Copy success alert */}
@@ -473,14 +485,23 @@ export default function PublikasiPage() {
               </div>
 
               {/* Large Image */}
-              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border/40 shadow-2xl">
+              <div
+                onClick={() => setIsImageZoomed(true)}
+                className="group/image relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border/40 shadow-2xl bg-surface cursor-zoom-in"
+              >
                 <Image
                   src={selectedPost.image}
                   alt={selectedPost.title}
                   fill
                   sizes="600px"
-                  className="object-cover hover:scale-105 transition-transform duration-700"
+                  className="object-contain transition-transform duration-700 group-hover/image:scale-105"
                 />
+                {/* Ikon zoom saat hover */}
+                <div className="absolute inset-0 flex items-center justify-center bg-background/0 opacity-0 transition-opacity duration-300 group-hover/image:opacity-100 group-hover/image:bg-background/10">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface/90 text-text-primary shadow-lg backdrop-blur">
+                    <Maximize2 size={18} />
+                  </div>
+                </div>
               </div>
 
               {/* Content Body */}
@@ -519,6 +540,36 @@ export default function PublikasiPage() {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+      )}
+      {/* ── Image Lightbox (Zoom Gambar Penuh) ─────────────────────────────── */}
+      {selectedPost && isImageZoomed && (
+        <div
+          className="fixed inset-0 z-[1400] flex items-center justify-center p-4 md:p-8 animate-fade-in"
+          onClick={() => setIsImageZoomed(false)}
+        >
+          <div className="absolute inset-0 bg-background/95 backdrop-blur-lg" />
+
+          <button
+            onClick={() => setIsImageZoomed(false)}
+            className="absolute right-5 top-5 z-10 flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-surface/80 text-text-primary hover:text-red-500 hover:border-red-500/40 transition-all duration-300 cursor-pointer"
+            aria-label="Tutup"
+          >
+            <X size={20} />
+          </button>
+
+          <div
+            className="relative h-full w-full max-w-5xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={selectedPost.image}
+              alt={selectedPost.title}
+              fill
+              sizes="90vw"
+              className="object-contain"
+            />
           </div>
         </div>
       )}
