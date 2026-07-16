@@ -103,13 +103,14 @@ export default function Hero() {
               {/* Background Image with slight scale animation when active */}
               <div className="absolute inset-0 w-full h-full">
                 <div
-                  className={`w-full h-full transition-transform duration-[12000ms] ease-out ${isActive ? "scale-105" : "scale-100"
+                  className={`relative w-full h-full transition-transform duration-[12000ms] ease-out ${isActive ? "scale-105" : "scale-100"
                     }`}
                 >
                   <Image
                     src={slide.image || assets.heroBg}
                     alt="GKPI Background"
                     fill
+                    sizes="100vw"
                     className="object-cover opacity-80"
                     priority={index === 0}
                     onError={(e) => {
@@ -134,6 +135,7 @@ export default function Hero() {
                         src={assets.logo}
                         alt="Logo GKPI"
                         fill
+                        sizes="(max-width: 768px) 96px, 128px"
                         className="object-contain drop-shadow-2xl"
                         priority
                       />

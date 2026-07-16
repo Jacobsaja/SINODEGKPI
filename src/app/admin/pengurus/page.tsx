@@ -16,6 +16,7 @@ import {
   User,
   Layers,
 } from "lucide-react";
+import { compressBeforeUpload } from "@/lib/image-compress";
 import {
   getAllSeksi,
   createSeksi,
@@ -403,11 +404,18 @@ function AnggotaFormModal({
   async function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+
+    if (file.size > 10 * 1024 * 1024) {
+      setError("File terlalu besar (maks 10MB sebelum kompresi).");
+      return;
+    }
+
     setUploading(true);
     setError("");
     try {
       const oldUrl = form.photo_url;
-      const url = await uploadPengurusPhoto(file);
+      const compressed = await compressBeforeUpload(file, "pengurus");
+      const url = await uploadPengurusPhoto(compressed);
       setForm((f) => ({ ...f, photo_url: url }));
       if (oldUrl) await deletePengurusPhoto(oldUrl).catch(() => {});
     } catch (err) {

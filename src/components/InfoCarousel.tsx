@@ -16,7 +16,7 @@ const slides = [
     title: "Pelatihan Kepemimpinan Pemuda GKPI",
     excerpt:
       "Pendaftaran pelatihan wilayah untuk pemuda GKPI kini dibuka secara daring.",
-    image: "/hero_slide_2.g",
+    image: "/hero_slide_2.png",
   },
   {
     title: "Update Renovasi Kantor Sinode",
