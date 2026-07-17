@@ -103,21 +103,21 @@ export default function Hero() {
               {/* Background Image with slight scale animation when active */}
               <div className="absolute inset-0 w-full h-full">
                 <div
-                  className={`relative w-full h-full transition-transform duration-[12000ms] ease-out ${isActive ? "scale-105" : "scale-100"
-                    }`}
-                >
-                  <Image
-                    src={slide.image || assets.heroBg}
-                    alt="GKPI Background"
-                    fill
-                    sizes="100vw"
-                    className="object-cover opacity-80"
-                    priority={index === 0}
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).srcset = assets.heroBg;
-                    }}
-                  />
-                </div>
+                    className={`relative w-full h-full transition-transform duration-[12000ms] ease-out ${isActive ? "scale-105" : "scale-100"
+                      }`}
+                  >
+                    <Image
+                      src={slide.image || assets.heroBg}
+                      alt="GKPI Background"
+                      fill
+                      sizes="100vw"
+                      className="object-cover opacity-80"
+                      priority={index === 0}
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).srcset = assets.heroBg;
+                      }}
+                    />
+                  </div>
 
                 {/* Soft dark blue overlay for contrast and spiritual calmness */}
                 <div className="absolute inset-0 bg-primary-dark/60 mix-blend-multiply" />

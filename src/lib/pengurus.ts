@@ -254,13 +254,7 @@ export async function deleteAnggota(id: string) {
 
 const PHOTO_BUCKET = "pengurus";
 
-/**
- * Tentukan ekstensi file dari MIME type, bukan dari nama file asli.
- * Penting karena file yang sudah dikompres (compressBeforeUpload) selalu
- * berisi konten webp meskipun nama file aslinya masih .jpg/.png — kalau
- * ekstensi diambil dari nama file, hasilnya file isi webp tapi ekstensi
- * salah (mis. foto.jpg padahal isinya webp).
- */
+
 function extFromMimeType(mimeType: string): string {
   const map: Record<string, string> = {
     "image/webp": "webp",
