@@ -3,7 +3,13 @@
 import { useEffect, useState, Suspense } from "react";
 import { supabase } from "@/lib/supabase";
 import { compressBeforeUpload } from "@/lib/image-compress";
-import type { Publication, PublicationCategory } from "@/lib/types";
+import {
+  uploadPublikasiImages,
+  uploadPublikasiDocuments,
+  PUBLIKASI_IMAGE_ACCEPT,
+  PUBLIKASI_DOCUMENT_ACCEPT,
+} from "@/lib/publikasi-upload";
+import type { Publication, PublicationCategory, PublicationDocument } from "@/lib/types";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -41,6 +47,8 @@ const emptyForm = {
   date: new Date().toISOString().slice(0, 10),
   author: "",
   image: "",
+  images: [] as string[],
+  documents: [] as PublicationDocument[],
   read_time: "3 menit",
   views: 0,
   is_featured: false,
@@ -57,6 +65,10 @@ function PublikasiAdminContent() {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
+  const [uploadingGallery, setUploadingGallery] = useState(false);
+  const [galleryError, setGalleryError] = useState("");
+  const [uploadingDocs, setUploadingDocs] = useState(false);
+  const [docError, setDocError] = useState("");
 
   // State pencarian dan filter
   const [searchQuery, setSearchQuery] = useState("");
@@ -143,6 +155,68 @@ function PublikasiAdminContent() {
     setUploading(false);
   }
 
+  // Upload galeri gambar tambahan (bisa pilih beberapa sekaligus, otomatis dikompres)
+  async function handleGalleryUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? []);
+    if (files.length === 0) return;
+
+    const oversized = files.find((f) => f.size > 10 * 1024 * 1024);
+    if (oversized) {
+      setGalleryError("Ada file lebih dari 10MB (sebelum kompresi).");
+      return;
+    }
+
+    setGalleryError("");
+    setUploadingGallery(true);
+    try {
+      const urls = await uploadPublikasiImages(files);
+      setForm((prev) => ({ ...prev, images: [...prev.images, ...urls] }));
+    } catch (err) {
+      setGalleryError(err instanceof Error ? err.message : "Gagal upload galeri.");
+    } finally {
+      setUploadingGallery(false);
+      e.target.value = "";
+    }
+  }
+
+  function removeGalleryImage(index: number) {
+    setForm((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
+    }));
+  }
+
+  // Upload lampiran dokumen (PDF/DOC/XLS, video sengaja tidak diizinkan)
+  async function handleDocumentUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? []);
+    if (files.length === 0) return;
+
+    const oversized = files.find((f) => f.size > 20 * 1024 * 1024);
+    if (oversized) {
+      setDocError("Ada file lebih dari 20MB.");
+      return;
+    }
+
+    setDocError("");
+    setUploadingDocs(true);
+    try {
+      const docs = await uploadPublikasiDocuments(files);
+      setForm((prev) => ({ ...prev, documents: [...prev.documents, ...docs] }));
+    } catch (err) {
+      setDocError(err instanceof Error ? err.message : "Gagal upload dokumen.");
+    } finally {
+      setUploadingDocs(false);
+      e.target.value = "";
+    }
+  }
+
+  function removeDocument(index: number) {
+    setForm((prev) => ({
+      ...prev,
+      documents: prev.documents.filter((_, i) => i !== index),
+    }));
+  }
+
   function startEdit(item: Publication) {
     setEditingId(item.id);
     setForm({
@@ -153,6 +227,8 @@ function PublikasiAdminContent() {
       date: item.date,
       author: item.author,
       image: item.image,
+      images: item.images ?? [],
+      documents: item.documents ?? [],
       read_time: item.read_time,
       views: item.views,
       is_featured: item.is_featured,
@@ -164,6 +240,8 @@ function PublikasiAdminContent() {
     setEditingId(null);
     setForm(emptyForm);
     setUploadError("");
+    setGalleryError("");
+    setDocError("");
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -591,6 +669,99 @@ function PublikasiAdminContent() {
                   )}
                 </div>
 
+                {/* Galeri Gambar Tambahan (banyak gambar, tampil di halaman detail) */}
+                <div className="space-y-2">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Galeri Gambar Tambahan</label>
+                  <div className="relative flex flex-col items-center justify-center rounded-xl border border-dashed border-border hover:border-accent/40 bg-background/20 p-4 transition-all group">
+                    <input
+                      type="file"
+                      accept={PUBLIKASI_IMAGE_ACCEPT}
+                      multiple
+                      onChange={handleGalleryUpload}
+                      disabled={uploadingGallery}
+                      className="absolute inset-0 z-10 w-full h-full opacity-0 cursor-pointer"
+                    />
+                    <Upload size={22} className="text-text-secondary group-hover:text-accent transition-colors" />
+                    <span className="text-xs font-semibold text-text-primary mt-2">Tambah Gambar Galeri</span>
+                    <span className="text-[10px] text-text-secondary/70 mt-1">Bisa pilih beberapa sekaligus, otomatis dikompres</span>
+                  </div>
+
+                  {uploadingGallery && (
+                    <div className="flex items-center gap-2 justify-center py-2 text-xs text-accent">
+                      <svg className="animate-spin h-3.5 w-3.5" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                      Mengunggah gambar galeri...
+                    </div>
+                  )}
+                  {galleryError && <p className="text-[10px] text-red-400 mt-1 text-center">{galleryError}</p>}
+
+                  {form.images.length > 0 && (
+                    <div className="grid grid-cols-3 gap-2 mt-3">
+                      {form.images.map((url, i) => (
+                        <div key={i} className="relative group aspect-square overflow-hidden rounded-lg border border-border bg-background/40">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={url} alt={`Galeri ${i + 1}`} className="h-full w-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => removeGalleryImage(i)}
+                            className="absolute right-1 top-1 inline-flex h-6 w-6 items-center justify-center rounded-md bg-red-500/80 hover:bg-red-600 text-white shadow-md transition-all opacity-0 group-hover:opacity-100 cursor-pointer"
+                            title="Hapus"
+                          >
+                            <X size={12} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Lampiran Dokumen (PDF/DOC/XLS, banyak file, video tidak diizinkan) */}
+                <div className="space-y-2">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Lampiran Dokumen</label>
+                  <div className="relative flex flex-col items-center justify-center rounded-xl border border-dashed border-border hover:border-accent/40 bg-background/20 p-4 transition-all group">
+                    <input
+                      type="file"
+                      accept={PUBLIKASI_DOCUMENT_ACCEPT}
+                      multiple
+                      onChange={handleDocumentUpload}
+                      disabled={uploadingDocs}
+                      className="absolute inset-0 z-10 w-full h-full opacity-0 cursor-pointer"
+                    />
+                    <FileText size={22} className="text-text-secondary group-hover:text-accent transition-colors" />
+                    <span className="text-xs font-semibold text-text-primary mt-2">Unggah Dokumen</span>
+                    <span className="text-[10px] text-text-secondary/70 mt-1">PDF / DOC / XLS, maks 20MB per file</span>
+                  </div>
+
+                  {uploadingDocs && (
+                    <div className="flex items-center gap-2 justify-center py-2 text-xs text-accent">
+                      <svg className="animate-spin h-3.5 w-3.5" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                      Mengunggah dokumen...
+                    </div>
+                  )}
+                  {docError && <p className="text-[10px] text-red-400 mt-1 text-center">{docError}</p>}
+
+                  {form.documents.length > 0 && (
+                    <div className="space-y-2 mt-3">
+                      {form.documents.map((doc, i) => (
+                        <div key={i} className="flex items-center justify-between gap-2 rounded-lg border border-border bg-background/40 px-3 py-2">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <FileText size={14} className="text-accent shrink-0" />
+                            <span className="text-xs font-medium text-text-primary truncate">{doc.name}</span>
+                            <span className="text-[10px] text-text-secondary shrink-0">{doc.size}</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => removeDocument(i)}
+                            className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-red-400 hover:bg-red-500/10 transition-all cursor-pointer"
+                            title="Hapus"
+                          >
+                            <X size={14} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
                 {/* Featured checkbox styled as switch container */}
                 <div className="flex items-center justify-between rounded-xl border border-border/80 bg-background/35 p-3.5">
                   <div className="flex items-center gap-2">
@@ -612,7 +783,7 @@ function PublikasiAdminContent() {
                 <div className="pt-2 flex flex-col gap-2.5">
                   <button
                     type="submit"
-                    disabled={saving || uploading}
+                    disabled={saving || uploading || uploadingGallery || uploadingDocs}
                     className="w-full py-3 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary-dark transition-all shadow-md shadow-primary/10 disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5"
                   >
                     {saving ? (

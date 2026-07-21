@@ -5,6 +5,13 @@ export type PublicationCategory =
   | "Dokumen"
   | "Renungan Harian";
 
+// Satu lampiran dokumen di dalam kolom `documents` (jsonb array).
+export interface PublicationDocument {
+  name: string;
+  url: string;
+  size?: string; // contoh: "2.4 MB"
+}
+
 // Bentuk data persis seperti kolom di tabel `publications` pada Supabase.
 export interface Publication {
   id: number;
@@ -15,6 +22,8 @@ export interface Publication {
   date: string; // format ISO, mis. "2026-07-03"
   author: string;
   image: string;
+  images: string[]; // galeri gambar tambahan, kolom `images` (text[])
+  documents: PublicationDocument[]; // lampiran dokumen, kolom `documents` (jsonb)
   read_time: string;
   views: number;
   is_featured: boolean;

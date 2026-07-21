@@ -6,7 +6,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
-import { getAllPublications, formatDateID, formatViewsID } from "@/lib/publications";
+import { getAllPublications, formatDateID } from "@/lib/publications";
 import type { Publication } from "@/lib/types";
 import {
   Search,
@@ -15,17 +15,12 @@ import {
   Clock,
   ArrowRight,
   ChevronRight,
-  X,
-  Download,
-  Share2,
   FileText,
   Megaphone,
-  Eye,
   BookOpen,
   Sparkles,
   Bookmark,
   CalendarDays,
-  Maximize2,
 } from "lucide-react";
 
 const categories: ("Semua" | "Berita" | "Pengumuman" | "Kegiatan" | "Dokumen" | "Renungan Harian")[] = [
@@ -59,10 +54,7 @@ export default function PublikasiPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("Semua");
-  const [selectedPost, setSelectedPost] = useState<Publication | null>(null);
   const [visibleCount, setVisibleCount] = useState(6);
-  const [isCopied, setIsCopied] = useState(false);
-  const [isImageZoomed, setIsImageZoomed] = useState(false);
 
   // Ambil data publikasi saat halaman dimuat.
   // Data diperbarui saat admin mengubah konten pada kunjungan berikutnya.
@@ -103,12 +95,6 @@ export default function PublikasiPage() {
 
   const handleLoadMore = () => {
     setVisibleCount((prev) => prev + 3);
-  };
-
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.href);
-    setIsCopied(true);
-    setTimeout(() => setIsCopied(false), 2000);
   };
 
   return (
@@ -185,7 +171,7 @@ export default function PublikasiPage() {
                   onClick={() => setSearchQuery("")}
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary hover:text-white"
                 >
-                  <X size={16} />
+                  ×
                 </button>
               )}
             </div>
@@ -224,21 +210,13 @@ export default function PublikasiPage() {
               <p className="mb-4 text-xs font-bold uppercase tracking-widest text-accent flex items-center gap-2">
                 <Bookmark size={14} className="animate-pulse" /> Renungan Harian
               </p>
-              <div
-                onClick={() => setSelectedPost(featuredPost)}
+              <Link
+                href={`/publikasi/${featuredPost.id}`}
                 className="group relative grid grid-cols-1 overflow-hidden rounded-[2rem] border border-border bg-surface/30 transition-all duration-500 hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/5 md:grid-cols-12 cursor-pointer"
                 style={{ backdropFilter: "blur(12px)" }}
               >
                 {/* Image side */}
-                {/* <div className="relative min-h-[300px] md:col-span-7 md:min-h-[420px] overflow-hidden bg-surface">
-                  <Image
-                    src={featuredPost.image}
-                    alt={featuredPost.title}
-                    fill
-                    sizes="(min-width: 768px) 60vw, 100vw"
-                    className="object-contain transition-transform duration-[6000ms] group-hover:scale-105"
-                  /> */}
-                  <div className="relative min-h-[300px] md:col-span-7 md:min-h-[420px] overflow-hidden">
+                <div className="relative min-h-[300px] md:col-span-7 md:min-h-[420px] overflow-hidden">
                   <Image
                     src={featuredPost.image}
                     alt={featuredPost.title}
@@ -294,7 +272,7 @@ export default function PublikasiPage() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
           </ScrollReveal>
         )}
@@ -303,8 +281,8 @@ export default function PublikasiPage() {
         <div className={`grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 ${isLoading ? "hidden" : ""}`}>
           {gridPublications.slice(0, visibleCount).map((post) => (
             <ScrollReveal key={post.id}>
-              <article
-                onClick={() => setSelectedPost(post)}
+              <Link
+                href={`/publikasi/${post.id}`}
                 className="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-surface/40 shadow-lg shadow-black/5 hover:-translate-y-1.5 hover:border-accent/30 hover:bg-surface/60 hover:shadow-2xl hover:shadow-accent/5 transition-all duration-300 cursor-pointer"
                 style={{ backdropFilter: "blur(12px)" }}
               >
@@ -365,7 +343,7 @@ export default function PublikasiPage() {
                     </span>
                   </div>
                 </div>
-              </article>
+              </Link>
             </ScrollReveal>
           ))}
         </div>
@@ -403,176 +381,6 @@ export default function PublikasiPage() {
           </ScrollReveal>
         )}
       </section>
-
-      {/* ── Detail Modal ─────────────────────────────────────────────────── */}
-      {selectedPost && (
-        <div className="fixed inset-0 z-[1200] flex items-center justify-center p-4 md:p-6 animate-fade-in">
-          {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-background/85 backdrop-blur-lg cursor-pointer"
-            onClick={() => setSelectedPost(null)}
-          />
-
-          {/* Modal Box */}
-          <div
-            className="relative flex h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-[2rem] border border-border/50 shadow-2xl animate-slide-up md:h-[80vh]"
-            style={{
-              background: "linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)",
-              boxShadow: "0 28px 90px rgba(0,0,0,0.25)",
-            }}
-          >
-            {/* Header / Top controls */}
-            <div className="flex items-center justify-between p-6 border-b border-border/40 shrink-0 bg-white">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-4 py-1.5 text-xs font-bold text-primary border border-primary/20">
-                {getCategoryIcon(selectedPost.category)}
-                {selectedPost.category}
-              </span>
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={handleCopyLink}
-                  className="flex h-11 w-11 items-center justify-center rounded-xl border border-border text-text-secondary hover:text-primary hover:border-primary/40 hover:bg-primary/5 transition-all duration-300 bg-surface cursor-pointer"
-                  title="Salin Tautan"
-                >
-                  <Share2 size={16} />
-                </button>
-                <button
-                  onClick={() => setSelectedPost(null)}
-                  className="flex h-11 w-11 items-center justify-center rounded-xl border border-border text-text-secondary hover:text-red-500 hover:border-red-500/40 hover:bg-red-500/5 transition-all duration-300 bg-surface cursor-pointer"
-                  aria-label="Tutup"
-                >
-                  <X size={18} />
-                </button>
-              </div>
-            </div>
-            
-
-            
-            {/* Scroll Content */}
-            <div className="flex-1 overflow-y-auto p-6 md:p-8 no-scrollbar space-y-6">
-              {/* Copy success alert */}
-              {isCopied && (
-                <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-400 text-xs font-bold text-center animate-fade-in">
-                  Tautan disalin ke papan klip!
-                </div>
-              )}
-
-              {/* Title & Meta */}
-              <div className="space-y-5">
-                <h2
-                  className="text-3xl md:text-4xl font-bold text-text-primary leading-tight tracking-tight"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
-                >
-                  {selectedPost.title}
-                </h2>
-                <div className="flex flex-wrap gap-4 text-xs text-text-secondary border-b border-border/30 pb-5">
-                  <span className="flex items-center gap-2">
-                    <Calendar size={14} className="text-primary" />
-                    {formatDateID(selectedPost.date)}
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <User size={14} className="text-primary" />
-                    {selectedPost.author}
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <Clock size={14} className="text-primary" />
-                    {selectedPost.read_time}
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <Eye size={14} className="text-primary" />
-                    {formatViewsID(selectedPost.views)}
-                  </span>
-                </div>
-              </div>
-
-              {/* Large Image */}
-              <div
-                onClick={() => setIsImageZoomed(true)}
-                className="group/image relative aspect-[16/9] w-full overflow-hidden rounded-2xl border border-border/40 shadow-2xl bg-surface cursor-zoom-in"
-              >
-                <Image
-                  src={selectedPost.image}
-                  alt={selectedPost.title}
-                  fill
-                  sizes="600px"
-                  className="object-contain transition-transform duration-700 group-hover/image:scale-105"
-                />
-                {/* Ikon zoom saat hover */}
-                <div className="absolute inset-0 flex items-center justify-center bg-background/0 opacity-0 transition-opacity duration-300 group-hover/image:opacity-100 group-hover/image:bg-background/10">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface/90 text-text-primary shadow-lg backdrop-blur">
-                    <Maximize2 size={18} />
-                  </div>
-                </div>
-              </div>
-
-              {/* Content Body */}
-              <div className="text-text-primary leading-relaxed space-y-5 text-base md:text-lg">
-                <p className="first-letter:text-5xl first-letter:font-bold first-letter:text-primary first-letter:float-left first-letter:mr-3 first-letter:mt-1">{selectedPost.content}</p>
-                <p className="text-sm text-text-secondary italic border-l-2 border-primary/20 pl-4 py-2 bg-surface/50 rounded-r-lg">
-                  Informasi ini akan diperbarui mengikuti materi resmi dari
-                  pengurus dan bidang pelayanan terkait.
-                </p>
-              </div>
-
-              {/* Document Download Link */}
-              {selectedPost.category === "Dokumen" && (
-                <div className="pt-4">
-                  <div
-                    className="p-5 rounded-2xl border border-accent/20 flex flex-col sm:flex-row items-center justify-between gap-4"
-                    style={{ background: "linear-gradient(135deg, rgba(111,168,220,0.08) 0%, rgba(22,42,64,0.4) 100%)" }}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 bg-accent/15 rounded-xl flex items-center justify-center text-accent">
-                        <FileText size={20} />
-                      </div>
-                      <div className="text-left">
-                        <p className="text-sm font-semibold text-white">Unduh Lampiran Dokumen</p>
-                        <p className="text-xs text-text-secondary">Format: PDF</p>
-                      </div>
-                    </div>
-                    <Link
-                      href="#"
-                      className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-accent text-background text-xs font-bold rounded-xl hover:bg-accent/90 shadow transition-all cursor-pointer"
-                    >
-                      <Download size={14} />
-                      Unduh PDF
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-      {/* ── Image Lightbox (Zoom Gambar Penuh) ─────────────────────────────── */}
-      {selectedPost && isImageZoomed && (
-        <div
-          className="fixed inset-0 z-[1400] flex items-center justify-center p-4 md:p-8 animate-fade-in"
-          onClick={() => setIsImageZoomed(false)}
-        >
-          <div className="absolute inset-0 bg-background/95 backdrop-blur-lg" />
-
-          <button
-            onClick={() => setIsImageZoomed(false)}
-            className="absolute right-5 top-5 z-10 flex h-11 w-11 items-center justify-center rounded-xl border border-border bg-surface/80 text-text-primary hover:text-red-500 hover:border-red-500/40 transition-all duration-300 cursor-pointer"
-            aria-label="Tutup"
-          >
-            <X size={20} />
-          </button>
-
-          <div
-            className="relative h-full w-full max-w-5xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Image
-              src={selectedPost.image}
-              alt={selectedPost.title}
-              fill
-              sizes="90vw"
-              className="object-contain"
-            />
-          </div>
-        </div>
-      )}
 
       <Footer />
     </main>
