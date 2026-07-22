@@ -65,19 +65,16 @@ export interface FinancialReport {
   id: number;
   month: number;
   year: number;
-  title: string;
-  summary: string | null;
-  file_url: string | null;
-  entries: FinancialReportEntry[];
-  total_income: number;
-  total_expense: number;
-  ending_balance: number;
+  name: string;
+  description: string | null;
+  file_url: string;
+  file_path: string;
+  file_name: string;
+  file_size: number;
   status: "draft" | "published";
-  created_by: string | null;
-  updated_by: string | null;
   created_at: string;
   updated_at: string;
-  last_edited_by_name?: string | null;
+  published_at: string | null;
 }
 
 export interface FinancialReportHistoryLog {

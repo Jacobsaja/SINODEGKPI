@@ -1,25 +1,23 @@
 "use client";
 
-import { useEffect, useMemo, useState, Suspense, Fragment } from "react";
+import { useEffect, useMemo, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { supabase } from "@/lib/supabase";
-import type { FinancialReport, FinancialReportEntry } from "@/lib/types";
+import type { FinancialReport } from "@/lib/types";
 import {
   getAllFinancialReportsAdmin,
   getFinancialReportById,
-  getFinancialReportHistoryWithChanges,
   createFinancialReport,
   updateFinancialReport,
   deleteFinancialReport,
   uploadFinancialReportFile,
-  formatRupiah,
   getMonthNameID,
-  type FinancialReportHistoryLogWithChanges,
+  getAvailableYears,
+  filterFinancialReports,
+  formatFileSize,
 } from "@/lib/laporan-keuangan";
 import {
   Search,
-  Filter,
   Plus,
   Edit3,
   Trash2,
@@ -27,25 +25,32 @@ import {
   FileText,
   X,
   ArrowLeft,
-  ChevronRight,
   Wallet,
-  History,
-  TrendingUp,
-  TrendingDown,
+  Calendar,
+  ExternalLink,
 } from "lucide-react";
 
-const MONTHS = Array.from({ length: 12 }, (_, i) => ({ value: i + 1, label: getMonthNameID(i + 1) }));
+const MONTHS = Array.from({ length: 12 }, (_, i) => ({
+  value: i + 1,
+  label: getMonthNameID(i + 1),
+}));
 
 const emptyForm = {
   month: new Date().getMonth() + 1,
   year: new Date().getFullYear(),
-  title: "",
-  summary: "",
+  name: "",
+  description: "",
   file_url: "",
-  entries: [] as FinancialReportEntry[],
-  status: "published" as "draft" | "published",
-  editor_name: "",
+  file_path: "",
+  file_name: "",
+  file_size: 0,
+  status: "draft" as "draft" | "published",
 };
+
+function formatDateTime(iso?: string | null): string {
+  if (!iso) return "-";
+  return new Date(iso).toLocaleString("id-ID", { dateStyle: "medium", timeStyle: "short" });
+}
 
 function LaporanKeuanganAdminContent() {
   const searchParams = useSearchParams();
@@ -58,29 +63,15 @@ function LaporanKeuanganAdminContent() {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
-const [formError, setFormError] = useState("");
-  const [editorEmail, setEditorEmail] = useState("");
+  const [formError, setFormError] = useState("");
 
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      setEditorEmail(data.user?.email ?? "");
-    });
-  }, []);
-
-  // State pencarian & filter
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedYear, setSelectedYear] = useState<number | "Semua">("Semua");
-
-  // Riwayat edit per baris (expand di tabel)
-  const [expandedId, setExpandedId] = useState<number | null>(null);
-  const [historyLogs, setHistoryLogs] = useState<FinancialReportHistoryLogWithChanges[]>([]);
-  const [loadingHistory, setLoadingHistory] = useState(false);
 
   useEffect(() => {
     loadItems();
   }, []);
 
-  // Pantau perubahan searchParams untuk deep link (sama pola kayak admin/toko)
   useEffect(() => {
     const tabParam = searchParams.get("tab");
     const editParam = searchParams.get("edit");
@@ -113,26 +104,27 @@ const [formError, setFormError] = useState("");
     if (data) startEdit(data);
   }
 
-  // Saran kategori dari entries yang udah ada
-  const existingCategories = useMemo(() => {
-    const all = items.flatMap((r) => r.entries.map((e) => e.category));
-    return Array.from(new Set(all)).filter(Boolean).sort();
-  }, [items]);
+  const availableYears = useMemo(() => getAvailableYears(items), [items]);
 
-  const availableYears = useMemo(
-    () => Array.from(new Set(items.map((i) => i.year))).sort((a, b) => b - a),
-    [items]
+  const filteredItems = useMemo(
+    () => filterFinancialReports(items, selectedYear, searchQuery),
+    [items, selectedYear, searchQuery]
   );
 
-  // Upload file laporan (PDF/gambar) ke storage bucket `financial-reports`
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploadError("");
     setUploading(true);
     try {
-      const url = await uploadFinancialReportFile(file);
-      setForm((prev) => ({ ...prev, file_url: url }));
+      const uploaded = await uploadFinancialReportFile(file);
+      setForm((prev) => ({
+        ...prev,
+        file_url: uploaded.url,
+        file_path: uploaded.path,
+        file_name: uploaded.name,
+        file_size: uploaded.size,
+      }));
     } catch (err) {
       setUploadError("Gagal upload file: " + (err as Error).message);
     } finally {
@@ -145,12 +137,13 @@ const [formError, setFormError] = useState("");
     setForm({
       month: item.month,
       year: item.year,
-      title: item.title,
-      summary: item.summary ?? "",
-      file_url: item.file_url ?? "",
-      entries: item.entries,
+      name: item.name,
+      description: item.description ?? "",
+      file_url: item.file_url,
+      file_path: item.file_path,
+      file_name: item.file_name,
+      file_size: item.file_size ?? 0,
       status: item.status,
-      editor_name: "",
     });
     setActiveTab("form");
   }
@@ -162,392 +155,246 @@ const [formError, setFormError] = useState("");
     setFormError("");
   }
 
-  function addEntry(type: "income" | "expense") {
-    setForm((prev) => ({
-      ...prev,
-      entries: [...prev.entries, { type, category: "", label: "", amount: 0 }],
-    }));
-  }
-
-  function updateEntry(index: number, patch: Partial<FinancialReportEntry>) {
-    setForm((prev) => ({
-      ...prev,
-      entries: prev.entries.map((e, i) => (i === index ? { ...e, ...patch } : e)),
-    }));
-  }
-
-  function removeEntry(index: number) {
-    setForm((prev) => ({
-      ...prev,
-      entries: prev.entries.filter((_, i) => i !== index),
-    }));
-  }
-
-  // Total dihitung live di form buat UX — total resmi tetap dihitung ulang
-  // di database lewat trigger, jadi gak akan pernah out-of-sync.
-  const liveTotals = useMemo(() => {
-    const income = form.entries.filter((e) => e.type === "income").reduce((s, e) => s + (e.amount || 0), 0);
-    const expense = form.entries.filter((e) => e.type === "expense").reduce((s, e) => s + (e.amount || 0), 0);
-    return { income, expense, balance: income - expense };
-  }, [form.entries]);
-
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setFormError("");
 
-    if (!form.title.trim()) {
-      setFormError("Judul laporan wajib diisi.");
+    if (!form.name.trim()) {
+      setFormError("Nama laporan wajib diisi.");
       return;
     }
-    if (!form.editor_name.trim()) {
-      setFormError("Nama Anda wajib diisi sebelum menyimpan.");
-      return;
-    }
-    if (form.entries.length === 0) {
-      setFormError("Tambahkan minimal satu rincian pemasukan atau pengeluaran.");
+    if (!form.file_url) {
+      setFormError("Dokumen laporan wajib diunggah.");
       return;
     }
 
     setSaving(true);
     try {
-      const { editor_name, ...reportData } = form;
-      const payload = { ...reportData, last_edited_by_name: editor_name };
+      const payload = {
+        month: form.month,
+        year: form.year,
+        name: form.name.trim(),
+        description: form.description.trim() || null,
+        file_url: form.file_url,
+        file_path: form.file_path,
+        file_name: form.file_name,
+        file_size: form.file_size,
+        status: form.status,
+      };
 
       if (editingId) {
         await updateFinancialReport(editingId, payload);
       } else {
         await createFinancialReport(payload);
       }
-      resetForm();
+
       await loadItems();
-      router.replace("/admin/laporan-keuangan");
+      resetForm();
       setActiveTab("list");
+      router.replace("/admin/laporan-keuangan");
     } catch (err) {
-      setFormError("Gagal menyimpan laporan: " + (err as Error).message);
+      setFormError("Gagal menyimpan: " + (err as Error).message);
     } finally {
       setSaving(false);
     }
   }
 
-  async function handleDelete(id: number) {
-    if (!confirm("Yakin ingin menghapus laporan ini? Riwayat edit juga akan ikut terhapus.")) return;
-    await deleteFinancialReport(id);
-    loadItems();
-  }
-
-  async function toggleHistory(id: number) {
-    if (expandedId === id) {
-      setExpandedId(null);
-      return;
+  async function handleDelete(item: FinancialReport) {
+    if (!confirm(`Hapus laporan "${item.name}"? Dokumen di storage juga akan dihapus.`)) return;
+    try {
+      await deleteFinancialReport(item.id, item.file_path);
+      await loadItems();
+    } catch (err) {
+      alert("Gagal menghapus: " + (err as Error).message);
     }
-    setExpandedId(id);
-    setLoadingHistory(true);
-    const logs = await getFinancialReportHistoryWithChanges(id);
-    setHistoryLogs(logs);
-    setLoadingHistory(false);
   }
-
-  // Daftar laporan hasil filter
-  const filteredItems = items.filter((item) => {
-    const matchesYear = selectedYear === "Semua" || item.year === selectedYear;
-    const q = searchQuery.toLowerCase();
-    const matchesSearch =
-      q === "" ||
-      item.title.toLowerCase().includes(q) ||
-      getMonthNameID(item.month).toLowerCase().includes(q) ||
-      String(item.year).includes(q);
-    return matchesYear && matchesSearch;
-  });
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-border/40 pb-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <div className="flex items-center gap-2 text-xs font-bold text-text-secondary uppercase tracking-widest">
-            <span>Admin</span>
-            <ChevronRight size={10} />
-            <span className="text-accent">Laporan Keuangan</span>
-          </div>
-          <h1
-            className="text-3xl font-extrabold text-text-primary mt-1"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Kelola Laporan Keuangan
+          <h1 className="flex items-center gap-2 text-xl font-bold text-text-primary">
+            <Wallet size={20} className="text-accent" /> Laporan Keuangan
           </h1>
-          <p className="text-sm text-text-secondary mt-1">
-            Buat laporan bulanan lengkap dengan rincian pemasukan/pengeluaran. Total dihitung otomatis dan setiap perubahan tercatat.
-          </p>
+          <p className="mt-1 text-xs text-text-secondary">Kelola dokumen laporan keuangan sinode.</p>
         </div>
-
-        {/* Tab switch buttons */}
-        <div className="flex shrink-0 items-center gap-2 rounded-xl bg-surface/50 p-1 border border-border">
-          <button
-            onClick={() => {
-              setActiveTab("list");
-              router.replace("/admin/laporan-keuangan");
-            }}
-            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-              activeTab === "list"
-                ? "bg-primary text-background shadow-md shadow-primary/20"
-                : "text-text-secondary hover:text-accent"
-            }`}
-          >
-            Daftar Laporan
-          </button>
+        {activeTab === "list" && (
           <button
             onClick={() => {
               resetForm();
               setActiveTab("form");
-              router.replace("/admin/laporan-keuangan?tab=form");
             }}
-            className={`px-4 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
-              activeTab === "form"
-                ? "bg-primary text-background shadow-md shadow-primary/20"
-                : "text-text-secondary hover:text-accent"
-            }`}
+            className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-xs font-bold text-background transition-all hover:bg-primary-dark"
           >
-            <Plus size={14} />
-            Laporan Baru
+            <Plus size={14} /> Laporan Baru
           </button>
-        </div>
+        )}
       </div>
 
       <AnimatePresence mode="wait">
         {activeTab === "list" ? (
           <motion.div
-            key="lk-list-tab"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.25 }}
+            key="list"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             className="space-y-4"
           >
-            {/* Filter Bar */}
-            <div className="flex flex-col gap-3 md:flex-row md:items-center justify-between rounded-2xl border border-border bg-surface/30 p-4">
+            {/* Search & filter */}
+            <div className="flex flex-col gap-3 sm:flex-row">
               <div className="relative flex-1">
-                <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary" />
+                <Search
+                  size={15}
+                  className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary/60"
+                />
                 <input
                   type="text"
-                  placeholder="Cari berdasarkan bulan, tahun, atau judul..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/60 outline-none focus:border-accent/40 focus:bg-background"
+                  placeholder="Cari nama, bulan, atau tahun..."
+                  className="w-full rounded-xl border border-border bg-surface/60 py-2.5 pl-10 pr-4 text-sm text-text-primary outline-none focus:border-accent/40"
                 />
               </div>
-              <div className="flex items-center gap-2">
-                <Filter size={16} className="text-text-secondary shrink-0" />
-                <select
-                  value={selectedYear}
-                  onChange={(e) => setSelectedYear(e.target.value === "Semua" ? "Semua" : Number(e.target.value))}
-                  className="rounded-xl border border-border bg-background/50 px-3.5 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 cursor-pointer"
-                >
-                  <option value="Semua">Semua Tahun</option>
-                  {availableYears.map((y) => (
-                    <option key={y} value={y}>{y}</option>
-                  ))}
-                </select>
-              </div>
+              <select
+                value={selectedYear}
+                onChange={(e) =>
+                  setSelectedYear(e.target.value === "Semua" ? "Semua" : parseInt(e.target.value))
+                }
+                className="cursor-pointer rounded-xl border border-border bg-surface/60 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40"
+              >
+                <option value="Semua">Semua Tahun</option>
+                {availableYears.map((y) => (
+                  <option key={y} value={y}>
+                    {y}
+                  </option>
+                ))}
+              </select>
             </div>
 
-            {/* List / Table */}
-            <div className="overflow-hidden rounded-2xl border border-border bg-surface/20 shadow-xl">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="border-b border-border/70 bg-surface/60 text-xs font-extrabold uppercase tracking-widest text-text-secondary">
-                      <th className="p-4 pl-6">Periode</th>
-                      <th className="p-4">Pemasukan</th>
-                      <th className="p-4">Pengeluaran</th>
-                      <th className="p-4">Saldo</th>
-                      <th className="p-4">Status</th>
-                      <th className="p-4 text-right pr-6">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-border/40">
-                    {filteredItems.map((item) => (
-                      <Fragment key={item.id}>
-                        <tr className="hover:bg-surface/30 transition-colors group">
-                          <td className="p-4 pl-6 min-w-[220px]">
-                            <div className="flex items-center gap-3.5">
-                              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary border border-primary/20">
-                                <Wallet size={18} />
-                              </div>
-                              <div className="min-w-0">
-                                <p className="font-bold text-text-primary group-hover:text-accent transition-colors truncate">
-                                  {getMonthNameID(item.month)} {item.year}
-                                </p>
-                                <p className="text-xs text-text-secondary truncate mt-0.5 max-w-[220px]">
-                                  {item.title}
-                                </p>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="p-4 text-xs font-bold text-primary whitespace-nowrap">
-                            {formatRupiah(item.total_income)}
-                          </td>
-                          <td className="p-4 text-xs font-bold text-accent whitespace-nowrap">
-                            {formatRupiah(item.total_expense)}
-                          </td>
-                          <td
-                            className={`p-4 text-xs font-bold whitespace-nowrap ${
-                              item.ending_balance >= 0 ? "text-success" : "text-accent"
-                            }`}
+            {/* Table */}
+            <div className="overflow-x-auto rounded-2xl border border-border">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-border bg-surface/40 text-left text-[11px] font-bold uppercase tracking-wider text-text-secondary">
+                    <th className="p-4">Laporan</th>
+                    <th className="p-4">Periode</th>
+                    <th className="p-4">Status</th>
+                    <th className="p-4">Dibuat</th>
+                    <th className="p-4">Diubah</th>
+                    <th className="p-4">Dipublikasikan</th>
+                    <th className="p-4 text-right">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border">
+                  {filteredItems.map((item) => (
+                    <tr key={item.id} className="transition-colors hover:bg-surface/20">
+                      <td className="max-w-[220px] p-4">
+                        <a
+                          href={item.file_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex items-center gap-2 truncate font-semibold text-text-primary hover:text-accent"
+                        >
+                          <FileText size={14} className="shrink-0 text-accent" />
+                          <span className="truncate">{item.name}</span>
+                          <ExternalLink size={11} className="shrink-0 text-text-secondary/50" />
+                        </a>
+                        {item.file_size ? (
+                          <p className="mt-0.5 text-[10px] text-text-secondary/60">
+                            {formatFileSize(item.file_size)}
+                          </p>
+                        ) : null}
+                      </td>
+                      <td className="whitespace-nowrap p-4 text-xs text-text-secondary">
+                        {getMonthNameID(item.month)} {item.year}
+                      </td>
+                      <td className="p-4">
+                        <span
+                          className={`rounded-md px-2 py-1 text-[10px] font-bold uppercase tracking-wide ${
+                            item.status === "published"
+                              ? "bg-success/10 text-success"
+                              : "bg-warning/10 text-warning"
+                          }`}
+                        >
+                          {item.status === "published" ? "Terbit" : "Draft"}
+                        </span>
+                      </td>
+                      <td className="whitespace-nowrap p-4 text-xs text-text-secondary">
+                        {formatDateTime(item.created_at)}
+                      </td>
+                      <td className="whitespace-nowrap p-4 text-xs text-text-secondary">
+                        {formatDateTime(item.updated_at)}
+                      </td>
+                      <td className="whitespace-nowrap p-4 text-xs text-text-secondary">
+                        {formatDateTime(item.published_at)}
+                      </td>
+                      <td className="p-4">
+                        <div className="flex items-center justify-end gap-1">
+                          <button
+                            onClick={() => startEdit(item)}
+                            className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-text-secondary hover:bg-primary/5 hover:text-primary"
                           >
-                            {formatRupiah(item.ending_balance)}
-                          </td>
-                          <td className="p-4">
-                            <span
-                              className={`inline-block rounded-md border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
-                                item.status === "published"
-                                  ? "border-success/20 bg-success/10 text-success"
-                                  : "border-warning/20 bg-warning/10 text-warning"
-                              }`}
-                            >
-                              {item.status === "published" ? "Terbit" : "Draft"}
-                            </span>
-                          </td>
-                          <td className="p-4 text-right pr-6 whitespace-nowrap">
-                            <div className="flex items-center justify-end gap-2">
-                              <button
-                                onClick={() => toggleHistory(item.id)}
-                                className={`inline-flex h-8 w-8 items-center justify-center rounded-lg border transition-all cursor-pointer ${
-                                  expandedId === item.id
-                                    ? "border-accent/40 bg-accent/10 text-accent"
-                                    : "border-border bg-surface/50 text-text-secondary hover:border-accent/40 hover:text-accent"
-                                }`}
-                                title="Riwayat"
-                              >
-                                <History size={14} />
-                              </button>
-                              <button
-                                onClick={() => {
-                                  startEdit(item);
-                                  router.replace(`/admin/laporan-keuangan?edit=${item.id}`);
-                                }}
-                                className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-surface/50 text-text-secondary transition-all hover:border-accent/40 hover:text-accent cursor-pointer"
-                                title="Edit"
-                              >
-                                <Edit3 size={14} />
-                              </button>
-                              <button
-                                onClick={() => handleDelete(item.id)}
-                                className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-surface/50 text-accent transition-all hover:border-accent/40 hover:bg-accent/10 cursor-pointer"
-                                title="Hapus"
-                              >
-                                <Trash2 size={14} />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                        {expandedId === item.id && (
-                          <tr>
-                            <td colSpan={6} className="bg-background/40 p-5 border-b border-border/40">
-                              {loadingHistory ? (
-                                <p className="text-xs text-text-secondary">Memuat riwayat...</p>
-                              ) : historyLogs.length === 0 ? (
-                                <p className="text-xs text-text-secondary">Belum ada riwayat perubahan.</p>
-                              ) : (
-                                <ol className="space-y-3">
-                                  {historyLogs.map((log) => (
-                                    <li key={log.id} className="flex items-start gap-3 text-xs">
-                                      <span
-                                        className={`mt-0.5 shrink-0 rounded-md border px-2 py-0.5 font-bold uppercase tracking-wide ${
-                                          log.action === "created"
-                                            ? "border-success/20 bg-success/10 text-success"
-                                            : "border-primary/20 bg-primary/10 text-primary"
-                                        }`}
-                                      >
-                                        {log.action === "created" ? "Dibuat" : "Diubah"}
-                                      </span>
-                                      <div className="flex-1">
-                                        <p className="font-semibold text-text-primary">
-                                          {log.changed_by_email ?? "Admin tidak diketahui"}
-                                        </p>
-                                        <p className="text-text-secondary mt-0.5">
-                                          {new Date(log.changed_at).toLocaleString("id-ID", {
-                                            dateStyle: "long",
-                                            timeStyle: "short",
-                                          })}
-                                        </p>
-                                        <ul className="mt-2 space-y-1 rounded-lg border border-border/50 bg-surface/40 p-2.5">
-                                          {log.changes.map((c, ci) => (
-                                            <li key={ci} className="text-text-secondary/90">
-                                              &bull; {c}
-                                            </li>
-                                          ))}
-                                        </ul>
-                                      </div>
-                                    </li>
-                                  ))}
-                                </ol>
-                              )}
-                            </td>
-                          </tr>
-                        )}
-                      </Fragment>
-                    ))}
-                    {filteredItems.length === 0 && (
-                      <tr>
-                        <td colSpan={6} className="p-8 text-center text-sm text-text-secondary">
-                          Tidak ada laporan yang cocok dengan pencarian Anda.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
+                            <Edit3 size={14} />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(item)}
+                            className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-text-secondary hover:bg-accent/5 hover:text-accent"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                  {filteredItems.length === 0 && (
+                    <tr>
+                      <td colSpan={7} className="p-8 text-center text-xs text-text-secondary">
+                        Tidak ada laporan ditemukan.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </motion.div>
         ) : (
           <motion.form
-            key="lk-form-tab"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -15 }}
-            transition={{ duration: 0.25 }}
+            key="form"
             onSubmit={handleSubmit}
-            className="space-y-6"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            className="space-y-5"
           >
-            {/* Form Top Actions Bar */}
-            <div className="flex items-center gap-3 rounded-2xl border border-border bg-surface/40 p-4">
-              <button
-                type="button"
-                onClick={() => {
-                  resetForm();
-                  setActiveTab("list");
-                  router.replace("/admin/laporan-keuangan");
-                }}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface/50 text-text-secondary hover:text-accent transition-colors cursor-pointer"
-              >
-                <ArrowLeft size={16} />
-              </button>
-              <div>
-                <h3 className="font-bold text-text-primary text-sm">
-                  {editingId ? "Edit Laporan Keuangan" : "Buat Laporan Keuangan Baru"}
-                </h3>
-                <p className="text-xs text-text-secondary mt-0.5">
-                  Total pemasukan, pengeluaran, dan saldo dihitung otomatis dari rincian di bawah.
-                </p>
-              </div>
-            </div>
+            <button
+              type="button"
+              onClick={() => {
+                resetForm();
+                setActiveTab("list");
+                router.replace("/admin/laporan-keuangan");
+              }}
+              className="inline-flex cursor-pointer items-center gap-1.5 text-xs font-bold text-text-secondary hover:text-accent"
+            >
+              <ArrowLeft size={14} /> Kembali ke daftar
+            </button>
 
-            {formError && (
-              <div className="rounded-xl border border-accent/20 bg-accent/10 p-4 text-xs font-semibold text-accent">
-                {formError}
-              </div>
-            )}
+            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+              {/* Left: info dasar */}
+              <div className="space-y-5 rounded-3xl border border-border bg-surface/20 p-6 shadow-md md:col-span-2">
+                <h4 className="border-b border-border pb-3 text-sm font-bold text-text-primary">
+                  Informasi Laporan
+                </h4>
 
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-              {/* Left Column - Data & Rincian (2/3 width) */}
-              <div className="lg:col-span-2 space-y-5 rounded-3xl border border-border bg-surface/20 p-6 shadow-md">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Bulan</label>
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
+                      Bulan
+                    </label>
                     <select
                       value={form.month}
-                      onChange={(e) => setForm({ ...form, month: Number(e.target.value) })}
-                      className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all cursor-pointer"
+                      onChange={(e) => setForm({ ...form, month: parseInt(e.target.value) })}
+                      className="w-full cursor-pointer rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40"
                     >
                       {MONTHS.map((m) => (
                         <option key={m.value} value={m.value}>
@@ -557,205 +404,96 @@ const [formError, setFormError] = useState("");
                     </select>
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Tahun</label>
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
+                      Tahun
+                    </label>
                     <input
                       type="number"
                       value={form.year}
-                      onChange={(e) => setForm({ ...form, year: Number(e.target.value) })}
-                      className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all"
-                      required
+                      onChange={(e) => setForm({ ...form, year: parseInt(e.target.value) })}
+                      className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Judul Laporan</label>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
+                    Nama Laporan
+                  </label>
                   <input
                     type="text"
-                    placeholder={`Contoh: Laporan Keuangan ${getMonthNameID(form.month)} ${form.year}`}
-                    value={form.title}
-                    onChange={(e) => setForm({ ...form, title: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all"
+                    placeholder="mis. Laporan Keuangan Bulan Januari 2026"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40"
                     required
                   />
                 </div>
 
                 <div className="space-y-1.5">
                   <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
-                    Ringkasan (opsional)
+                    Deskripsi{" "}
+                    <span className="font-normal normal-case text-text-secondary/60">
+                      (opsional)
+                    </span>
                   </label>
                   <textarea
-                    placeholder="Catatan singkat untuk jemaat, mis. penjelasan pos pengeluaran besar..."
-                    value={form.summary}
-                    onChange={(e) => setForm({ ...form, summary: e.target.value })}
-                    rows={3}
-                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all"
+                    rows={4}
+                    placeholder="Catatan singkat tentang laporan ini..."
+                    value={form.description}
+                    onChange={(e) => setForm({ ...form, description: e.target.value })}
+                    className="w-full resize-none rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40"
                   />
                 </div>
 
-                {/* Rincian Pemasukan */}
-                <div className="space-y-2 pt-2 border-t border-border/50">
-                  <div className="flex items-center justify-between">
-                    <label className="text-[11px] font-bold uppercase tracking-wider text-success flex items-center gap-1.5">
-                      <TrendingUp size={12} /> Rincian Pemasukan
-                    </label>
-                    <button
-                      type="button"
-                      onClick={() => addEntry("income")}
-                      className="inline-flex items-center gap-1 text-[11px] font-bold text-success hover:text-success/80 cursor-pointer"
-                    >
-                      <Plus size={12} /> Tambah
-                    </button>
-                  </div>
-                  <div className="space-y-2">
-                    {form.entries.map(
-                      (entry, i) =>
-                        entry.type === "income" && (
-                          <div key={i} className="grid grid-cols-12 gap-2 items-center">
-                            <input
-                              list="lk-categories"
-                              placeholder="Kategori"
-                              value={entry.category}
-                              onChange={(e) => updateEntry(i, { category: e.target.value })}
-                              className="col-span-4 rounded-lg border border-border bg-background/50 px-3 py-2 text-xs text-text-primary outline-none focus:border-accent/40"
-                            />
-                            <input
-                              placeholder="Keterangan"
-                              value={entry.label}
-                              onChange={(e) => updateEntry(i, { label: e.target.value })}
-                              className="col-span-4 rounded-lg border border-border bg-background/50 px-3 py-2 text-xs text-text-primary outline-none focus:border-accent/40"
-                            />
-                            <input
-                              type="number"
-                              min={0}
-                              placeholder="Jumlah"
-                              value={entry.amount || ""}
-                              onChange={(e) => updateEntry(i, { amount: Number(e.target.value) })}
-                              className="col-span-3 rounded-lg border border-border bg-background/50 px-3 py-2 text-xs text-text-primary outline-none focus:border-accent/40"
-                            />
-                            <button
-                              type="button"
-                              onClick={() => removeEntry(i)}
-                              className="col-span-1 inline-flex h-8 w-8 items-center justify-center rounded-lg text-text-secondary hover:text-accent cursor-pointer"
-                            >
-                              <X size={14} />
-                            </button>
-                          </div>
-                        )
-                    )}
-                    {form.entries.filter((e) => e.type === "income").length === 0 && (
-                      <p className="text-xs text-text-secondary/70 italic">Belum ada rincian pemasukan.</p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Rincian Pengeluaran */}
-                <div className="space-y-2 pt-4 border-t border-border/50">
-                  <div className="flex items-center justify-between">
-                    <label className="text-[11px] font-bold uppercase tracking-wider text-accent flex items-center gap-1.5">
-                      <TrendingDown size={12} /> Rincian Pengeluaran
-                    </label>
-                    <button
-                      type="button"
-                      onClick={() => addEntry("expense")}
-                      className="inline-flex items-center gap-1 text-[11px] font-bold text-accent hover:text-accent/80 cursor-pointer"
-                    >
-                      <Plus size={12} /> Tambah
-                    </button>
-                  </div>
-                  <div className="space-y-2">
-                    {form.entries.map(
-                      (entry, i) =>
-                        entry.type === "expense" && (
-                          <div key={i} className="grid grid-cols-12 gap-2 items-center">
-                            <input
-                              list="lk-categories"
-                              placeholder="Kategori"
-                              value={entry.category}
-                              onChange={(e) => updateEntry(i, { category: e.target.value })}
-                              className="col-span-4 rounded-lg border border-border bg-background/50 px-3 py-2 text-xs text-text-primary outline-none focus:border-accent/40"
-                            />
-                            <input
-                              placeholder="Keterangan"
-                              value={entry.label}
-                              onChange={(e) => updateEntry(i, { label: e.target.value })}
-                              className="col-span-4 rounded-lg border border-border bg-background/50 px-3 py-2 text-xs text-text-primary outline-none focus:border-accent/40"
-                            />
-                            <input
-                              type="number"
-                              min={0}
-                              placeholder="Jumlah"
-                              value={entry.amount || ""}
-                              onChange={(e) => updateEntry(i, { amount: Number(e.target.value) })}
-                              className="col-span-3 rounded-lg border border-border bg-background/50 px-3 py-2 text-xs text-text-primary outline-none focus:border-accent/40"
-                            />
-                            <button
-                              type="button"
-                              onClick={() => removeEntry(i)}
-                              className="col-span-1 inline-flex h-8 w-8 items-center justify-center rounded-lg text-text-secondary hover:text-accent cursor-pointer"
-                            >
-                              <X size={14} />
-                            </button>
-                          </div>
-                        )
-                    )}
-                    {form.entries.filter((e) => e.type === "expense").length === 0 && (
-                      <p className="text-xs text-text-secondary/70 italic">Belum ada rincian pengeluaran.</p>
-                    )}
-                  </div>
-                </div>
-
-                <datalist id="lk-categories">
-                  {existingCategories.map((c) => (
-                    <option key={c} value={c} />
-                  ))}
-                </datalist>
-
-                {/* Live totals */}
-                <div className="grid grid-cols-3 gap-3 pt-4 border-t border-border/50">
-                  <div className="rounded-xl border border-success/20 bg-success/5 p-3 text-center">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-success">Pemasukan</p>
-                    <p className="text-sm font-extrabold text-success mt-1">{formatRupiah(liveTotals.income)}</p>
-                  </div>
-                  <div className="rounded-xl border border-accent/20 bg-accent/5 p-3 text-center">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-accent">Pengeluaran</p>
-                    <p className="text-sm font-extrabold text-accent mt-1">{formatRupiah(liveTotals.expense)}</p>
-                  </div>
-                  <div className="rounded-xl border border-primary/20 bg-primary/5 p-3 text-center">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-primary">Saldo</p>
-                    <p className="text-sm font-extrabold text-primary mt-1">{formatRupiah(liveTotals.balance)}</p>
-                  </div>
-                </div>
+                {formError && (
+                  <p className="rounded-xl border border-accent/20 bg-accent/5 px-4 py-2.5 text-xs font-semibold text-accent">
+                    {formError}
+                  </p>
+                )}
               </div>
 
-              {/* Right Column - Dokumen & Status (1/3 width) */}
+              {/* Right: dokumen & status */}
               <div className="space-y-5 rounded-3xl border border-border bg-surface/20 p-6 shadow-md">
-                <h4 className="font-bold text-text-primary text-sm border-b border-border pb-3 flex items-center gap-1.5">
-                  <FileText size={16} className="text-accent" />
-                  Dokumen & Status
+                <h4 className="flex items-center gap-1.5 border-b border-border pb-3 text-sm font-bold text-text-primary">
+                  <FileText size={16} className="text-accent" /> Dokumen & Status
                 </h4>
 
                 <div className="space-y-2">
                   <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
                     File Laporan (PDF/Gambar)
                   </label>
-                  <div className="relative flex flex-col items-center justify-center rounded-xl border border-dashed border-border hover:border-accent/40 bg-background/20 p-4 transition-all group">
+                  <div className="group relative flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-background/20 p-4 transition-all hover:border-accent/40">
                     <input
                       type="file"
                       accept="application/pdf,image/*"
                       onChange={handleFileUpload}
                       disabled={uploading}
-                      className="absolute inset-0 z-10 w-full h-full opacity-0 cursor-pointer"
+                      className="absolute inset-0 z-10 h-full w-full cursor-pointer opacity-0"
                     />
-                    <Upload size={22} className="text-text-secondary group-hover:text-accent transition-colors" />
-                    <span className="text-xs font-semibold text-text-primary mt-2">Pilih File Laporan</span>
-                    <span className="text-[10px] text-text-secondary/70 mt-1">Format PDF, PNG, atau JPG</span>
+                    <Upload
+                      size={22}
+                      className="text-text-secondary transition-colors group-hover:text-accent"
+                    />
+                    <span className="mt-2 text-xs font-semibold text-text-primary">
+                      Pilih File Laporan
+                    </span>
+                    <span className="mt-1 text-[10px] text-text-secondary/70">
+                      Format PDF, PNG, atau JPG
+                    </span>
                   </div>
 
                   {uploading && (
-                    <div className="flex items-center gap-2 justify-center py-2 text-xs text-accent">
-                      <svg className="animate-spin h-3.5 w-3.5" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <div className="flex items-center justify-center gap-2 py-2 text-xs text-accent">
+                      <svg className="h-3.5 w-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
                         <path
                           className="opacity-75"
                           fill="currentColor"
@@ -765,23 +503,33 @@ const [formError, setFormError] = useState("");
                       Mengunggah file...
                     </div>
                   )}
-                  {uploadError && <p className="text-[10px] text-accent mt-1 text-center">{uploadError}</p>}
+                  {uploadError && (
+                    <p className="mt-1 text-center text-[10px] text-accent">{uploadError}</p>
+                  )}
 
                   {form.file_url && !uploading && (
-                    <div className="flex items-center gap-2 mt-3 rounded-xl border border-border bg-background/40 p-3">
-                      <FileText size={16} className="text-accent shrink-0" />
+                    <div className="mt-3 flex items-center gap-2 rounded-xl border border-border bg-background/40 p-3">
+                      <FileText size={16} className="shrink-0 text-accent" />
                       <a
                         href={form.file_url}
                         target="_blank"
                         rel="noreferrer"
-                        className="text-xs font-semibold text-text-primary hover:text-accent truncate flex-1"
+                        className="flex-1 truncate text-xs font-semibold text-text-primary hover:text-accent"
                       >
-                        Lihat file terlampir
+                        {form.file_name || "Lihat file terlampir"}
                       </a>
                       <button
                         type="button"
-                        onClick={() => setForm((prev) => ({ ...prev, file_url: "" }))}
-                        className="text-text-secondary hover:text-accent cursor-pointer"
+                        onClick={() =>
+                          setForm((prev) => ({
+                            ...prev,
+                            file_url: "",
+                            file_path: "",
+                            file_name: "",
+                            file_size: 0,
+                          }))
+                        }
+                        className="cursor-pointer text-text-secondary hover:text-accent"
                       >
                         <X size={14} />
                       </button>
@@ -789,64 +537,47 @@ const [formError, setFormError] = useState("");
                   )}
                 </div>
 
-                {/* Nama Pengedit (tampil ke publik) */}
-                <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
-                    Nama Anda (tampil ke publik)
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="Nama lengkap"
-                    value={form.editor_name}
-                    onChange={(e) => setForm({ ...form, editor_name: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all"
-                    required
-                  />
-                  {editorEmail && (
-                    <p className="text-[10px] text-text-secondary/60">
-                      Login sebagai: {editorEmail} (tidak ditampilkan ke publik)
-                    </p>
-                  )}
-                </div>
-
-                {/* Publish Toggle */}
                 <div className="flex items-center justify-between rounded-xl border border-border/80 bg-background/35 p-3.5">
                   <div>
                     <p className="text-xs font-bold text-text-primary">Publikasikan ke Jemaat</p>
-                    <p className="text-[10px] text-text-secondary mt-0.5">Kalau nonaktif, laporan tersimpan sebagai draft</p>
+                    <p className="mt-0.5 text-[10px] text-text-secondary">
+                      Kalau nonaktif, laporan tersimpan sebagai draft
+                    </p>
                   </div>
                   <input
                     type="checkbox"
                     checked={form.status === "published"}
-                    onChange={(e) => setForm({ ...form, status: e.target.checked ? "published" : "draft" })}
-                    className="h-4.5 w-4.5 rounded border-border bg-background/50 text-primary focus:ring-accent/40 cursor-pointer"
+                    onChange={(e) =>
+                      setForm({ ...form, status: e.target.checked ? "published" : "draft" })
+                    }
+                    className="h-4.5 w-4.5 cursor-pointer rounded border-border bg-background/50 text-primary focus:ring-accent/40"
                   />
                 </div>
 
-                {/* Form Buttons */}
-                <div className="pt-2 flex flex-col gap-2.5">
+                {editingId && (
+                  <div className="space-y-1 rounded-xl border border-border/60 bg-background/20 p-3 text-[10px] text-text-secondary">
+                    <p className="flex items-center gap-1.5">
+                      <Calendar size={11} /> Dibuat:{" "}
+                      {formatDateTime(items.find((i) => i.id === editingId)?.created_at)}
+                    </p>
+                    <p className="flex items-center gap-1.5">
+                      <Calendar size={11} /> Diubah:{" "}
+                      {formatDateTime(items.find((i) => i.id === editingId)?.updated_at)}
+                    </p>
+                    <p className="flex items-center gap-1.5">
+                      <Calendar size={11} /> Dipublikasikan:{" "}
+                      {formatDateTime(items.find((i) => i.id === editingId)?.published_at)}
+                    </p>
+                  </div>
+                )}
+
+                <div className="flex flex-col gap-2.5 pt-2">
                   <button
                     type="submit"
                     disabled={saving || uploading}
-                    className="w-full py-3 bg-primary text-background text-xs font-bold rounded-xl hover:bg-primary-dark transition-all shadow-md shadow-primary/10 disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5"
+                    className="flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-xl bg-primary py-3 text-xs font-bold text-background shadow-md shadow-primary/10 transition-all hover:bg-primary-dark disabled:opacity-50"
                   >
-                    {saving ? (
-                      <>
-                        <svg className="animate-spin h-3.5 w-3.5" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                        Menyimpan...
-                      </>
-                    ) : editingId ? (
-                      "Simpan Perubahan"
-                    ) : (
-                      "Simpan Laporan Baru"
-                    )}
+                    {saving ? "Menyimpan..." : editingId ? "Simpan Perubahan" : "Simpan Laporan Baru"}
                   </button>
                   <button
                     type="button"
@@ -855,7 +586,7 @@ const [formError, setFormError] = useState("");
                       setActiveTab("list");
                       router.replace("/admin/laporan-keuangan");
                     }}
-                    className="w-full py-3 border border-border text-text-secondary text-xs font-bold rounded-xl hover:text-accent hover:bg-background/40 transition-all cursor-pointer"
+                    className="w-full cursor-pointer rounded-xl border border-border py-3 text-xs font-bold text-text-secondary transition-all hover:bg-background/40 hover:text-accent"
                   >
                     Batal
                   </button>
@@ -873,7 +604,7 @@ export default function AdminLaporanKeuanganPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex h-[400px] items-center justify-center text-text-secondary text-sm font-semibold">
+        <div className="flex h-[400px] items-center justify-center text-sm font-semibold text-text-secondary">
           Memuat data laporan keuangan...
         </div>
       }

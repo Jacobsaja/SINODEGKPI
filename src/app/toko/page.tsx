@@ -20,9 +20,21 @@ import {
   Sparkles,
   ArrowRight,
   ExternalLink,
+  MessageCircle,
 } from "lucide-react";
 
 const categoryIcons = [ShoppingBag, Package, Gift, Tag, Sparkles];
+
+// Nomor WA admin, format internasional tanpa "+" (contoh: 6281234567890)
+const ADMIN_WHATSAPP_NUMBER =
+  process.env.NEXT_PUBLIC_ADMIN_WHATSAPP_NUMBER || "";
+
+function getWhatsAppLink(productName: string) {
+  const message = `Hai, saya tertarik dengan ${productName}`;
+  return `https://wa.me/${ADMIN_WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    message
+  )}`;
+}
 
 export default function TokoPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -241,12 +253,24 @@ export default function TokoPage() {
                     <p className="mb-4 text-2xl font-bold text-white">
                       {formatRupiah(featuredProduct.price)}
                     </p>
-                    <div className="inline-flex items-center gap-1 text-sm font-bold text-accent group-hover:underline">
-                      <span>Lihat Detail</span>
-                      <ArrowRight
-                        size={16}
-                        className="transition-transform duration-300 group-hover:translate-x-1"
-                      />
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div className="inline-flex items-center gap-1 text-sm font-bold text-accent group-hover:underline">
+                        <span>Lihat Detail</span>
+                        <ArrowRight
+                          size={16}
+                          className="transition-transform duration-300 group-hover:translate-x-1"
+                        />
+                      </div>
+                      <a
+                        href={getWhatsAppLink(featuredProduct.name)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-1.5 rounded-xl border border-[#25D366]/30 bg-[#25D366]/10 px-3 py-2 text-xs font-bold text-[#128C7E] transition-colors hover:bg-[#25D366]/15"
+                      >
+                        <MessageCircle size={14} />
+                        Tanya via WA
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -303,6 +327,17 @@ export default function TokoPage() {
                         />
                       </span>
                     </div>
+
+                    <a
+                      href={getWhatsAppLink(product.name)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="mt-3 inline-flex items-center justify-center gap-1.5 rounded-xl border border-[#25D366]/30 bg-[#25D366]/10 px-3 py-2.5 text-xs font-bold text-[#128C7E] transition-colors hover:bg-[#25D366]/15"
+                    >
+                      <MessageCircle size={14} />
+                      Tanya via WhatsApp
+                    </a>
                   </div>
                 </article>
               </ScrollReveal>
@@ -448,6 +483,18 @@ export default function TokoPage() {
                       <ExternalLink size={14} />
                     </Link>
                   </div>
+
+                  {/* WhatsApp Button */}
+                  <Link
+                    href={getWhatsAppLink(selectedProduct.name)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-[#25D366] bg-[#25D366] px-4 py-3 text-sm font-bold text-white transition-all hover:bg-[#1FAF5C] hover:border-[#1FAF5C] hover:shadow-lg hover:shadow-emerald-500/25"
+                  >
+                    <MessageCircle size={16} />
+                    Tanya Admin via WhatsApp
+                  </Link>
+
                   <p className="text-center text-xs text-text-secondary/70">
                     Pembelian diproses sepenuhnya di marketplace pilihan kamu.
                   </p>

@@ -15,18 +15,26 @@ import {
   Wallet,
   LogOut,
   ExternalLink,
+  Globe,
   X,
 } from "lucide-react";
 
 const NAV_ITEMS = [
-  { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
-  { href: "/admin/publikasi", label: "Publikasi", icon: Newspaper, exact: false },
-  { href: "/admin/toko", label: "Toko", icon: ShoppingBag, exact: false },
-  { href: "/admin/pengurus", label: "Pengurus", icon: Users, exact: false },
-  { href: "/admin/jemaat", label: "Jemaat & Resort", icon: Church, exact: false },
-  { href: "/admin/kontak", label: "Pesan Masuk", icon: Mail, exact: false },
-  { href: "/admin/laporan-keuangan", label: "Laporan Keuangan", icon: Wallet, exact: false },
-  { href: "/admin/sharefiles", label: "Share Files", icon: FolderLock, exact: false },
+  { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true, external: false },
+  { href: "/admin/publikasi", label: "Publikasi", icon: Newspaper, exact: false, external: false },
+  { href: "/admin/toko", label: "Toko", icon: ShoppingBag, exact: false, external: false },
+  { href: "/admin/pengurus", label: "Pengurus", icon: Users, exact: false, external: false },
+  { href: "/admin/jemaat", label: "Jemaat & Resort", icon: Church, exact: false, external: false },
+  { href: "/admin/kontak", label: "Pesan Masuk", icon: Mail, exact: false, external: false },
+  { href: "/admin/laporan-keuangan", label: "Laporan Keuangan", icon: Wallet, exact: false, external: false },
+  { href: "/admin/sharefiles", label: "Share Files", icon: FolderLock, exact: false, external: false },
+  {
+    href: "https://script.google.com/macros/s/AKfycby2uE9OQ4nsFWJn7CVapu5zImdQNEGH3g3BFqnA6Axspe4t6Xf94OyhhlHY0xaquZrbUA/exec",
+    label: "GKPI Digital Hub",
+    icon: Globe,
+    exact: false,
+    external: true,
+  },
 ];
 
 interface AdminSidebarProps {
@@ -91,8 +99,26 @@ export default function AdminSidebar({ email, onLogout, isOpen, onClose }: Admin
       {/* Nav */}
       <nav className="flex-1 space-y-1.5 p-4 overflow-y-auto">
         {NAV_ITEMS.map((item) => {
-          const active = isActive(item.href, item.exact);
+          const active = !item.external && isActive(item.href, item.exact);
           const Icon = item.icon;
+
+          if (item.external) {
+            return (
+              <a
+                key={item.href}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={onClose}
+                className="group relative flex items-center gap-3.5 rounded-xl border border-transparent px-4 py-3.5 text-sm font-semibold text-text-secondary transition-all hover:border-border/60 hover:bg-background/40 hover:text-primary"
+              >
+                <Icon size={18} className="text-text-secondary transition-colors group-hover:text-primary" />
+                <span>{item.label}</span>
+                <ExternalLink size={14} className="ml-auto text-text-secondary/60 group-hover:text-primary" />
+              </a>
+            );
+          }
+
           return (
             <Link
               key={item.href}
