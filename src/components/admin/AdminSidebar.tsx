@@ -82,14 +82,14 @@ export default function AdminSidebar({ email, onLogout, isOpen, onClose }: Admin
           >
             GKPI Sinode
           </p>
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-accent mt-0.5">
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-primary mt-0.5">
             Admin Workspace
           </p>
         </div>
         {/* Tombol Close Mobile */}
         <button
           onClick={onClose}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background/50 text-text-secondary hover:text-accent hover:border-accent/40 md:hidden cursor-pointer"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background/50 text-text-secondary hover:text-primary hover:border-primary/40 md:hidden cursor-pointer"
           aria-label="Tutup Menu"
         >
           <X size={18} />
@@ -126,23 +126,23 @@ export default function AdminSidebar({ email, onLogout, isOpen, onClose }: Admin
               onClick={onClose}
               className={`group relative flex items-center gap-3.5 rounded-xl border px-4 py-3.5 text-sm font-semibold transition-all ${
                 active
-                  ? "border-accent/20 bg-accent/10 text-text-primary shadow-inner"
+                  ? "border-primary/20 bg-primary/10 text-text-primary shadow-inner"
                   : "border-transparent text-text-secondary hover:border-border/60 hover:bg-background/40 hover:text-primary"
               }`}
             >
               {/* Active Indicator Bar */}
               {active && (
-                <span className="absolute left-0 top-1/4 h-1/2 w-1.5 rounded-r-full bg-accent" />
+                <span className="absolute left-0 top-1/4 h-1/2 w-1.5 rounded-r-full bg-primary" />
               )}
               <Icon
                 size={18}
                 className={`transition-colors ${
-                  active ? "text-accent" : "text-text-secondary group-hover:text-primary"
+                  active ? "text-primary" : "text-text-secondary group-hover:text-primary"
                 }`}
               />
               <span>{item.label}</span>
               {item.href === "/admin/kontak" && unreadCount > 0 && (
-                <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-accent px-1.5 text-[10px] font-bold text-white">
+                <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-md bg-primary px-1.5 text-[10px] font-bold text-white">
                   {unreadCount}
                 </span>
               )}
@@ -171,7 +171,7 @@ export default function AdminSidebar({ email, onLogout, isOpen, onClose }: Admin
 
         {email && (
           <div className="mt-2 flex items-center gap-3 border-t border-border/40 px-4 pt-3.5">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr from-primary to-accent font-bold text-xs text-white uppercase shadow-md shadow-primary/10">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-tr from-primary to-primary font-bold text-xs text-white uppercase shadow-md shadow-primary/10">
               {getInitials(email)}
             </div>
             <div className="min-w-0 flex-1">

@@ -52,7 +52,7 @@ export default function InfoCarousel() {
   };
 
   return (
-    <div className="relative left-1/2 w-[min(96vw,1720px)] -translate-x-1/2 overflow-hidden rounded-[2rem] border border-border/80 bg-surface/70 shadow-2xl shadow-black/25">
+    <div className="relative left-1/2 w-[min(96vw,1720px)] -translate-x-1/2 overflow-hidden rounded-2xl border border-border/80 bg-surface/70 shadow-sm shadow-black/25">
       <div className="relative min-h-[720px] sm:min-h-[760px] md:min-h-[min(88vh,920px)]">
         {slides.map((slide, index) => (
           <article
@@ -78,10 +78,10 @@ export default function InfoCarousel() {
             <div className="absolute inset-0 bg-gradient-to-t from-background via-background/45 to-background/10 md:bg-gradient-to-r md:from-background/95 md:via-background/55 md:to-background/10" />
 
             <div className="relative z-10 flex h-full max-w-4xl flex-col justify-end px-6 pb-24 pt-16 sm:px-10 md:px-16 lg:px-20 xl:px-24">
-              <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-accent sm:text-sm">
+              <p className="mb-4 text-xs font-bold uppercase tracking-[0.2em] text-primary sm:text-sm">
                 Info GKPI
               </p>
-              <h3 className="text-3xl font-bold leading-tight text-white drop-shadow-lg sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
+              <h3 className="text-3xl font-bold leading-tight text-white drop-shadow-sm sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
                 {slide.title}
               </h3>
               <p className="mt-5 max-w-2xl text-sm leading-relaxed text-slate-200 drop-shadow sm:text-base md:text-lg">
@@ -89,7 +89,7 @@ export default function InfoCarousel() {
               </p>
               <Link
                 href="#"
-                className="mt-8 inline-flex w-fit items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white shadow-lg shadow-black/30 transition-colors duration-200 hover:bg-primary-dark sm:px-7 sm:py-3.5"
+                className="mt-8 inline-flex w-fit items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-bold text-white shadow-sm shadow-black/30 transition-colors duration-200 hover:bg-primary-dark sm:px-7 sm:py-3.5"
               >
                 Baca Selengkapnya
                 <ChevronRight size={17} />
@@ -107,7 +107,7 @@ export default function InfoCarousel() {
             onClick={() => setActiveIndex(index)}
             className={`h-2.5 rounded-full transition-all duration-300 ${
               index === activeIndex
-                ? "w-8 bg-accent"
+                ? "w-8 bg-primary"
                 : "w-2.5 bg-text-secondary/35 hover:bg-text-secondary/60"
             }`}
             aria-label={`Tampilkan info ${index + 1}`}
@@ -120,7 +120,7 @@ export default function InfoCarousel() {
         <button
           type="button"
           onClick={goToPrevious}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/70 text-text-primary backdrop-blur transition-colors hover:border-accent/60 hover:text-accent"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/70 text-text-primary backdrop-blur transition-colors hover:border-primary/60 hover:text-primary"
           aria-label="Info sebelumnya"
         >
           <ChevronLeft size={18} />
@@ -128,7 +128,7 @@ export default function InfoCarousel() {
         <button
           type="button"
           onClick={goToNext}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/70 text-text-primary backdrop-blur transition-colors hover:border-accent/60 hover:text-accent"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/70 text-text-primary backdrop-blur transition-colors hover:border-primary/60 hover:text-primary"
           aria-label="Info berikutnya"
         >
           <ChevronRight size={18} />

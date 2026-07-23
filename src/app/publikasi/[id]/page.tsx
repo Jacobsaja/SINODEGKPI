@@ -94,19 +94,19 @@ export default async function PublikasiDetailPage({ params }: Props) {
           <nav aria-label="Breadcrumb" className="mb-8 flex flex-wrap items-center gap-2">
             <Link
               href="/"
-              className="text-sm text-text-primary/75 transition-colors hover:text-accent"
+              className="text-sm text-text-primary/75 transition-colors hover:text-primary"
             >
               Beranda
             </Link>
             <ChevronRight size={14} className="text-text-primary/30" />
             <Link
               href="/publikasi"
-              className="text-sm text-text-primary/75 transition-colors hover:text-accent"
+              className="text-sm text-text-primary/75 transition-colors hover:text-primary"
             >
               Publikasi
             </Link>
             <ChevronRight size={14} className="text-text-primary/30" />
-            <span className="max-w-[200px] truncate text-sm font-medium text-accent sm:max-w-xs">
+            <span className="max-w-[200px] truncate text-sm font-medium text-primary sm:max-w-xs">
               {post.title}
             </span>
           </nav>
@@ -114,7 +114,7 @@ export default async function PublikasiDetailPage({ params }: Props) {
           <ScrollReveal>
             <Link
               href="/publikasi"
-              className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-text-secondary transition-colors hover:text-accent"
+              className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-text-secondary transition-colors hover:text-primary"
             >
               <ArrowLeft size={16} />
               Kembali ke Publikasi
@@ -137,19 +137,19 @@ export default async function PublikasiDetailPage({ params }: Props) {
 
             <div className="mb-10 flex flex-wrap gap-5 border-b border-border/50 pb-6 text-xs text-text-secondary">
               <span className="flex items-center gap-2">
-                <Calendar size={14} className="text-accent" />
+                <Calendar size={14} className="text-primary" />
                 {formatDateID(post.date)}
               </span>
               <span className="flex items-center gap-2">
-                <User size={14} className="text-accent" />
+                <User size={14} className="text-primary" />
                 {post.author}
               </span>
               <span className="flex items-center gap-2">
-                <Clock size={14} className="text-accent" />
+                <Clock size={14} className="text-primary" />
                 {post.read_time}
               </span>
               <span className="flex items-center gap-2">
-                <Eye size={14} className="text-accent" />
+                <Eye size={14} className="text-primary" />
                 {formatViewsID(post.views)} dilihat
               </span>
             </div>
@@ -166,7 +166,7 @@ export default async function PublikasiDetailPage({ params }: Props) {
               <p className="first-letter:float-left first-letter:mr-3 first-letter:mt-1 first-letter:text-5xl first-letter:font-bold first-letter:text-primary">
                 {post.content}
               </p>
-              <p className="rounded-r-lg border-l-2 border-primary/20 bg-surface/50 py-2 pl-4 text-sm italic text-text-secondary">
+              <p className="rounded-r-lg border-l-2 border-primary/20 bg-surface py-2 pl-4 text-sm italic text-text-secondary">
                 Informasi ini akan diperbarui mengikuti materi resmi dari
                 pengurus dan bidang pelayanan terkait.
               </p>
@@ -183,10 +183,10 @@ export default async function PublikasiDetailPage({ params }: Props) {
                 {post.documents.map((doc, i) => (
                   <div
                     key={i}
-                    className="flex flex-col items-center justify-between gap-4 rounded-2xl border border-border bg-surface/40 p-5 sm:flex-row"
+                    className="flex flex-col items-center justify-between gap-4 rounded-2xl border border-border bg-surface p-5 sm:flex-row"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/15 text-accent">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/15 text-primary">
                         <FileText size={20} />
                       </div>
                       <div>
@@ -204,7 +204,7 @@ export default async function PublikasiDetailPage({ params }: Props) {
                       target="_blank"
                       rel="noopener noreferrer"
                       download
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-accent px-5 py-2.5 text-xs font-bold text-background shadow transition-all hover:bg-accent/90"
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-5 py-2.5 text-xs font-bold text-background shadow transition-all hover:bg-primary/90"
                     >
                       <Download size={14} />
                       Unduh

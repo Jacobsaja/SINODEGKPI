@@ -76,7 +76,7 @@ function ProfileCard({
       }`}
     >
       <div
-        className={`relative w-full aspect-square bg-surface/50 border border-border rounded-3xl overflow-hidden shadow-lg transition-colors duration-300 group-hover:border-accent/40 flex items-center justify-center ${sizeClass}`}
+        className={`relative w-full aspect-square bg-surface border border-border rounded-2xl overflow-hidden shadow-sm transition-colors duration-300 group-hover:border-primary/40 flex items-center justify-center ${sizeClass}`}
       >
         {anggota.photo_url ? (
           <Image
@@ -98,7 +98,7 @@ function ProfileCard({
       <div className={`mt-5 space-y-1 ${sizeClass}`}>
         {anggota.role && (
           <p
-            className={`font-bold text-accent uppercase tracking-wider ${
+            className={`font-bold text-primary uppercase tracking-wider ${
               isLeader ? "text-xs" : "text-[10px]"
             }`}
           >
@@ -126,7 +126,7 @@ function SectionHeading({ title }: { title: string }) {
   return (
     <div className="text-center mb-16 md:mb-20">
       <h2 className="text-3xl md:text-4xl font-sans font-bold text-text-primary">{title}</h2>
-      <div className="w-16 h-1 mx-auto mt-6 rounded-full bg-primary/40" />
+      <div className="w-16 h-1 mx-auto mt-6 rounded-md bg-primary/40" />
     </div>
   );
 }
@@ -152,7 +152,7 @@ function SectionWrapper({
   return (
     <section
       id={id}
-      className={`py-16 md:py-24 bg-surface/30 ${isLast ? "border-t" : "border-y"} border-border/50`}
+      className={`py-16 md:py-24 bg-surface ${isLast ? "border-t" : "border-y"} border-border/50`}
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-8">{children}</div>
     </section>
@@ -170,7 +170,7 @@ function GroupCard({
   const compact = grup.anggota.filter((a) => a.variant === "compact");
 
   return (
-    <div className="bg-background/50 border border-border/60 rounded-[2.5rem] p-8 md:p-12 shadow-2xl">
+    <div className="bg-background/50 border border-border/60 rounded-2xl p-8 md:p-12 shadow-sm">
       {grup.name && (
         <h3 className="text-2xl font-bold text-center text-black mb-12">{grup.name}</h3>
       )}
@@ -269,7 +269,7 @@ export default function PengurusClient({ seksiList }: { seksiList: PengurusSeksi
 
         <div className="relative z-10 max-w-4xl mx-auto px-5 text-center space-y-4">
           <ScrollReveal>
-            <p className="text-xs font-bold uppercase tracking-[0.24em] text-accent">Struktur Organisasi</p>
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary">Struktur Organisasi</p>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-sans font-bold text-text-primary tracking-tight mt-3">
               Kepengurusan GKPI
             </h1>
@@ -282,7 +282,7 @@ export default function PengurusClient({ seksiList }: { seksiList: PengurusSeksi
 
       {/* Sticky Section Navigation */}
       {tabs.length > 0 && (
-        <div className="sticky top-[60px] z-40 bg-background/90 backdrop-blur-md border-y border-border/50 shadow-lg py-1">
+        <div className="sticky top-[60px] z-40 bg-background/90 backdrop-blur-md border-y border-border/50 shadow-sm py-1">
           <div className="max-w-7xl mx-auto px-2 sm:px-8 overflow-x-auto no-scrollbar">
             <ul ref={navRef} className="relative flex items-center w-max mx-auto sm:w-full sm:justify-center px-4">
               {tabs.map((tab) => {
@@ -295,7 +295,7 @@ export default function PengurusClient({ seksiList }: { seksiList: PengurusSeksi
                       }}
                       onClick={() => scrollToSection(tab.id)}
                       className={`relative px-5 py-4 text-sm font-bold whitespace-nowrap transition-colors duration-300 ${
-                        isActive ? "text-accent" : "text-text-secondary hover:text-accent"
+                        isActive ? "text-primary" : "text-text-secondary hover:text-primary"
                       }`}
                     >
                       {tab.label}
@@ -304,7 +304,7 @@ export default function PengurusClient({ seksiList }: { seksiList: PengurusSeksi
                 );
               })}
               <span
-                className="absolute bottom-0 h-0.5 rounded-t-full bg-accent transition-all duration-500 ease-out"
+                className="absolute bottom-0 h-0.5 rounded-t-full bg-primary transition-all duration-500 ease-out"
                 style={{ left: indicatorStyle.left, width: indicatorStyle.width }}
               />
             </ul>

@@ -237,7 +237,7 @@ function TabButton({
       onClick={onClick}
       className={`flex-1 flex items-center justify-center gap-2 py-3 text-sm font-semibold border-b-2 transition-all
         ${active
-          ? "border-accent text-accent bg-primary/10"
+          ? "border-primary text-primary bg-primary/10"
           : "border-transparent text-text-secondary hover:text-text-primary"
         }`}
     >
@@ -251,7 +251,7 @@ function TabButton({
 
 function ZoomNote() {
   return (
-    <div className="bg-background/80 backdrop-blur-sm border border-border rounded-xl px-3 py-2 text-xs text-text-secondary shadow-lg hidden lg:block">
+    <div className="bg-background/80 backdrop-blur-sm border border-border rounded-xl px-3 py-2 text-xs text-text-secondary shadow-sm hidden lg:block">
       Scroll untuk zoom · Klik marker untuk detail
     </div>
   );

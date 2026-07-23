@@ -254,12 +254,12 @@ export default function MitraPage() {
         <div className="relative z-10 mx-auto max-w-7xl">
           <ScrollReveal>
             <div className="max-w-3xl space-y-7">
-              <p className="text-xs font-bold uppercase tracking-[0.24em] text-accent">
+              <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary">
                 Mitra Pelayanan
               </p>
               <h1 className="text-4xl font-bold leading-tight text-text-primary sm:text-5xl md:text-6xl">
                 Bersama Mewujudkan{" "}
-                <span className="text-accent">Pelayanan Kristus.</span>
+                <span className="text-primary">Pelayanan Kristus.</span>
               </h1>
               <p className="max-w-2xl text-base leading-relaxed text-text-secondary md:text-lg">
                 GKPI menjalin kemitraan dengan gereja-gereja, lembaga ekumenis,
@@ -275,7 +275,7 @@ export default function MitraPage() {
                   { value: "4", label: "Benua" },
                 ].map((stat) => (
                   <div key={stat.label} className="flex flex-col">
-                    <span className="text-3xl font-bold text-accent">
+                    <span className="text-3xl font-bold text-primary">
                       {stat.value}
                     </span>
                     <span className="text-sm text-text-secondary">
@@ -295,10 +295,10 @@ export default function MitraPage() {
           <div className="mb-12 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div className="space-y-2">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
-                  <Globe size={20} className="text-accent" />
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                  <Globe size={20} className="text-primary" />
                 </div>
-                <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent">
+                <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
                   Ekumenis Internasional
                 </p>
               </div>
@@ -333,10 +333,10 @@ export default function MitraPage() {
             <div className="mb-12 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
               <div className="space-y-2">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
-                    <HandHeart size={20} className="text-accent" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                    <HandHeart size={20} className="text-primary" />
                   </div>
-                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent">
+                  <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
                     Nasional
                   </p>
                 </div>
@@ -369,8 +369,8 @@ export default function MitraPage() {
       <section className="px-5 py-16 sm:px-8 md:py-24">
         <div className="mx-auto max-w-4xl text-center">
           <ScrollReveal>
-            <div className="rounded-[2rem] border border-border/70 bg-surface/55 p-10 shadow-2xl shadow-black/15 md:p-14">
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent">
+            <div className="rounded-2xl border border-border/70 bg-surface p-10 shadow-sm shadow-black/15 md:p-14">
+              <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
                 Bergabung Bersama Kami
               </p>
               <h2 className="mt-4 text-3xl font-bold text-text-primary md:text-4xl">
@@ -384,14 +384,14 @@ export default function MitraPage() {
               <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Link
                   href="/kontak"
-                  className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-bold text-white shadow-lg transition-colors hover:bg-primary-dark"
+                  className="inline-flex items-center gap-2 rounded-md bg-primary px-8 py-3.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-primary-dark"
                 >
                   Hubungi Kami
                   <ArrowRight size={16} />
                 </Link>
                 <Link
                   href="/"
-                  className="inline-flex items-center gap-2 rounded-full border border-border px-8 py-3.5 text-sm font-medium text-text-secondary transition-all hover:border-accent/30 hover:text-text-primary"
+                  className="inline-flex items-center gap-2 rounded-full border border-border px-8 py-3.5 text-sm font-medium text-text-secondary transition-all hover:border-primary/30 hover:text-text-primary"
                 >
                   Kembali ke Beranda
                 </Link>
@@ -422,16 +422,16 @@ export default function MitraPage() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 25 }}
               transition={{ type: "spring", duration: 0.5, bounce: 0.15 }}
-              className="relative z-10 flex max-h-[85vh] w-full max-w-2xl flex-col overflow-hidden rounded-[2rem] border border-white/10 bg-surface/95 shadow-2xl backdrop-blur-xl"
+              className="relative z-10 flex max-h-[85vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-white/10 bg-surface/95 shadow-sm backdrop-blur-xl"
             >
               {/* Header */}
               <div className="relative flex items-center justify-between border-b border-border/40 px-6 py-5 md:px-8">
                 <div className="flex items-center gap-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10">
-                    <Globe size={20} className="text-accent" />
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                    <Globe size={20} className="text-primary" />
                   </div>
                   <div>
-                    <span className="inline-block rounded-full border border-accent/20 bg-accent/10 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-accent">
+                    <span className="inline-block rounded-full border border-primary/20 bg-primary/10 px-2.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-primary">
                       {selectedMitra.region}
                     </span>
                     <h2 className="mt-0.5 text-lg font-bold text-text-primary md:text-xl">
@@ -475,7 +475,7 @@ export default function MitraPage() {
 
                 {/* Scraped Content / Details */}
                 <div className="space-y-4">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-accent">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-primary">
                     Tentang Kemitraan
                   </h4>
                   {mitraDetails[selectedMitra.name] ? (
@@ -485,7 +485,7 @@ export default function MitraPage() {
                         [&>h1]:text-text-primary [&>h1]:text-xl [&>h1]:font-bold [&>h1]:mt-6 [&>h1]:mb-2
                         [&>h2]:text-text-primary [&>h2]:text-lg [&>h2]:font-bold [&>h2]:mt-6 [&>h2]:mb-2
                         [&>h3]:text-text-primary [&>h3]:text-md [&>h3]:font-semibold [&>h3]:mt-4 [&>h3]:mb-2
-                        [&_a]:text-accent [&_a]:underline [&_a]:font-medium [&_a]:hover:text-accent/80 [&_a]:transition-colors
+                        [&_a]:text-primary [&_a]:underline [&_a]:font-medium [&_a]:hover:text-primary/80 [&_a]:transition-colors
                         [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1
                         [&_li]:text-text-secondary
                         [&_strong]:text-text-primary [&_strong]:font-semibold
@@ -509,7 +509,7 @@ export default function MitraPage() {
                     href={officialWebsites[selectedMitra.name]}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-accent px-6 py-2.5 text-xs font-bold text-white shadow-lg shadow-accent/15 hover:bg-accent/90 transition-all duration-200"
+                    className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-md bg-primary px-6 py-2.5 text-xs font-bold text-white shadow-sm shadow-primary/15 hover:bg-primary/90 transition-all duration-200"
                   >
                     <Globe size={14} />
                     Kunjungi Website Resmi
@@ -557,7 +557,7 @@ function MitraCard({
       type="button"
       onClick={onOpenDetails}
       id={`mitra-card-${index}`}
-      className="group flex h-full w-full flex-col text-left rounded-3xl border border-border/70 bg-surface/55 p-6 shadow-xl shadow-black/10 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-accent/5 focus:outline-none focus:ring-2 focus:ring-accent/50"
+      className="group flex h-full w-full flex-col text-left rounded-2xl border border-border/70 bg-surface p-6 shadow-md shadow-black/10 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-primary/5 focus:outline-none focus:ring-2 focus:ring-primary/50"
     >
       {/* Logo */}
       <div className="mb-5 flex h-20 w-full items-center justify-center rounded-2xl border border-border/50 bg-background/60 p-4">
@@ -575,12 +575,12 @@ function MitraCard({
       {/* Content */}
       <div className="flex flex-1 flex-col gap-3">
         {/* Region badge */}
-        <span className="inline-block w-fit rounded-full border border-accent/20 bg-accent/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-accent">
+        <span className="inline-block w-fit rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-primary">
           {mitra.region}
         </span>
 
         {/* Name */}
-        <h3 className="text-base font-bold leading-snug text-text-primary group-hover:text-accent transition-colors duration-200">
+        <h3 className="text-base font-bold leading-snug text-text-primary group-hover:text-primary transition-colors duration-200">
           {mitra.name}
         </h3>
 
@@ -590,7 +590,7 @@ function MitraCard({
         </p>
 
         {/* Link indicator */}
-        <div className="mt-2 flex items-center gap-1.5 text-xs font-semibold text-accent opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+        <div className="mt-2 flex items-center gap-1.5 text-xs font-semibold text-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100">
           Selengkapnya
           <ArrowRight size={12} />
         </div>

@@ -21,20 +21,20 @@ export default function PengurusModal({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-md rounded-[2rem] border border-border/85 bg-surface/95 p-8 md:p-10 shadow-2xl backdrop-blur-2xl animate-slide-up"
+        className="relative w-full max-w-md rounded-2xl border border-border/85 bg-surface/95 p-8 md:p-10 shadow-sm backdrop-blur-2xl animate-slide-up"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute top-5 right-5 flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background/50 text-text-secondary hover:text-white hover:border-accent/40 transition-all cursor-pointer"
+          className="absolute top-5 right-5 flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background/50 text-text-secondary hover:text-white hover:border-primary/40 transition-all cursor-pointer"
           aria-label="Tutup"
         >
           <X size={16} />
         </button>
 
         <div className="flex flex-col items-center text-center">
-          <div className="relative w-28 h-28 shrink-0 rounded-3xl overflow-hidden border border-border bg-background/50 flex items-center justify-center">
+          <div className="relative w-28 h-28 shrink-0 rounded-2xl overflow-hidden border border-border bg-background/50 flex items-center justify-center">
             {person.photo_url ? (
               <Image src={person.photo_url} alt={person.name} fill sizes="112px" className="object-cover" />
             ) : (
@@ -44,7 +44,7 @@ export default function PengurusModal({
 
           <div className="mt-5 space-y-1">
             {person.role && (
-              <p className="text-xs font-bold text-accent uppercase tracking-wider">{person.role}</p>
+              <p className="text-xs font-bold text-primary uppercase tracking-wider">{person.role}</p>
             )}
             <h3
               className="text-xl font-bold text-white"
@@ -65,18 +65,18 @@ export default function PengurusModal({
               {person.email && (
                 <a
                   href={`mailto:${person.email}`}
-                  className="flex items-center justify-center gap-2.5 text-sm text-text-secondary hover:text-accent transition-colors"
+                  className="flex items-center justify-center gap-2.5 text-sm text-text-secondary hover:text-primary transition-colors"
                 >
-                  <Mail size={15} className="text-accent shrink-0" />
+                  <Mail size={15} className="text-primary shrink-0" />
                   {person.email}
                 </a>
               )}
               {person.phone && (
                 <a
                   href={`tel:${person.phone}`}
-                  className="flex items-center justify-center gap-2.5 text-sm text-text-secondary hover:text-accent transition-colors"
+                  className="flex items-center justify-center gap-2.5 text-sm text-text-secondary hover:text-primary transition-colors"
                 >
-                  <Phone size={15} className="text-accent shrink-0" />
+                  <Phone size={15} className="text-primary shrink-0" />
                   {person.phone}
                 </a>
               )}

@@ -54,8 +54,8 @@ export default function InfoSlideshow() {
     setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
   };
   return (
-    <div className="relative mx-auto w-full max-w-6xl overflow-hidden rounded-[2rem] border border-border/80 bg-surface shadow-[0_28px_90px_rgba(10,61,145,0.15)]">
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent/[0.03] via-transparent to-primary/[0.05]" />
+    <div className="relative mx-auto w-full max-w-6xl overflow-hidden rounded-2xl border border-border/80 bg-surface shadow-[0_28px_90px_rgba(10,61,145,0.15)]">
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/[0.03] via-transparent to-primary/[0.05]" />
       <div className="relative min-h-[760px] sm:min-h-[700px] md:min-h-[460px]">
         {slides.map((slide, index) => {
           const isActive = index === currentIndex;
@@ -78,8 +78,8 @@ export default function InfoSlideshow() {
                 />
                 <div className="absolute inset-0 bg-primary/20 mix-blend-multiply" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-surface/5 md:to-surface" />
-                <div className="absolute bottom-5 left-5 rounded-2xl border border-white/20 bg-slate-900/60 px-4 py-3 text-white shadow-lg backdrop-blur-md">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-accent">
+                <div className="absolute bottom-5 left-5 rounded-2xl border border-white/20 bg-slate-900/60 px-4 py-3 text-white shadow-sm backdrop-blur-md">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-primary">
                     Info GKPI
                   </p>
                   <p className="mt-1 text-sm font-semibold text-white">{slide.meta}</p>
@@ -88,7 +88,7 @@ export default function InfoSlideshow() {
               <div className="flex flex-col justify-center p-7 pb-16 sm:p-9 sm:pb-20 md:p-12 md:pb-12 lg:p-14">
                 <div className="space-y-5">
                   <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-text-muted">
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-accent/25 bg-accent/10 px-3 py-1 text-accent">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary/10 px-3 py-1 text-primary">
                       <FileText size={13} />
                       {slide.meta}
                     </span>
@@ -108,14 +108,14 @@ export default function InfoSlideshow() {
                   <div className="flex flex-col gap-3 pt-4 sm:flex-row">
                     <Link
                       href={slide.href}
-                      className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 text-sm font-bold text-white shadow-lg shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-dark"
+                      className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-primary px-7 text-sm font-bold text-white shadow-sm shadow-primary/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary-dark"
                     >
                       Buka Info
                       <ChevronRight size={16} />
                     </Link>
                     <Link
                       href="/profil-gkpi"
-                      className="inline-flex min-h-12 items-center justify-center rounded-full border border-border bg-slate-50 px-7 text-sm font-bold text-text-primary transition-all duration-300 hover:border-accent/40 hover:bg-slate-100"
+                      className="inline-flex min-h-12 items-center justify-center rounded-full border border-border bg-slate-50 px-7 text-sm font-bold text-text-primary transition-all duration-300 hover:border-primary/40 hover:bg-slate-100"
                     >
                       Lihat Semua
                     </Link>
@@ -148,7 +148,7 @@ export default function InfoSlideshow() {
               onClick={() => setCurrentIndex(index)}
               className={`transition-all duration-300 rounded-full ${
                 index === currentIndex 
-                  ? "w-8 h-2 bg-accent"
+                  ? "w-8 h-2 bg-primary"
                   : "w-2 h-2 bg-slate-200 hover:bg-slate-300"
               }`}
               aria-label={`Go to slide ${index + 1}`}

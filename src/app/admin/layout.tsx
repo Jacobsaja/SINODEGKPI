@@ -56,15 +56,15 @@ export default function AdminLayout({
     return (
       <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 text-text-primary">
         {/* Glow decoration */}
-        <div className="absolute -top-40 -left-40 h-[400px] w-[400px] rounded-full bg-primary/20 blur-[100px] pointer-events-none" />
-        <div className="absolute -bottom-40 -right-40 h-[400px] w-[400px] rounded-full bg-accent/15 blur-[100px] pointer-events-none" />
+        <div className="absolute -top-40 -left-40 h-[400px] w-[400px] rounded-md bg-primary/20 blur-[100px] pointer-events-none" />
+        <div className="absolute -bottom-40 -right-40 h-[400px] w-[400px] rounded-md bg-primary/15 blur-[100px] pointer-events-none" />
         
         <form
           onSubmit={handleLogin}
-          className="relative z-10 w-full max-w-md space-y-6 rounded-3xl border border-border/85 bg-surface/45 p-8 md:p-10 shadow-2xl backdrop-blur-2xl transition-all duration-300 hover:border-accent/20 animate-fade-in-up"
+          className="relative z-10 w-full max-w-md space-y-6 rounded-2xl border border-border/85 bg-surface/45 p-8 md:p-10 shadow-md backdrop-blur-2xl transition-all duration-300 hover:border-primary/20 animate-fade-in-up"
         >
           <div className="text-center space-y-2">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-primary to-accent p-0.5 shadow-lg shadow-primary/20">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-primary to-primary p-0.5 shadow-sm shadow-primary/20">
               <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-[14px] bg-background">
                 <img
                   src="/mitra/Logo_GKPI.png"
@@ -74,7 +74,7 @@ export default function AdminLayout({
               </div>
             </div>
             <div className="pt-2">
-              <p className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-accent">
+              <p className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-primary">
                 GKPI Sinode
               </p>
               <h1
@@ -104,7 +104,7 @@ export default function AdminLayout({
                 placeholder="nama@email.com"
                 value={loginEmail}
                 onChange={(e) => setLoginEmail(e.target.value)}
-                className="w-full rounded-xl border border-border bg-background/40 px-4 py-3.5 text-sm text-text-primary placeholder-text-secondary/50 outline-none transition-all focus:border-accent/50 focus:bg-background/80 focus:ring-4 focus:ring-accent/10"
+                className="w-full rounded-xl border border-border bg-background/40 px-4 py-3.5 text-sm text-text-primary placeholder-text-secondary/50 outline-none transition-all focus:border-primary/50 focus:bg-background/80 focus:ring-4 focus:ring-primary/10"
                 required
               />
             </div>
@@ -116,7 +116,7 @@ export default function AdminLayout({
                 placeholder="••••••••"
                 value={loginPassword}
                 onChange={(e) => setLoginPassword(e.target.value)}
-                className="w-full rounded-xl border border-border bg-background/40 px-4 py-3.5 text-sm text-text-primary placeholder-text-secondary/50 outline-none transition-all focus:border-accent/50 focus:bg-background/80 focus:ring-4 focus:ring-accent/10"
+                className="w-full rounded-xl border border-border bg-background/40 px-4 py-3.5 text-sm text-text-primary placeholder-text-secondary/50 outline-none transition-all focus:border-primary/50 focus:bg-background/80 focus:ring-4 focus:ring-primary/10"
                 required
               />
             </div>
@@ -125,7 +125,7 @@ export default function AdminLayout({
           <button
             type="submit"
             disabled={loggingIn}
-            className="group relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl bg-primary py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/20 transition-all hover:bg-primary-dark hover:shadow-primary/30 active:scale-[0.98] disabled:opacity-50"
+            className="group relative flex w-full cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-xl bg-primary py-3.5 text-sm font-bold text-white shadow-sm shadow-primary/20 transition-all hover:bg-primary-dark hover:shadow-primary/30 active:scale-[0.98] disabled:opacity-50"
           >
             {loggingIn ? (
               <span className="flex items-center gap-2">
@@ -170,13 +170,13 @@ export default function AdminLayout({
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface/50 text-text-secondary transition-colors hover:border-accent/40 hover:text-accent md:hidden cursor-pointer"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface text-text-secondary transition-colors hover:border-primary/40 hover:text-primary md:hidden cursor-pointer"
               aria-label="Buka Menu"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"></line><line x1="4" x2="20" y1="6" y2="6"></line><line x1="4" x2="20" y1="18" y2="18"></line></svg>
             </button>
             <div className="flex flex-col">
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-accent">GKPI Sinode</span>
+              <span className="text-[10px] font-extrabold uppercase tracking-widest text-primary">GKPI Sinode</span>
               <span className="text-sm font-bold text-white hidden md:inline-block">Admin Panel Dashboard</span>
             </div>
           </div>
@@ -186,7 +186,7 @@ export default function AdminLayout({
               href="/"
               target="_blank"
               rel="noreferrer"
-              className="text-xs font-bold text-text-secondary hover:text-accent flex items-center gap-1.5 border border-border px-3.5 py-2 rounded-xl hover:border-accent/30 bg-surface/30 hover:bg-surface/50 transition-all"
+              className="text-xs font-bold text-text-secondary hover:text-primary flex items-center gap-1.5 border border-border px-3.5 py-2 rounded-xl hover:border-primary/30 bg-surface hover:bg-surface transition-all"
             >
               Lihat Situs
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>

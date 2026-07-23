@@ -149,7 +149,7 @@ export default function JemaatFormModal({ jemaat, onClose, onSaved }: JemaatForm
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
 
       {/* Modal */}
-      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto no-scrollbar bg-surface border border-border rounded-3xl shadow-2xl">
+      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto no-scrollbar bg-surface border border-border rounded-2xl shadow-md">
         {/* Header */}
         <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 bg-surface border-b border-border rounded-t-3xl">
           <h2 className="text-lg font-bold text-text-primary">
@@ -178,7 +178,7 @@ export default function JemaatFormModal({ jemaat, onClose, onSaved }: JemaatForm
                   </div>
                 )}
               </div>
-              <label className="flex items-center gap-2 px-4 py-2.5 bg-background border border-border rounded-xl text-sm font-semibold text-text-secondary hover:border-accent/40 hover:text-text-primary cursor-pointer transition-all">
+              <label className="flex items-center gap-2 px-4 py-2.5 bg-background border border-border rounded-xl text-sm font-semibold text-text-secondary hover:border-primary/40 hover:text-text-primary cursor-pointer transition-all">
                 <Upload size={14} />
                 Pilih Foto
                 <input type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} />
@@ -262,7 +262,7 @@ export default function JemaatFormModal({ jemaat, onClose, onSaved }: JemaatForm
               <button
                 type="button"
                 onClick={addJadwal}
-                className="shrink-0 px-3.5 rounded-xl bg-primary/10 text-accent hover:bg-primary/20 transition-colors"
+                className="shrink-0 px-3.5 rounded-xl bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
                 aria-label="Tambah jadwal"
               >
                 <Plus size={16} />
@@ -273,7 +273,7 @@ export default function JemaatFormModal({ jemaat, onClose, onSaved }: JemaatForm
                 {jadwal.map((j, idx) => (
                   <span
                     key={idx}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-primary/10 text-accent"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-md bg-primary/10 text-primary"
                   >
                     {j}
                     <button type="button" onClick={() => removeJadwal(idx)} aria-label="Hapus jadwal">
@@ -296,7 +296,7 @@ export default function JemaatFormModal({ jemaat, onClose, onSaved }: JemaatForm
           </div>
 
           {error && (
-            <div className="px-4 py-3 rounded-xl bg-accent/10 border border-accent/20 text-sm text-accent">
+            <div className="px-4 py-3 rounded-xl bg-primary/10 border border-primary/20 text-sm text-primary">
               {error}
             </div>
           )}
@@ -313,7 +313,7 @@ export default function JemaatFormModal({ jemaat, onClose, onSaved }: JemaatForm
             <button
               type="submit"
               disabled={saving}
-              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-primary hover:bg-primary-dark disabled:opacity-60 text-white font-bold text-sm shadow-lg transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-primary hover:bg-primary-dark disabled:opacity-60 text-white font-bold text-sm shadow-sm transition-colors"
             >
               {saving ? (
                 <>
@@ -336,7 +336,7 @@ export default function JemaatFormModal({ jemaat, onClose, onSaved }: JemaatForm
 // ─── Small form primitives (kept local, matching existing input styling) ──────
 
 const inputClass =
-  "w-full bg-background border border-border text-text-primary placeholder:text-text-placeholder text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all";
+  "w-full bg-background border border-border text-text-primary placeholder:text-text-placeholder text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all";
 
 function Label({ children }: { children: React.ReactNode }) {
   return <p className="text-xs font-bold uppercase tracking-widest text-text-secondary/60 mb-2">{children}</p>;

@@ -113,10 +113,10 @@ export default async function Home() {
               <Link
                 key={idx}
                 href={feature.href}
-                className="group flex flex-col items-center text-center p-6 md:p-8 bg-surface/90 backdrop-blur-xl border border-border shadow-2xl rounded-[2rem] hover:-translate-y-2 hover:border-accent/30 hover:shadow-accent/10 transition-all duration-300"
+                className="group flex flex-col items-center text-center p-6 md:p-8 bg-surface backdrop-blur-xl border border-border shadow-sm rounded-2xl hover:shadow-md hover:border-primary transition-all duration-300"
               >
                 <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors">
-                  <feature.icon size={26} className="text-accent" />
+                  <feature.icon size={26} className="text-primary" />
                 </div>
                 <h3 className="text-lg font-bold text-text-primary mb-2">
                   {feature.title}
@@ -136,7 +136,7 @@ export default async function Home() {
           {/* Text side */}
           <div className="space-y-8">
             <div className="space-y-2">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Tentang Kami</p>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Tentang Kami</p>
               <h2 className="text-4xl sm:text-5xl font-sans font-bold text-text-primary leading-[1.1]">
                 Melayani dengan Hati,<br />Bertumbuh dalam Iman
               </h2>
@@ -152,7 +152,7 @@ export default async function Home() {
 
             {/* Moto Pelayanan */}
             <div className="pt-4 space-y-4">
-              <h4 className="text-sm font-bold uppercase tracking-widest text-accent">Moto Pelayanan</h4>
+              <h4 className="text-sm font-bold uppercase tracking-widest text-primary">Moto Pelayanan</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
                   "Yesus Gembala Yang Baik",
@@ -160,8 +160,8 @@ export default async function Home() {
                   "Imamat Am Orang Percaya",
                   "Membayar Hutang Penginjilan"
                 ].map((moto, i) => (
-                  <div key={i} className="flex items-center gap-3 p-4 rounded-2xl bg-surface/50 border border-border/50">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-accent text-xs font-bold shrink-0">
+                  <div key={i} className="flex items-center gap-3 p-4 rounded-2xl bg-surface border border-border/50">
+                    <div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center text-primary text-xs font-bold shrink-0">
                       {i + 1}
                     </div>
                     <span className="text-sm font-medium text-text-primary">{moto}</span>
@@ -171,7 +171,7 @@ export default async function Home() {
             </div>
             <Link
               href="/profil-gkpi"
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-bold rounded-full hover:bg-primary-dark shadow-lg transition-all duration-300"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-primary text-white text-sm font-bold rounded-md hover:bg-primary-dark shadow-sm transition-all duration-300 active:scale-95 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             >
               Selengkapnya
               <ChevronRight size={18} />
@@ -180,7 +180,7 @@ export default async function Home() {
 
           {/* Image side */}
           <div className="relative">
-            <div className="relative aspect-[4/3] rounded-[2.5rem] overflow-hidden border border-border shadow-2xl">
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-md transition-shadow duration-300">
               <Image
                 src={assets.aboutImg}
                 alt="Pelayanan GKPI"
@@ -191,7 +191,7 @@ export default async function Home() {
               <div className="absolute inset-0 bg-gradient-to-tr from-background/40 to-transparent" />
             </div>
             {/* Floating stat */}
-            <div className="absolute -bottom-8 -left-8 bg-surface rounded-[2rem] shadow-2xl border border-border p-8 hidden sm:block">
+            <div className="absolute -bottom-8 -left-8 bg-surface rounded-2xl shadow-sm border border-border p-8 hidden sm:block">
               <p className="text-4xl font-sans font-bold text-primary">65+</p>
               <p className="text-xs text-text-secondary mt-1 font-medium tracking-wide">Tahun Melayani</p>
             </div>
@@ -203,9 +203,9 @@ export default async function Home() {
       <Section pattern>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {/* Visi */}
-          <div className="bg-surface border border-border/80 rounded-[2rem] p-8 md:p-10 space-y-6 shadow-[0_20px_50px_rgba(10,61,145,0.12)] hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(10,61,145,0.2)] transition-all duration-300">
-            <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center">
-              <ShieldCheck size={28} className="text-accent" />
+          <div className="bg-surface border border-border rounded-2xl p-8 md:p-10 space-y-6 shadow-sm hover:shadow-md hover:border-primary transition-all duration-300">
+            <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <ShieldCheck size={28} className="text-primary" />
             </div>
             <div className="space-y-4">
               <h3 className="text-2xl font-sans font-bold text-text-primary">Visi</h3>
@@ -216,9 +216,9 @@ export default async function Home() {
           </div>
 
           {/* Misi */}
-          <div className="bg-surface border border-border/80 rounded-[2rem] p-8 md:p-10 space-y-6 shadow-[0_20px_50px_rgba(10,61,145,0.12)] hover:-translate-y-1.5 hover:shadow-[0_24px_60px_rgba(10,61,145,0.2)] transition-all duration-300">
-            <div className="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center">
-              <HeartHandshake size={28} className="text-accent" />
+          <div className="bg-surface border border-border rounded-2xl p-8 md:p-10 space-y-6 shadow-sm hover:shadow-md hover:border-primary transition-all duration-300">
+            <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <HeartHandshake size={28} className="text-primary" />
             </div>
             <div className="space-y-4">
               <h3 className="text-2xl font-sans font-bold text-text-primary">Misi</h3>
@@ -264,7 +264,7 @@ export default async function Home() {
         <div className="mt-16 text-center">
           <Link
             href="/publikasi"
-            className="inline-flex items-center gap-2 text-sm text-accent font-bold hover:underline underline-offset-8 transition-all"
+            className="inline-flex items-center gap-2 text-sm text-primary font-bold hover:text-primary-dark hover:underline underline-offset-8 transition-all"
           >
             Lihat semua publikasi
             <ChevronRight size={16} />
@@ -283,7 +283,7 @@ export default async function Home() {
             <Link
               key={i}
               href="/mitra"
-              className="group relative w-full max-w-[170px] md:max-w-[180px] justify-self-center aspect-square bg-surface/90 rounded-3xl border border-border flex items-center justify-center p-3 hover:bg-white/5 hover:border-accent/30 transition-all duration-300"
+              className="group relative w-full max-w-[170px] md:max-w-[180px] justify-self-center aspect-square bg-surface rounded-2xl border border-border flex items-center justify-center p-3 hover:shadow-md hover:border-primary transition-all duration-300"
             >
               <div className="relative h-[60%] w-[60%] grayscale-0 opacity-100 transition-all duration-300">
                 <Image
@@ -304,7 +304,7 @@ export default async function Home() {
         <div className="mt-12 text-center">
           <Link
             href="/mitra"
-            className="inline-flex items-center gap-2 text-sm text-accent font-bold hover:underline underline-offset-8 transition-all"
+            className="inline-flex items-center gap-2 text-sm text-primary font-bold hover:text-primary-dark hover:underline underline-offset-8 transition-all"
           >
             Lihat semua mitra
             <ChevronRight size={16} />
@@ -329,14 +329,14 @@ export default async function Home() {
                 { icon: Mail, title: "Email", content: "info@gkpi.or.id", isLink: true, href: "mailto:info@gkpi.or.id" },
                 { icon: Globe, title: "Jam Pelayanan", content: "Senin – Jumat, 08.00 – 16.00 WIB" },
               ].map((item, idx) => (
-                <div key={idx} className="flex items-start gap-5 p-6 rounded-3xl bg-surface border border-border hover:border-accent/20 transition-all">
+                <div key={idx} className="flex items-start gap-5 p-6 rounded-2xl bg-surface border border-border hover:shadow-md hover:border-primary transition-all duration-300">
                   <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center shrink-0">
-                    <item.icon size={20} className="text-accent" />
+                    <item.icon size={20} className="text-primary" />
                   </div>
                   <div>
                     <p className="text-sm font-bold text-text-primary tracking-wide">{item.title}</p>
                     {item.isLink ? (
-                      <a href={item.href} className="text-sm text-accent hover:underline underline-offset-4 mt-1 block">
+                      <a href={item.href} className="text-sm text-primary hover:text-primary-dark hover:underline underline-offset-4 mt-1 block transition-colors">
                         {item.content}
                       </a>
                     ) : (
@@ -351,7 +351,7 @@ export default async function Home() {
           </div>
 
           {/* Contact form */}
-          <div className="lg:col-span-3 rounded-[2.5rem] p-10 md:p-14 shadow-2xl border border-border" style={{ background: "linear-gradient(135deg, #F8FAFC 0%, #FFFFFF 100%)", boxShadow: "0 20px 50px rgba(14, 99, 233, 0.15)" }}>
+          <div className="lg:col-span-3 rounded-2xl p-10 md:p-14 shadow-sm border border-border bg-surface hover:shadow-md transition-shadow duration-300">
             <h3 className="text-3xl font-sans font-bold text-text-primary mb-8">Kirim Pesan</h3>
             <form className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -362,7 +362,7 @@ export default async function Home() {
                   <input
                     type="text"
                     placeholder="Masukkan nama Anda"
-                    className="w-full bg-background/50 border border-border text-text-primary placeholder:text-text-secondary/30 text-sm rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 focus:bg-background/80 transition-all"
+                    className="w-full bg-surface border border-border text-text-primary placeholder:text-text-muted text-sm rounded-md px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent hover:border-primary transition-all duration-200"
                   />
                 </div>
                 <div className="space-y-2">
@@ -372,7 +372,7 @@ export default async function Home() {
                   <input
                     type="email"
                     placeholder="email@contoh.com"
-                    className="w-full bg-background/50 border border-border text-text-primary placeholder:text-text-secondary/30 text-sm rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 focus:bg-background/80 transition-all"
+                    className="w-full bg-surface border border-border text-text-primary placeholder:text-text-muted text-sm rounded-md px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent hover:border-primary transition-all duration-200"
                   />
                 </div>
               </div>
@@ -383,7 +383,7 @@ export default async function Home() {
                 <input
                   type="text"
                   placeholder="Mengenai apa?"
-                  className="w-full bg-background/50 border border-border text-text-primary placeholder:text-text-secondary/30 text-sm rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 focus:bg-background/80 transition-all"
+                  className="w-full bg-surface border border-border text-text-primary placeholder:text-text-muted text-sm rounded-md px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent hover:border-primary transition-all duration-200"
                 />
               </div>
               <div className="space-y-2">
@@ -393,12 +393,12 @@ export default async function Home() {
                 <textarea
                   rows={4}
                   placeholder="Tulis pesan Anda di sini..."
-                  className="w-full bg-background/50 border border-border text-text-primary placeholder:text-text-secondary/30 text-sm rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 focus:bg-background/80 transition-all resize-none"
+                  className="w-full bg-surface border border-border text-text-primary placeholder:text-text-muted text-sm rounded-md px-5 py-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent hover:border-primary transition-all duration-200 resize-none"
                 />
               </div>
               <button
                 type="submit"
-                className="w-full py-4 bg-primary text-white text-base font-bold rounded-2xl hover:bg-primary-dark shadow-xl transition-all duration-300 mt-4"
+                className="w-full py-4 bg-primary text-white text-base font-bold rounded-md hover:bg-primary-dark shadow-sm transition-all duration-300 mt-4 active:scale-95 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               >
                 Kirim Pesan
               </button>

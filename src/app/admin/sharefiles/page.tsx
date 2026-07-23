@@ -186,7 +186,7 @@ export default function ShareFilesListPage() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white flex items-center gap-2.5">
-            <FolderLock size={24} className="text-accent" />
+            <FolderLock size={24} className="text-primary" />
             Share Files
           </h1>
           <p className="text-sm text-text-secondary mt-1">
@@ -210,7 +210,7 @@ export default function ShareFilesListPage() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             onSubmit={handleCreate}
-            className="overflow-hidden rounded-2xl border border-border bg-surface/30 p-6 space-y-4"
+            className="overflow-hidden rounded-2xl border border-border bg-surface p-6 space-y-4"
           >
             <h3 className="font-bold text-white text-sm">Folder Baru</h3>
             <div className="grid md:grid-cols-2 gap-4">
@@ -221,7 +221,7 @@ export default function ShareFilesListPage() {
                   value={form.title}
                   onChange={(e) => setForm({ ...form, title: e.target.value })}
                   placeholder="Contoh: Arsip Notulen Sinode 2026"
-                  className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 transition-all"
+                  className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 transition-all"
                 />
               </div>
               <div className="space-y-1.5">
@@ -229,7 +229,7 @@ export default function ShareFilesListPage() {
                 <select
                   value={form.access_mode}
                   onChange={(e) => setForm({ ...form, access_mode: e.target.value as "email" | "code" })}
-                  className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 transition-all cursor-pointer"
+                  className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 transition-all cursor-pointer"
                 >
                   <option value="email">Email terdaftar</option>
                   <option value="code">Kode registrasi</option>
@@ -245,7 +245,7 @@ export default function ShareFilesListPage() {
                   value={form.access_code}
                   onChange={(e) => setForm({ ...form, access_code: e.target.value })}
                   placeholder="Contoh: SINODE2026"
-                  className="w-full md:w-1/2 rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 transition-all"
+                  className="w-full md:w-1/2 rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 transition-all"
                 />
               </div>
             )}
@@ -256,7 +256,7 @@ export default function ShareFilesListPage() {
                 value={form.description}
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
                 rows={2}
-                className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 transition-all"
+                className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 transition-all"
               />
             </div>
 
@@ -290,13 +290,13 @@ export default function ShareFilesListPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Cari judul atau deskripsi folder..."
-            className="w-full rounded-xl border border-border bg-surface/30 pl-11 pr-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 transition-all"
+            className="w-full rounded-xl border border-border bg-surface pl-11 pr-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 transition-all"
           />
         </div>
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value as "all" | "draft" | "published")}
-          className="rounded-xl border border-border bg-surface/30 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 transition-all cursor-pointer"
+          className="rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 transition-all cursor-pointer"
         >
           <option value="all">Semua Status</option>
           <option value="draft">Draf</option>
@@ -308,7 +308,7 @@ export default function ShareFilesListPage() {
       <div className="overflow-x-auto rounded-2xl border border-border">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border bg-surface/40 text-left text-[11px] font-bold uppercase tracking-wider text-text-secondary">
+            <tr className="border-b border-border bg-surface text-left text-[11px] font-bold uppercase tracking-wider text-text-secondary">
               <th className="px-5 py-3.5">
                 <button onClick={() => toggleSort("title")} className="flex items-center gap-1.5 cursor-pointer hover:text-primary">
                   Judul <ArrowUpDown size={12} />
@@ -354,19 +354,19 @@ export default function ShareFilesListPage() {
                           value={editValue}
                           onChange={(e) => setEditValue(e.target.value)}
                           onKeyDown={(e) => e.key === "Enter" && saveEditCell()}
-                          className="rounded-lg border border-accent/40 bg-background/60 px-2.5 py-1.5 text-sm text-text-primary outline-none w-48"
+                          className="rounded-lg border border-primary/40 bg-background/60 px-2.5 py-1.5 text-sm text-text-primary outline-none w-48"
                         />
                         <button onClick={saveEditCell} className="text-success cursor-pointer"><Check size={16} /></button>
                         <button onClick={() => setEditingCell(null)} className="text-text-secondary cursor-pointer"><X size={16} /></button>
                       </div>
                     ) : (
                       <div className="flex items-center gap-2 group">
-                        <Link href={`/admin/sharefiles/${f.id}`} className="font-bold text-text-primary hover:text-accent transition-colors">
+                        <Link href={`/admin/sharefiles/${f.id}`} className="font-bold text-text-primary hover:text-primary transition-colors">
                           {f.title}
                         </Link>
                         <button
                           onClick={() => startEditCell(f.id, "title", f.title)}
-                          className="opacity-0 group-hover:opacity-100 text-text-secondary hover:text-accent transition-all cursor-pointer"
+                          className="opacity-0 group-hover:opacity-100 text-text-secondary hover:text-primary transition-all cursor-pointer"
                         >
                           <Pencil size={12} />
                         </button>
@@ -382,7 +382,7 @@ export default function ShareFilesListPage() {
                           value={editValue}
                           onChange={(e) => setEditValue(e.target.value)}
                           onKeyDown={(e) => e.key === "Enter" && saveEditCell()}
-                          className="rounded-lg border border-accent/40 bg-background/60 px-2.5 py-1.5 text-sm text-text-primary outline-none w-56"
+                          className="rounded-lg border border-primary/40 bg-background/60 px-2.5 py-1.5 text-sm text-text-primary outline-none w-56"
                         />
                         <button onClick={saveEditCell} className="text-success cursor-pointer"><Check size={16} /></button>
                         <button onClick={() => setEditingCell(null)} className="text-text-secondary cursor-pointer"><X size={16} /></button>
@@ -394,7 +394,7 @@ export default function ShareFilesListPage() {
                         </span>
                         <button
                           onClick={() => startEditCell(f.id, "description", f.description ?? "")}
-                          className="opacity-0 group-hover:opacity-100 shrink-0 text-text-secondary hover:text-accent transition-all cursor-pointer"
+                          className="opacity-0 group-hover:opacity-100 shrink-0 text-text-secondary hover:text-primary transition-all cursor-pointer"
                         >
                           <Pencil size={12} />
                         </button>
@@ -444,7 +444,7 @@ export default function ShareFilesListPage() {
                     <div className="flex items-center justify-end gap-2">
                       <Link
                         href={`/admin/sharefiles/${f.id}`}
-                        className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:text-accent transition-colors cursor-pointer"
+                        className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:text-primary transition-colors cursor-pointer"
                       >
                         Buka <ChevronRight size={14} />
                       </Link>

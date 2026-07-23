@@ -436,13 +436,13 @@ function AccordionItem({
           aria-expanded={isOpen}
           className={`w-12 h-12 md:w-14 md:h-14 rounded-full border-2 flex items-center justify-center z-10 transition-all duration-300 shrink-0
             ${isOpen
-              ? "bg-accent border-accent shadow-[0_0_20px_rgba(111,168,220,0.4)]"
-              : "bg-surface border-border group-hover:border-accent/50"
+              ? "bg-primary border-primary shadow-sm"
+              : "bg-surface border-border group-hover:border-primary/50"
             }`}
         >
           <span
             className={`font-serif font-bold text-xs md:text-sm ${
-              isOpen ? "text-background" : "text-accent"
+              isOpen ? "text-background" : "text-primary"
             }`}
           >
             {item.tahun.slice(-2)}
@@ -451,7 +451,7 @@ function AccordionItem({
         {index < sejarahTimeline.length - 1 && (
           <div
             className={`w-0.5 flex-1 mt-2 transition-colors duration-500 ${
-              isOpen ? "bg-accent/30" : "bg-border/50"
+              isOpen ? "bg-primary/30" : "bg-border/50"
             }`}
           />
         )}
@@ -467,15 +467,15 @@ function AccordionItem({
           <div
             className={`flex items-center justify-between p-5 md:p-6 rounded-2xl border transition-all duration-300 cursor-pointer
               ${isOpen
-                ? "bg-surface/80 border-accent/30 shadow-lg shadow-accent/5"
-                : "bg-surface/40 border-border/60 hover:border-accent/20 hover:bg-surface/60"
+                ? "bg-surface border-primary/30 shadow-sm shadow-primary/5"
+                : "bg-surface border-border/60 hover:border-primary/20 hover:bg-surface"
               }`}
           >
             <div className="flex items-center gap-4">
               <span
                 className={`text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full transition-colors duration-300
                   ${isOpen
-                    ? "bg-accent/20 text-accent"
+                    ? "bg-primary/20 text-primary"
                     : "bg-primary/10 text-text-secondary"
                   }`}
               >
@@ -491,7 +491,7 @@ function AccordionItem({
             </div>
             <ChevronDown
               size={20}
-              className={`shrink-0 text-accent transition-transform duration-300 ${
+              className={`shrink-0 text-primary transition-transform duration-300 ${
                 isOpen ? "rotate-180" : ""
               }`}
             />
@@ -635,20 +635,20 @@ export default function ProfilGKPIPage() {
           <nav aria-label="Breadcrumb" className="mb-8 flex items-center gap-2">
             <Link
               href="/"
-              className="flex items-center gap-1.5 text-sm text-text-primary/75 transition-colors hover:text-accent"
+              className="flex items-center gap-1.5 text-sm text-text-primary/75 transition-colors hover:text-primary"
             >
               <ArrowLeft size={14} />
               Beranda
             </Link>
             <ChevronRight size={14} className="text-text-primary/30" />
-            <span className="text-sm font-medium text-accent">
+            <span className="text-sm font-medium text-primary">
               Profil GKPI
             </span>
           </nav>
 
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
             <ScrollReveal>
-              <p className="mb-5 text-xs font-bold uppercase tracking-[0.3em] text-accent drop-shadow-lg">
+              <p className="mb-5 text-xs font-bold uppercase tracking-[0.3em] text-primary drop-shadow-sm">
                 Gereja Kristen Protestan Indonesia
               </p>
               <h1
@@ -656,7 +656,7 @@ export default function ProfilGKPIPage() {
               >
                 Profil dan Identitas GKPI
               </h1>
-              <p className="max-w-2xl text-base leading-8 text-text-primary/90 drop-shadow-lg md:text-xl">
+              <p className="max-w-2xl text-base leading-8 text-text-primary/90 drop-shadow-sm md:text-xl">
                 Mengenal lebih dalam Gereja Kristen Protestan Indonesia — sejarah,
                 visi misi, dan identitas gereja yang telah melayani selama lebih
                 dari 60 tahun.
@@ -673,7 +673,7 @@ export default function ProfilGKPIPage() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-surface/80 px-5 text-sm font-semibold text-text-primary backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:border-accent/50 hover:bg-primary/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+                    className="inline-flex min-h-11 items-center justify-center rounded-full border border-border bg-surface px-5 text-sm font-semibold text-text-primary backdrop-blur-md transition duration-300 hover:-translate-y-0.5 hover:border-primary/50 hover:bg-primary/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
                   >
                     {item.label}
                   </Link>
@@ -687,10 +687,10 @@ export default function ProfilGKPIPage() {
                 {quickFacts.map((fact) => (
                   <div
                     key={fact.label}
-                    className="flex items-center gap-4 rounded-2xl border border-border/70 bg-surface/70 p-5 shadow-xl shadow-black/10 backdrop-blur"
+                    className="flex items-center gap-4 rounded-2xl border border-border/70 bg-surface/70 p-5 shadow-md shadow-black/10 backdrop-blur"
                   >
                     <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15">
-                      <fact.icon size={22} className="text-accent" />
+                      <fact.icon size={22} className="text-primary" />
                     </div>
                     <div>
                       <p className="text-xs font-bold uppercase tracking-[0.18em] text-text-secondary">
@@ -718,7 +718,7 @@ export default function ProfilGKPIPage() {
                   className="rounded-2xl border border-white/10 bg-background/35 px-4 py-4 shadow-[0_18px_50px_rgba(0,0,0,0.2)] backdrop-blur-md"
                 >
                   <span
-                    className="block text-3xl font-bold text-accent md:text-4xl"
+                    className="block text-3xl font-bold text-primary md:text-4xl"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     {stat.angka}
@@ -737,7 +737,7 @@ export default function ProfilGKPIPage() {
       <Section id="sejarah-singkat" className="!py-16 md:!py-24">
         <div className="grid grid-cols-1 gap-12 lg:gap-16 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
           <div className="space-y-5">
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent">
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
               Sejarah Singkat
             </p>
             <h2 className="text-3xl font-bold text-text-primary md:text-4xl leading-tight">
@@ -754,10 +754,10 @@ export default function ProfilGKPIPage() {
             {historyShort.map((item) => (
               <article
                 key={item.title}
-                className="flex flex-col h-full justify-between rounded-3xl border border-border/70 bg-surface/55 p-7 shadow-xl shadow-black/10 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-accent/5"
+                className="flex flex-col h-full justify-between rounded-2xl border border-border/70 bg-surface p-7 shadow-md shadow-black/10 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-primary/5"
               >
                 <div>
-                  <p className="text-sm font-bold text-accent">{item.year}</p>
+                  <p className="text-sm font-bold text-primary">{item.year}</p>
                   <h3 className="mt-3 text-lg font-bold text-text-primary leading-snug">
                     {item.title}
                   </h3>
@@ -778,7 +778,7 @@ export default function ProfilGKPIPage() {
       >
         <ScrollReveal>
           <div className="max-w-xl mb-16">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-accent mb-3">
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-3">
               Perjalanan Iman
             </p>
             <h2
@@ -812,14 +812,14 @@ export default function ProfilGKPIPage() {
       </section>
 
       {/* ── Pokok Iman (from tentang-gkpi) ─────────────────────────────────── */}
-      <section className="border-y border-border/60 bg-surface/30 px-5 py-16 sm:px-8 md:py-20">
+      <section className="border-y border-border/60 bg-surface px-5 py-16 sm:px-8 md:py-20">
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 lg:grid-cols-2 lg:items-center">
           <ScrollReveal>
-            <div className="rounded-3xl border border-border/70 bg-background/75 p-8 shadow-2xl shadow-black/15 md:p-10">
+            <div className="rounded-2xl border border-border/70 bg-background/75 p-8 shadow-sm shadow-black/15 md:p-10">
               <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/15">
-                <ShieldCheck size={28} className="text-accent" />
+                <ShieldCheck size={28} className="text-primary" />
               </div>
-              <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent">
+              <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
                 Pokok Iman
               </p>
               <h2 className="mt-3 text-3xl font-bold text-text-primary md:text-4xl">
@@ -840,7 +840,7 @@ export default function ProfilGKPIPage() {
                   key={point}
                   className="flex items-start gap-4 rounded-2xl border border-border/60 bg-background/50 p-5"
                 >
-                  <BookOpen size={21} className="mt-0.5 shrink-0 text-accent" />
+                  <BookOpen size={21} className="mt-0.5 shrink-0 text-primary" />
                   <p className="text-text-secondary">{point}</p>
                 </div>
               ))}
@@ -856,7 +856,7 @@ export default function ProfilGKPIPage() {
       >
         <ScrollReveal>
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-accent mb-3">
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-3">
               Visi & Misi
             </p>
             <h2
@@ -868,7 +868,7 @@ export default function ProfilGKPIPage() {
 
             {/* Visi Card */}
             <div
-              className="relative rounded-3xl p-8 md:p-10 mb-4 overflow-hidden border border-amber-500/30"
+              className="relative rounded-2xl p-8 md:p-10 mb-4 overflow-hidden border border-amber-500/30"
               style={{
                 background:
                   "linear-gradient(135deg, rgba(245,158,11,0.08) 0%, rgba(248,250,252,0.95) 100%)",
@@ -907,7 +907,7 @@ export default function ProfilGKPIPage() {
           {misiCards.map((item, idx) => (
             <ScrollReveal key={idx}>
               <article
-                className={`relative group rounded-3xl p-7 md:p-8 border transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl overflow-hidden ${item.border}`}
+                className={`relative group rounded-2xl p-7 md:p-8 border transition-all duration-300 hover:-translate-y-1 hover:shadow-sm overflow-hidden ${item.border}`}
                 style={{
                   background: `linear-gradient(135deg, ${item.warna
                     .replace("from-", "")
@@ -917,7 +917,7 @@ export default function ProfilGKPIPage() {
                 }}
               >
                 {/* Glow effect on hover */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl"
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"
                   style={{ background: "radial-gradient(ellipse at top left, rgba(111,168,220,0.06), transparent 70%)" }} />
 
                 <div
@@ -956,7 +956,7 @@ export default function ProfilGKPIPage() {
       >
         <ScrollReveal>
           <div className="max-w-7xl mx-auto">
-            <p className="text-center text-xs font-bold uppercase tracking-[0.25em] text-accent mb-10">
+            <p className="text-center text-xs font-bold uppercase tracking-[0.25em] text-primary mb-10">
               Motto Pelayanan GKPI
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -984,10 +984,10 @@ export default function ProfilGKPIPage() {
               ].map((m) => (
                 <div
                   key={m.num}
-                  className="group flex items-center gap-4 p-6 rounded-2xl border border-border/60 bg-surface/40 hover:border-accent/30 hover:bg-surface/70 transition-all duration-300 min-h-[72px]"
+                  className="group flex items-center gap-4 p-6 rounded-2xl border border-border/60 bg-surface hover:border-primary/30 hover:bg-surface/70 transition-all duration-300 min-h-[72px]"
                 >
                   <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
-                    <m.icon size={18} className="text-accent" />
+                    <m.icon size={18} className="text-primary" />
                   </div>
                   <p className="text-text-primary font-medium leading-tight text-base">
                     {m.teks}
@@ -1002,11 +1002,11 @@ export default function ProfilGKPIPage() {
       {/* ── Kepemimpinan & Lembaga Pelayanan (from tentang-gkpi) ─────────────── */}
       <Section id="pemimpin-lembaga" className="!py-14 md:!py-20 border-b border-border/40">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <article className="rounded-3xl border border-border/70 bg-surface/55 p-8 shadow-xl shadow-black/10">
+          <article className="rounded-2xl border border-border/70 bg-surface p-8 shadow-md shadow-black/10">
             <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15">
-              <Church size={24} className="text-accent" />
+              <Church size={24} className="text-primary" />
             </div>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
               Pimpinan 2025-2030
             </p>
             <h2 className="mt-3 text-2xl font-bold text-text-primary">
@@ -1024,11 +1024,11 @@ export default function ProfilGKPIPage() {
             </div>
           </article>
 
-          <article className="rounded-3xl border border-border/70 bg-surface/55 p-8 shadow-xl shadow-black/10 lg:col-span-2">
+          <article className="rounded-2xl border border-border/70 bg-surface p-8 shadow-md shadow-black/10 lg:col-span-2">
             <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15">
-              <HandHeart size={24} className="text-accent" />
+              <HandHeart size={24} className="text-primary" />
             </div>
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
               Lembaga Pelayanan
             </p>
             <h2 className="mt-3 text-2xl font-bold text-text-primary">
@@ -1040,7 +1040,7 @@ export default function ProfilGKPIPage() {
                   key={institution}
                   className="flex items-center gap-3 rounded-xl border border-border/50 bg-background/45 px-4 py-3"
                 >
-                  <Building2 size={17} className="shrink-0 text-accent" />
+                  <Building2 size={17} className="shrink-0 text-primary" />
                   <span className="text-sm text-text-secondary">
                     {institution}
                   </span>
@@ -1053,11 +1053,11 @@ export default function ProfilGKPIPage() {
 
       {/* ── Wilayah Pelayanan (from tentang-gkpi) ────────────────────────────── */}
       <section id="wilayah-pelayanan" className="px-5 py-20 sm:px-8 md:py-28 border-b border-border/40 bg-surface/10">
-        <div className="mx-auto max-w-7xl rounded-[2rem] border border-border/70 bg-surface/55 p-7 shadow-2xl shadow-black/15 md:p-10">
+        <div className="mx-auto max-w-7xl rounded-2xl border border-border/70 bg-surface p-7 shadow-sm shadow-black/15 md:p-10">
           <ScrollReveal>
             <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.22em] text-accent">
+                <p className="text-xs font-bold uppercase tracking-[0.22em] text-primary">
                   Wilayah Pelayanan
                 </p>
                 <h2 className="mt-3 text-3xl font-bold text-text-primary">
@@ -1076,7 +1076,7 @@ export default function ProfilGKPIPage() {
                   key={region}
                   className="flex items-center gap-3 rounded-xl border border-border/50 bg-background/45 px-4 py-3"
                 >
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-xs font-bold text-accent">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-xs font-bold text-primary">
                     {index + 1}
                   </div>
                   <span className="text-sm text-text-secondary">{region}</span>
@@ -1086,7 +1086,7 @@ export default function ProfilGKPIPage() {
 
             <div className="mt-10 flex flex-col items-start justify-between gap-5 rounded-2xl border border-border/60 bg-background/55 p-6 md:flex-row md:items-center">
               <div className="flex items-start gap-4">
-                <Users size={24} className="mt-1 shrink-0 text-accent" />
+                <Users size={24} className="mt-1 shrink-0 text-primary" />
                 <div>
                   <h3 className="text-xl font-bold text-text-primary">
                     Ingin mengenal pelayanan GKPI lebih lanjut?
@@ -1098,7 +1098,7 @@ export default function ProfilGKPIPage() {
               </div>
               <Link
                 href="/kontak"
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-primary-dark"
+                className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-primary-dark"
               >
                 Hubungi Kami
                 <ArrowRight size={16} />
@@ -1115,7 +1115,7 @@ export default function ProfilGKPIPage() {
       >
         <ScrollReveal>
           <div className="max-w-xl mb-14">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-accent mb-3">
+            <p className="text-xs font-bold uppercase tracking-[0.25em] text-primary mb-3">
               Dokumen Resmi
             </p>
             <h2
@@ -1137,26 +1137,26 @@ export default function ProfilGKPIPage() {
               <button
                 type="button"
                 onClick={() => openDocument(idx)}
-                className="w-full text-left group flex flex-col gap-5 p-7 rounded-3xl border border-border/60 bg-surface/50 hover:border-accent/30 hover:bg-surface/80 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-accent/5 transition-all duration-300 min-h-[200px] cursor-pointer"
+                className="w-full text-left group flex flex-col gap-5 p-7 rounded-2xl border border-border/60 bg-surface hover:border-primary/30 hover:bg-surface hover:-translate-y-1 hover:shadow-md hover:shadow-primary/5 transition-all duration-300 min-h-[200px] cursor-pointer"
                 style={{ backdropFilter: "blur(12px)" }}
               >
                 <div className="flex items-start justify-between w-full">
-                  <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-border/60 flex items-center justify-center group-hover:bg-accent/10 group-hover:border-accent/20 transition-colors">
-                    <dok.icon size={22} className="text-accent" />
+                  <div className="w-12 h-12 rounded-2xl bg-primary/10 border border-border/60 flex items-center justify-center group-hover:bg-primary/10 group-hover:border-primary/20 transition-colors">
+                    <dok.icon size={22} className="text-primary" />
                   </div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-accent/10 text-accent border border-accent/20">
+                  <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-primary/10 text-primary border border-primary/20">
                     {dok.tag}
                   </span>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-text-primary mb-2 group-hover:text-accent transition-colors">
+                  <h3 className="text-lg font-bold text-text-primary mb-2 group-hover:text-primary transition-colors">
                     {dok.judul}
                   </h3>
                   <p className="text-sm text-text-secondary leading-relaxed">
                     {dok.deskripsi}
                   </p>
                 </div>
-                <div className="flex items-center gap-1.5 text-accent text-sm font-semibold mt-auto opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-300">
+                <div className="flex items-center gap-1.5 text-primary text-sm font-semibold mt-auto opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all duration-300">
                   <span>Lihat selengkapnya</span>
                   <ChevronRight size={16} />
                 </div>
@@ -1179,7 +1179,7 @@ export default function ProfilGKPIPage() {
 
             {/* Modal Body */}
             <div
-              className="relative flex h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-border/60 shadow-2xl animate-slide-up md:h-[80vh]"
+              className="relative flex h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-border/60 shadow-sm animate-slide-up md:h-[80vh]"
               style={{
                 background: "linear-gradient(160deg, rgba(255,255,255,0.98) 0%, rgba(248,250,252,0.98) 100%)",
                 boxShadow: "0 28px 90px rgba(15,23,42,0.16), 0 0 40px rgba(14,99,233,0.08)",
@@ -1188,16 +1188,16 @@ export default function ProfilGKPIPage() {
               {/* Header */}
               <div className="flex items-center justify-between p-6 md:p-8 border-b border-border shrink-0">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/15 border border-accent/20 flex items-center justify-center">
-                    {selectedDocIndex === 0 && <BookOpen className="text-accent" size={22} />}
-                    {selectedDocIndex === 1 && <Eye className="text-accent" size={22} />}
-                    {selectedDocIndex === 2 && <Music className="text-accent" size={22} />}
-                    {selectedDocIndex === 3 && <FileText className="text-accent" size={22} />}
-                    {selectedDocIndex === 4 && <Scale className="text-accent" size={22} />}
-                    {selectedDocIndex === 5 && <Home className="text-accent" size={22} />}
+                  <div className="w-12 h-12 rounded-xl bg-primary/15 border border-primary/20 flex items-center justify-center">
+                    {selectedDocIndex === 0 && <BookOpen className="text-primary" size={22} />}
+                    {selectedDocIndex === 1 && <Eye className="text-primary" size={22} />}
+                    {selectedDocIndex === 2 && <Music className="text-primary" size={22} />}
+                    {selectedDocIndex === 3 && <FileText className="text-primary" size={22} />}
+                    {selectedDocIndex === 4 && <Scale className="text-primary" size={22} />}
+                    {selectedDocIndex === 5 && <Home className="text-primary" size={22} />}
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-accent/15 text-accent border border-accent/25">
+                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-primary/15 text-primary border border-primary/25">
                       {doc.tag}
                     </span>
                     <h3 className="text-xl md:text-2xl font-bold text-text-primary mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>
@@ -1208,7 +1208,7 @@ export default function ProfilGKPIPage() {
 
                 <button
                   onClick={() => setSelectedDocIndex(null)}
-                  className="w-10 h-10 rounded-full border border-border/60 flex items-center justify-center text-text-secondary hover:text-text-primary hover:border-border transition-all bg-surface/30 cursor-pointer"
+                  className="w-10 h-10 rounded-full border border-border/60 flex items-center justify-center text-text-secondary hover:text-text-primary hover:border-border transition-all bg-surface cursor-pointer"
                   aria-label="Tutup"
                 >
                   <X size={18} />
@@ -1228,8 +1228,8 @@ export default function ProfilGKPIPage() {
                           onClick={() => setActiveTab(sidx)}
                           className={`text-left px-4 py-2.5 rounded-xl text-sm font-medium transition-all whitespace-nowrap md:whitespace-normal cursor-pointer
                             ${activeTab === sidx
-                              ? "bg-accent/15 text-accent border-l-2 border-accent"
-                              : "text-text-secondary hover:text-text-primary hover:bg-surface/30"}`}
+                              ? "bg-primary/15 text-primary border-l-2 border-primary"
+                              : "text-text-secondary hover:text-text-primary hover:bg-surface"}`}
                         >
                           {sec.title}
                         </button>
@@ -1248,7 +1248,7 @@ export default function ProfilGKPIPage() {
                               <div key={pidx} className="pl-4 space-y-2">
                                 {para.split("\n").map((li, lidx) => (
                                   <p key={lidx} className="relative pl-5">
-                                    <span className="absolute left-0 text-accent">•</span>
+                                    <span className="absolute left-0 text-primary">•</span>
                                     {li.replace(/^[-\d\.\s]+/, "")}
                                   </p>
                                 ))}
@@ -1272,7 +1272,7 @@ export default function ProfilGKPIPage() {
                 {doc.isMars && (
                   <div className="max-w-2xl mx-auto space-y-8 pb-8">
                     {/* Beautiful Audio Player Card */}
-                    <div className="p-6 rounded-3xl border border-accent/20 bg-surface/40 flex flex-col md:flex-row items-center gap-6"
+                    <div className="p-6 rounded-2xl border border-primary/20 bg-surface flex flex-col md:flex-row items-center gap-6"
                          style={{ background: "linear-gradient(135deg, rgba(14,99,233,0.07) 0%, rgba(248,250,252,0.9) 100%)" }}>
                       <audio
                         ref={audioRef}
@@ -1284,7 +1284,7 @@ export default function ProfilGKPIPage() {
 
                       <button
                         onClick={togglePlay}
-                        className="w-16 h-16 rounded-full bg-accent flex items-center justify-center text-background hover:scale-105 active:scale-95 transition-all shadow-lg shadow-accent/20 shrink-0 cursor-pointer"
+                        className="w-16 h-16 rounded-md bg-primary flex items-center justify-center text-background hover:scale-105 active:scale-95 transition-all shadow-sm shadow-primary/20 shrink-0 cursor-pointer"
                       >
                         {isPlaying ? <Pause size={28} fill="currentColor" /> : <Play size={28} className="translate-x-0.5" fill="currentColor" />}
                       </button>
@@ -1300,7 +1300,7 @@ export default function ProfilGKPIPage() {
                           max={audioDuration || 100}
                           value={audioProgress}
                           onChange={handleProgressChange}
-                          className="w-full h-1.5 rounded-lg bg-border/40 accent-accent cursor-pointer"
+                          className="w-full h-1.5 rounded-lg bg-border/40 accent-primary cursor-pointer"
                         />
                         <div className="flex items-center justify-between pt-2">
                           <p className="text-sm font-semibold text-text-primary">Mars GKPI Audio</p>
@@ -1318,13 +1318,13 @@ export default function ProfilGKPIPage() {
                                 setVolume(parseFloat(e.target.value));
                                 setIsMuted(false);
                               }}
-                              className="w-16 h-1 accent-accent cursor-pointer"
+                              className="w-16 h-1 accent-primary cursor-pointer"
                             />
                             <a
                               href="https://gkpisinode.org/wp-content/uploads/2021/09/MARS-GKPI-Revisi-3-1.pdf"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-1 text-xs text-accent hover:underline font-semibold pl-2 cursor-pointer"
+                              className="flex items-center gap-1 text-xs text-primary hover:underline font-semibold pl-2 cursor-pointer"
                             >
                               <Download size={14} />
                               PDF
@@ -1376,14 +1376,14 @@ export default function ProfilGKPIPage() {
                           <div
                             key={idx}
                             className={`rounded-2xl border transition-all duration-300 overflow-hidden
-                              ${isArtOpen ? "border-accent/30 bg-surface/60" : "border-border/40 bg-surface/25 hover:border-border/80"}`}
+                              ${isArtOpen ? "border-primary/30 bg-surface" : "border-border/40 bg-surface/25 hover:border-border/80"}`}
                           >
                             <button
                               onClick={() => setActiveTab(isArtOpen ? -1 : idx)}
                               className="w-full text-left p-5 flex items-center justify-between cursor-pointer"
                             >
                               <div className="flex items-center gap-4">
-                                <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-accent/15 text-accent">
+                                <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-primary/15 text-primary">
                                   {art.pasal}
                                 </span>
                                 <h5 className="font-serif font-bold text-text-primary text-base md:text-lg">
@@ -1392,7 +1392,7 @@ export default function ProfilGKPIPage() {
                               </div>
                               <ChevronDown
                                 size={18}
-                                className={`text-text-secondary transition-transform duration-300 ${isArtOpen ? "rotate-180 text-accent" : ""}`}
+                                className={`text-text-secondary transition-transform duration-300 ${isArtOpen ? "rotate-180 text-primary" : ""}`}
                               />
                             </button>
                             {isArtOpen && (
@@ -1422,14 +1422,14 @@ export default function ProfilGKPIPage() {
                           <div
                             key={idx}
                             className={`rounded-2xl border transition-all duration-300 overflow-hidden
-                              ${isChapOpen ? "border-accent/30 bg-surface/60" : "border-border/40 bg-surface/25 hover:border-border/80"}`}
+                              ${isChapOpen ? "border-primary/30 bg-surface" : "border-border/40 bg-surface/25 hover:border-border/80"}`}
                           >
                             <button
                               onClick={() => setActiveTab(isChapOpen ? -1 : idx)}
                               className="w-full text-left p-5 flex items-center justify-between cursor-pointer"
                             >
                               <div className="flex items-center gap-4">
-                                <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-accent/15 text-accent">
+                                <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-primary/15 text-primary">
                                   {chap.bab}
                                 </span>
                                 <h5 className="font-serif font-bold text-text-primary text-base md:text-lg">
@@ -1438,7 +1438,7 @@ export default function ProfilGKPIPage() {
                               </div>
                               <ChevronDown
                                 size={18}
-                                className={`text-text-secondary transition-transform duration-300 ${isChapOpen ? "rotate-180 text-accent" : ""}`}
+                                className={`text-text-secondary transition-transform duration-300 ${isChapOpen ? "rotate-180 text-primary" : ""}`}
                               />
                             </button>
                             {isChapOpen && (
@@ -1471,7 +1471,7 @@ export default function ProfilGKPIPage() {
                       <p className="text-text-secondary text-sm md:text-base leading-relaxed">
                         {doc.pengantar}
                       </p>
-                      <blockquote className="border-l-4 border-accent pl-4 py-1.5 italic text-text-primary font-medium text-base md:text-lg leading-relaxed bg-accent/5 pr-4 rounded-r-lg">
+                      <blockquote className="border-l-4 border-primary pl-4 py-1.5 italic text-text-primary font-medium text-base md:text-lg leading-relaxed bg-primary/5 pr-4 rounded-r-lg">
                         {doc.isiConfession}
                       </blockquote>
                     </div>
@@ -1501,7 +1501,7 @@ export default function ProfilGKPIPage() {
       <section className="py-16 px-4 md:px-8 max-w-7xl mx-auto mb-16">
         <ScrollReveal>
           <div
-            className="relative rounded-[2rem] p-10 md:p-14 overflow-hidden border border-border"
+            className="relative rounded-2xl p-10 md:p-14 overflow-hidden border border-border"
             style={{
               background:
                 "linear-gradient(135deg, rgba(14,99,233,0.06) 0%, rgba(248,250,252,0.95) 100%)",
@@ -1515,7 +1515,7 @@ export default function ProfilGKPIPage() {
             />
             <div className="relative flex flex-col md:flex-row items-center justify-between gap-8">
               <div>
-                <p className="text-xs font-bold uppercase tracking-widest text-accent mb-3">
+                <p className="text-xs font-bold uppercase tracking-widest text-primary mb-3">
                   Bergabunglah dengan Kami
                 </p>
                 <h2
@@ -1532,7 +1532,7 @@ export default function ProfilGKPIPage() {
               <div className="flex flex-col sm:flex-row gap-4 shrink-0">
                 <Link
                   href="/wilayah-resort"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-accent text-background text-sm font-bold rounded-2xl hover:bg-accent/90 shadow-lg shadow-accent/20 transition-all duration-300 whitespace-nowrap"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-primary text-background text-sm font-bold rounded-2xl hover:bg-primary/90 shadow-sm shadow-primary/20 transition-all duration-300 whitespace-nowrap"
                   style={{ backgroundColor: "#0E63E9" }}
                 >
                   <span>Cari Jemaat</span>
@@ -1540,7 +1540,7 @@ export default function ProfilGKPIPage() {
                 </Link>
                 <Link
                   href="/pengurus"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-surface/80 text-text-primary text-sm font-bold rounded-2xl border border-border hover:border-accent/30 hover:bg-surface transition-all duration-300 whitespace-nowrap"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-surface text-text-primary text-sm font-bold rounded-2xl border border-border hover:border-primary/30 hover:bg-surface transition-all duration-300 whitespace-nowrap"
                 >
                   <span>Struktur Pengurus</span>
                 </Link>

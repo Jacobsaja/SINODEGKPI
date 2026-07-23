@@ -21,7 +21,7 @@ function HighlightText({ text, highlight }: { text: string; highlight?: string }
     <>
       {parts.map((part, i) => 
         part.toLowerCase() === highlight.toLowerCase() ? (
-          <span key={i} className="bg-accent/30 text-accent font-extrabold px-0.5 rounded-sm">
+          <span key={i} className="bg-primary/30 text-primary font-extrabold px-0.5 rounded-sm">
             {part}
           </span>
         ) : (
@@ -47,8 +47,8 @@ export default function ChurchListItem({
       className={`
         w-full text-left flex gap-4 p-4 rounded-2xl border transition-all duration-200 group
         ${isSelected
-          ? "bg-primary/20 border-accent/60 shadow-lg shadow-primary/10"
-          : "bg-surface/60 border-border hover:bg-primary/20 hover:border-accent/60 hover:shadow-lg hover:shadow-primary/10"
+          ? "bg-primary/20 border-primary/60 shadow-sm shadow-primary/10"
+          : "bg-surface border-border hover:bg-primary/20 hover:border-primary/60 hover:shadow-sm hover:shadow-primary/10"
         }
       `}
     >
@@ -58,7 +58,7 @@ export default function ChurchListItem({
           <div
             className={`w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold shadow
               ${rank === 1
-                ? "bg-accent text-white"
+                ? "bg-primary text-white"
                 : "bg-surface border border-border text-text-secondary"
               }`}
           >
@@ -68,8 +68,8 @@ export default function ChurchListItem({
           <div
             className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors
               ${isSelected
-                ? "bg-primary text-accent"
-                : "bg-primary/10 text-accent group-hover:bg-primary"
+                ? "bg-primary text-primary"
+                : "bg-primary/10 text-primary group-hover:bg-primary"
               }`}
           >
             <MapPin size={16} strokeWidth={2.5} />
@@ -81,7 +81,7 @@ export default function ChurchListItem({
       <div className="flex-1 min-w-0">
         <p
           className={`font-bold text-sm leading-tight truncate
-            ${isSelected ? "text-accent" : "text-text-primary group-hover:text-accent"}`}
+            ${isSelected ? "text-primary" : "text-text-primary group-hover:text-primary"}`}
         >
           <HighlightText text={jemaat.nama} highlight={searchQuery} />
         </p>
@@ -110,8 +110,8 @@ export default function ChurchListItem({
           <span
             className={`text-xs font-bold px-2 py-1 rounded-full
               ${rank === 1
-                ? "bg-accent/20 text-accent"
-                : "bg-primary/10 text-accent"
+                ? "bg-primary/20 text-primary"
+                : "bg-primary/10 text-primary"
               }`}
           >
             {distanceLabel}

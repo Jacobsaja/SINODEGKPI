@@ -215,7 +215,7 @@ function LaporanKeuanganAdminContent() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="flex items-center gap-2 text-xl font-bold text-text-primary">
-            <Wallet size={20} className="text-accent" /> Laporan Keuangan
+            <Wallet size={20} className="text-primary" /> Laporan Keuangan
           </h1>
           <p className="mt-1 text-xs text-text-secondary">Kelola dokumen laporan keuangan sinode.</p>
         </div>
@@ -253,7 +253,7 @@ function LaporanKeuanganAdminContent() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Cari nama, bulan, atau tahun..."
-                  className="w-full rounded-xl border border-border bg-surface/60 py-2.5 pl-10 pr-4 text-sm text-text-primary outline-none focus:border-accent/40"
+                  className="w-full rounded-xl border border-border bg-surface py-2.5 pl-10 pr-4 text-sm text-text-primary outline-none focus:border-primary/40"
                 />
               </div>
               <select
@@ -261,7 +261,7 @@ function LaporanKeuanganAdminContent() {
                 onChange={(e) =>
                   setSelectedYear(e.target.value === "Semua" ? "Semua" : parseInt(e.target.value))
                 }
-                className="cursor-pointer rounded-xl border border-border bg-surface/60 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40"
+                className="cursor-pointer rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40"
               >
                 <option value="Semua">Semua Tahun</option>
                 {availableYears.map((y) => (
@@ -276,7 +276,7 @@ function LaporanKeuanganAdminContent() {
             <div className="overflow-x-auto rounded-2xl border border-border">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-border bg-surface/40 text-left text-[11px] font-bold uppercase tracking-wider text-text-secondary">
+                  <tr className="border-b border-border bg-surface text-left text-[11px] font-bold uppercase tracking-wider text-text-secondary">
                     <th className="p-4">Laporan</th>
                     <th className="p-4">Periode</th>
                     <th className="p-4">Status</th>
@@ -294,9 +294,9 @@ function LaporanKeuanganAdminContent() {
                           href={item.file_url}
                           target="_blank"
                           rel="noreferrer"
-                          className="flex items-center gap-2 truncate font-semibold text-text-primary hover:text-accent"
+                          className="flex items-center gap-2 truncate font-semibold text-text-primary hover:text-primary"
                         >
-                          <FileText size={14} className="shrink-0 text-accent" />
+                          <FileText size={14} className="shrink-0 text-primary" />
                           <span className="truncate">{item.name}</span>
                           <ExternalLink size={11} className="shrink-0 text-text-secondary/50" />
                         </a>
@@ -339,7 +339,7 @@ function LaporanKeuanganAdminContent() {
                           </button>
                           <button
                             onClick={() => handleDelete(item)}
-                            className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-text-secondary hover:bg-accent/5 hover:text-accent"
+                            className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-text-secondary hover:bg-primary/5 hover:text-primary"
                           >
                             <Trash2 size={14} />
                           </button>
@@ -374,14 +374,14 @@ function LaporanKeuanganAdminContent() {
                 setActiveTab("list");
                 router.replace("/admin/laporan-keuangan");
               }}
-              className="inline-flex cursor-pointer items-center gap-1.5 text-xs font-bold text-text-secondary hover:text-accent"
+              className="inline-flex cursor-pointer items-center gap-1.5 text-xs font-bold text-text-secondary hover:text-primary"
             >
               <ArrowLeft size={14} /> Kembali ke daftar
             </button>
 
             <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
               {/* Left: info dasar */}
-              <div className="space-y-5 rounded-3xl border border-border bg-surface/20 p-6 shadow-md md:col-span-2">
+              <div className="space-y-5 rounded-2xl border border-border bg-surface/20 p-6 shadow-md md:col-span-2">
                 <h4 className="border-b border-border pb-3 text-sm font-bold text-text-primary">
                   Informasi Laporan
                 </h4>
@@ -394,7 +394,7 @@ function LaporanKeuanganAdminContent() {
                     <select
                       value={form.month}
                       onChange={(e) => setForm({ ...form, month: parseInt(e.target.value) })}
-                      className="w-full cursor-pointer rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40"
+                      className="w-full cursor-pointer rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40"
                     >
                       {MONTHS.map((m) => (
                         <option key={m.value} value={m.value}>
@@ -411,7 +411,7 @@ function LaporanKeuanganAdminContent() {
                       type="number"
                       value={form.year}
                       onChange={(e) => setForm({ ...form, year: parseInt(e.target.value) })}
-                      className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40"
+                      className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40"
                     />
                   </div>
                 </div>
@@ -425,7 +425,7 @@ function LaporanKeuanganAdminContent() {
                     placeholder="mis. Laporan Keuangan Bulan Januari 2026"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40"
+                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40"
                     required
                   />
                 </div>
@@ -442,28 +442,28 @@ function LaporanKeuanganAdminContent() {
                     placeholder="Catatan singkat tentang laporan ini..."
                     value={form.description}
                     onChange={(e) => setForm({ ...form, description: e.target.value })}
-                    className="w-full resize-none rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40"
+                    className="w-full resize-none rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40"
                   />
                 </div>
 
                 {formError && (
-                  <p className="rounded-xl border border-accent/20 bg-accent/5 px-4 py-2.5 text-xs font-semibold text-accent">
+                  <p className="rounded-xl border border-primary/20 bg-primary/5 px-4 py-2.5 text-xs font-semibold text-primary">
                     {formError}
                   </p>
                 )}
               </div>
 
               {/* Right: dokumen & status */}
-              <div className="space-y-5 rounded-3xl border border-border bg-surface/20 p-6 shadow-md">
+              <div className="space-y-5 rounded-2xl border border-border bg-surface/20 p-6 shadow-md">
                 <h4 className="flex items-center gap-1.5 border-b border-border pb-3 text-sm font-bold text-text-primary">
-                  <FileText size={16} className="text-accent" /> Dokumen & Status
+                  <FileText size={16} className="text-primary" /> Dokumen & Status
                 </h4>
 
                 <div className="space-y-2">
                   <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
                     File Laporan (PDF/Gambar)
                   </label>
-                  <div className="group relative flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-background/20 p-4 transition-all hover:border-accent/40">
+                  <div className="group relative flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-background/20 p-4 transition-all hover:border-primary/40">
                     <input
                       type="file"
                       accept="application/pdf,image/*"
@@ -473,7 +473,7 @@ function LaporanKeuanganAdminContent() {
                     />
                     <Upload
                       size={22}
-                      className="text-text-secondary transition-colors group-hover:text-accent"
+                      className="text-text-secondary transition-colors group-hover:text-primary"
                     />
                     <span className="mt-2 text-xs font-semibold text-text-primary">
                       Pilih File Laporan
@@ -484,7 +484,7 @@ function LaporanKeuanganAdminContent() {
                   </div>
 
                   {uploading && (
-                    <div className="flex items-center justify-center gap-2 py-2 text-xs text-accent">
+                    <div className="flex items-center justify-center gap-2 py-2 text-xs text-primary">
                       <svg className="h-3.5 w-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
                         <circle
                           className="opacity-25"
@@ -504,17 +504,17 @@ function LaporanKeuanganAdminContent() {
                     </div>
                   )}
                   {uploadError && (
-                    <p className="mt-1 text-center text-[10px] text-accent">{uploadError}</p>
+                    <p className="mt-1 text-center text-[10px] text-primary">{uploadError}</p>
                   )}
 
                   {form.file_url && !uploading && (
                     <div className="mt-3 flex items-center gap-2 rounded-xl border border-border bg-background/40 p-3">
-                      <FileText size={16} className="shrink-0 text-accent" />
+                      <FileText size={16} className="shrink-0 text-primary" />
                       <a
                         href={form.file_url}
                         target="_blank"
                         rel="noreferrer"
-                        className="flex-1 truncate text-xs font-semibold text-text-primary hover:text-accent"
+                        className="flex-1 truncate text-xs font-semibold text-text-primary hover:text-primary"
                       >
                         {form.file_name || "Lihat file terlampir"}
                       </a>
@@ -529,7 +529,7 @@ function LaporanKeuanganAdminContent() {
                             file_size: 0,
                           }))
                         }
-                        className="cursor-pointer text-text-secondary hover:text-accent"
+                        className="cursor-pointer text-text-secondary hover:text-primary"
                       >
                         <X size={14} />
                       </button>
@@ -550,7 +550,7 @@ function LaporanKeuanganAdminContent() {
                     onChange={(e) =>
                       setForm({ ...form, status: e.target.checked ? "published" : "draft" })
                     }
-                    className="h-4.5 w-4.5 cursor-pointer rounded border-border bg-background/50 text-primary focus:ring-accent/40"
+                    className="h-4.5 w-4.5 cursor-pointer rounded border-border bg-background/50 text-primary focus:ring-primary/40"
                   />
                 </div>
 
@@ -586,7 +586,7 @@ function LaporanKeuanganAdminContent() {
                       setActiveTab("list");
                       router.replace("/admin/laporan-keuangan");
                     }}
-                    className="w-full cursor-pointer rounded-xl border border-border py-3 text-xs font-bold text-text-secondary transition-all hover:bg-background/40 hover:text-accent"
+                    className="w-full cursor-pointer rounded-xl border border-border py-3 text-xs font-bold text-text-secondary transition-all hover:bg-background/40 hover:text-primary"
                   >
                     Batal
                   </button>

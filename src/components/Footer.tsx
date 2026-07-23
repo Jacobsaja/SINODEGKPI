@@ -36,7 +36,7 @@ export default function Footer() {
                   src={assets.logo}
                   alt="Logo GKPI"
                   fill
-                  className="object-contain drop-shadow-lg transition-transform duration-300 group-hover:scale-110"
+                  className="object-contain drop-shadow-sm transition-transform duration-300 group-hover:scale-110"
                 />
               </div>
               <span className="text-2xl font-sans font-bold tracking-tight text-text-primary">GKPI</span>
@@ -55,7 +55,7 @@ export default function Footer() {
                   key={label}
                   href={href}
                   aria-label={label}
-                  className="w-10 h-10 rounded-xl border border-border flex items-center justify-center text-text-secondary hover:text-text-primary hover:border-accent/40 hover:bg-accent/5 transition-all duration-300 shadow-sm"
+                  className="w-10 h-10 rounded-xl border border-border flex items-center justify-center text-text-secondary hover:text-primary hover:border-primary hover:bg-primary/5 transition-all duration-300 shadow-sm"
                 >
                  
                   <Icon size={18} />
@@ -66,7 +66,7 @@ export default function Footer() {
 
           {/* Navigation */}
           <div className="space-y-6">
-            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Navigasi</h4>
+            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Navigasi</h4>
             <ul className="space-y-4">
               {navLinks.map((item) => (
                 <li key={item.name}>
@@ -83,7 +83,7 @@ export default function Footer() {
 
           {/* Services */}
           <div className="space-y-6">
-            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Layanan</h4>
+            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Layanan</h4>
             <ul className="space-y-4">
               {serviceLinks.map((item) => (
                 <li key={item.name}>
@@ -100,22 +100,22 @@ export default function Footer() {
 
           {/* Contact */}
           <div className="space-y-6">
-            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-accent">Kontak</h4>
+            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Kontak</h4>
             <ul className="space-y-5">
               <li className="flex items-start gap-4">
-                <MapPin size={18} className="text-accent shrink-0 mt-0.5" />
+                <MapPin size={18} className="text-primary shrink-0 mt-0.5" />
                 <span className="text-sm text-text-secondary leading-relaxed">
                   Jl. Pematang Siantar No. 12,<br />Sumatera Utara, Indonesia
                 </span>
               </li>
               <li className="flex items-center gap-4">
-                <Phone size={18} className="text-accent shrink-0" />
+                <Phone size={18} className="text-primary shrink-0" />
                 <a href="tel:+621234567890" className="text-sm text-text-secondary hover:text-text-primary transition-colors font-medium">
                   +62 123 4567 890
                 </a>
               </li>
               <li className="flex items-center gap-4">
-                <Mail size={18} className="text-accent shrink-0" />
+                <Mail size={18} className="text-primary shrink-0" />
                 <a href="mailto:info@gkpi.or.id" className="text-sm text-text-secondary hover:text-text-primary transition-colors font-medium">
                   info@gkpi.or.id
                 </a>

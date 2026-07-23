@@ -295,12 +295,12 @@ export default function ShareFolderDetailPage() {
           <ArrowLeft size={14} /> Kembali ke Share Files
         </Link>
 
-        <div className="flex flex-col md:flex-row md:items-center gap-3 rounded-2xl border border-border bg-surface/30 p-4">
+        <div className="flex flex-col md:flex-row md:items-center gap-3 rounded-2xl border border-border bg-surface p-4">
           <span className="text-[11px] font-bold uppercase tracking-wider text-text-secondary shrink-0">Link Folder</span>
-          <code className="flex-1 truncate text-xs text-accent bg-background/40 rounded-lg px-3 py-2">{shareUrl}</code>
+          <code className="flex-1 truncate text-xs text-primary bg-background/40 rounded-lg px-3 py-2">{shareUrl}</code>
           <button
             onClick={copyLink}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-bold text-text-primary hover:border-accent/40 hover:text-accent transition-all cursor-pointer shrink-0"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-xs font-bold text-text-primary hover:border-primary/40 hover:text-primary transition-all cursor-pointer shrink-0"
           >
             {copied ? <Check size={13} className="text-success" /> : <Copy size={13} />}
             {copied ? "Tersalin" : "Salin"}
@@ -327,7 +327,7 @@ export default function ShareFolderDetailPage() {
               ) : (
                 <ImageIcon size={32} className="text-text-secondary/40" />
               )}
-              <label className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-lg bg-background/80 backdrop-blur px-3 py-2 text-xs font-bold text-text-primary cursor-pointer hover:bg-background hover:text-accent transition-all">
+              <label className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-lg bg-background/80 backdrop-blur px-3 py-2 text-xs font-bold text-text-primary cursor-pointer hover:bg-background hover:text-primary transition-all">
                 <input type="file" accept="image/*" className="hidden" onChange={handleCoverUpload} disabled={coverUploading} />
                 <Upload size={13} />
                 {coverUploading ? "Mengunggah..." : "Ubah Sampul"}
@@ -356,14 +356,14 @@ export default function ShareFolderDetailPage() {
                               value={editValue}
                               onChange={(e) => setEditValue(e.target.value)}
                               onKeyDown={(e) => e.key === "Enter" && saveEditFile()}
-                              className="rounded-lg border border-accent/40 bg-background/60 px-2.5 py-1.5 text-sm text-text-primary outline-none w-full"
+                              className="rounded-lg border border-primary/40 bg-background/60 px-2.5 py-1.5 text-sm text-text-primary outline-none w-full"
                             />
                             <button onClick={saveEditFile} className="text-success cursor-pointer shrink-0"><Check size={16} /></button>
                           </div>
                         ) : (
                           <div className="flex items-center gap-2 group">
                             <p className="font-bold text-text-primary text-sm truncate">{f.title || `Dokumen ${idx + 1}`}</p>
-                            <button onClick={() => startEditFile(f.id, "title", f.title)} className="opacity-0 group-hover:opacity-100 text-text-secondary hover:text-accent transition-all cursor-pointer shrink-0">
+                            <button onClick={() => startEditFile(f.id, "title", f.title)} className="opacity-0 group-hover:opacity-100 text-text-secondary hover:text-primary transition-all cursor-pointer shrink-0">
                               <Pencil size={11} />
                             </button>
                           </div>
@@ -377,14 +377,14 @@ export default function ShareFolderDetailPage() {
                               onChange={(e) => setEditValue(e.target.value)}
                               onKeyDown={(e) => e.key === "Enter" && saveEditFile()}
                               placeholder="Deskripsi singkat (opsional)"
-                              className="rounded-lg border border-accent/40 bg-background/60 px-2.5 py-1.5 text-xs text-text-primary outline-none w-full"
+                              className="rounded-lg border border-primary/40 bg-background/60 px-2.5 py-1.5 text-xs text-text-primary outline-none w-full"
                             />
                             <button onClick={saveEditFile} className="text-success cursor-pointer shrink-0"><Check size={14} /></button>
                           </div>
                         ) : (
                           <div className="flex items-center gap-2 group">
                             <p className="text-xs text-text-secondary truncate">{f.description || "Tanpa deskripsi"}</p>
-                            <button onClick={() => startEditFile(f.id, "description", f.description ?? "")} className="opacity-0 group-hover:opacity-100 text-text-secondary hover:text-accent transition-all cursor-pointer shrink-0">
+                            <button onClick={() => startEditFile(f.id, "description", f.description ?? "")} className="opacity-0 group-hover:opacity-100 text-text-secondary hover:text-primary transition-all cursor-pointer shrink-0">
                               <Pencil size={11} />
                             </button>
                           </div>
@@ -405,7 +405,7 @@ export default function ShareFolderDetailPage() {
                     </button>
                   </div>
 
-                  <label className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-border px-3 py-2 text-xs font-semibold text-text-secondary hover:border-accent/40 hover:text-accent transition-all cursor-pointer">
+                  <label className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-border px-3 py-2 text-xs font-semibold text-text-secondary hover:border-primary/40 hover:text-primary transition-all cursor-pointer">
                     <input type="file" className="hidden" onChange={(e) => handleFileUpload(e, f)} disabled={uploadingFileId === f.id} />
                     <Upload size={12} />
                     {uploadingFileId === f.id ? "Mengunggah..." : f.storage_path ? "Ganti Berkas" : "Unggah Berkas"}
@@ -420,7 +420,7 @@ export default function ShareFolderDetailPage() {
 
             <button
               onClick={addFileSlot}
-              className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-dashed border-border py-3 text-xs font-bold text-text-secondary hover:border-accent/40 hover:text-accent transition-all cursor-pointer"
+              className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-dashed border-border py-3 text-xs font-bold text-text-secondary hover:border-primary/40 hover:text-primary transition-all cursor-pointer"
             >
               <Plus size={14} /> Tambah Dokumen
             </button>
@@ -437,7 +437,7 @@ export default function ShareFolderDetailPage() {
               <select
                 value={folder.status}
                 onChange={(e) => updateStatus(e.target.value as "draft" | "published")}
-                className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 transition-all cursor-pointer"
+                className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 transition-all cursor-pointer"
               >
                 <option value="draft">Draf</option>
                 <option value="published">Terbit</option>
@@ -471,7 +471,7 @@ export default function ShareFolderDetailPage() {
 
             <button
               onClick={refreshLink}
-              className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-border py-2.5 text-xs font-bold text-text-secondary hover:border-accent/40 hover:text-accent transition-all cursor-pointer"
+              className="w-full inline-flex items-center justify-center gap-1.5 rounded-xl border border-border py-2.5 text-xs font-bold text-text-secondary hover:border-primary/40 hover:text-primary transition-all cursor-pointer"
             >
               <RefreshCw size={13} /> Perbarui Link
             </button>
@@ -490,7 +490,7 @@ export default function ShareFolderDetailPage() {
                 value={accessSearch}
                 onChange={(e) => setAccessSearch(e.target.value)}
                 placeholder="Cari nama atau email..."
-                className="rounded-xl border border-border bg-background/40 pl-9 pr-3 py-2 text-xs text-text-primary outline-none focus:border-accent/40 transition-all"
+                className="rounded-xl border border-border bg-background/40 pl-9 pr-3 py-2 text-xs text-text-primary outline-none focus:border-primary/40 transition-all"
               />
             </div>
             <button
@@ -510,7 +510,7 @@ export default function ShareFolderDetailPage() {
                 value={accessForm.name}
                 onChange={(e) => setAccessForm({ ...accessForm, name: e.target.value })}
                 placeholder="Nama pengakses"
-                className="rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 transition-all"
+                className="rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 transition-all"
               />
               <input
                 type="email"
@@ -518,7 +518,7 @@ export default function ShareFolderDetailPage() {
                 value={accessForm.email}
                 onChange={(e) => setAccessForm({ ...accessForm, email: e.target.value })}
                 placeholder={folder.access_mode === "email" ? "Email (wajib)" : "Email (opsional, untuk catatan)"}
-                className="rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 transition-all"
+                className="rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 transition-all"
               />
             </div>
             <label className="flex items-center gap-2 text-xs text-text-secondary/70 cursor-not-allowed" title="Fitur notifikasi email belum dikonfigurasi — hubungi admin sistem">

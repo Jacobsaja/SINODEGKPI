@@ -3,9 +3,9 @@ import { formatRupiah, type Product } from "@/lib/products";
 
 export default function ProductCard({ product }: { product: Product }) {
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:border-accent/60 hover:shadow-[0_0_0_1px_rgba(111,168,220,0.15),0_20px_40px_-20px_rgba(15,30,46,0.8)]">
+    <div className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:border-primary/60 hover:shadow-[0_0_0_1px_rgba(111,168,220,0.15),0_20px_40px_-20px_rgba(15,30,46,0.8)]">
       {product.is_featured && (
-        <span className="absolute left-3 top-3 z-10 rounded-full bg-accent/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-primary-dark">
+        <span className="absolute left-3 top-3 z-10 rounded-md bg-primary/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-primary-dark">
           Unggulan
         </span>
       )}
@@ -20,7 +20,7 @@ export default function ProductCard({ product }: { product: Product }) {
       </div>
 
       <div className="flex flex-1 flex-col gap-2 p-4">
-        <span className="text-xs font-medium uppercase tracking-wide text-accent">
+        <span className="text-xs font-medium uppercase tracking-wide text-primary">
           {product.category}
         </span>
 

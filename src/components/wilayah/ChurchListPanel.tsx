@@ -56,7 +56,7 @@ export default function ChurchListPanel({
         <div className="px-4 pt-4 pb-3 border-b border-border shrink-0 space-y-3">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest text-accent">
+              <p className="text-xs font-bold uppercase tracking-widest text-primary">
                 Gereja Terdekat
               </p>
               <p className="text-sm font-bold text-text-primary mt-0.5">
@@ -110,7 +110,7 @@ export default function ChurchListPanel({
                   onSearchChange("");
                   onCityChange(null);
                 }}
-                className="mt-3 text-xs text-accent hover:underline"
+                className="mt-3 text-xs text-primary hover:underline"
               >
                 Reset Filter
               </button>

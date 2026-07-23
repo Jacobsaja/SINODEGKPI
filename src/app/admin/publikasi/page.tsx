@@ -305,7 +305,7 @@ function PublikasiAdminContent() {
           <div className="flex items-center gap-2 text-xs font-bold text-text-secondary uppercase tracking-widest">
             <span>Admin</span>
             <ChevronRight size={10} />
-            <span className="text-accent">Publikasi</span>
+            <span className="text-primary">Publikasi</span>
           </div>
           <h1
             className="text-3xl font-extrabold text-text-primary mt-1"
@@ -319,7 +319,7 @@ function PublikasiAdminContent() {
         </div>
 
         {/* Tab switch buttons */}
-        <div className="flex shrink-0 items-center gap-2 rounded-xl bg-surface/50 p-1 border border-border">
+        <div className="flex shrink-0 items-center gap-2 rounded-xl bg-surface p-1 border border-border">
           <button
             onClick={() => {
               setActiveTab("list");
@@ -328,7 +328,7 @@ function PublikasiAdminContent() {
             className={`px-4 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer ${
               activeTab === "list"
                 ? "bg-primary text-white shadow-md shadow-primary/20"
-                : "text-text-secondary hover:text-accent"
+                : "text-text-secondary hover:text-primary"
             }`}
           >
             Daftar Publikasi
@@ -342,7 +342,7 @@ function PublikasiAdminContent() {
             className={`px-4 py-2 text-xs font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
               activeTab === "form"
                 ? "bg-primary text-white shadow-md shadow-primary/20"
-                : "text-text-secondary hover:text-accent"
+                : "text-text-secondary hover:text-primary"
             }`}
           >
             <Plus size={14} />
@@ -363,7 +363,7 @@ function PublikasiAdminContent() {
             className="space-y-4"
           >
             {/* Filter Bar */}
-            <div className="flex flex-col gap-3 md:flex-row md:items-center justify-between rounded-2xl border border-border bg-surface/30 p-4">
+            <div className="flex flex-col gap-3 md:flex-row md:items-center justify-between rounded-2xl border border-border bg-surface p-4">
               <div className="relative flex-1">
                 <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary" />
                 <input
@@ -371,7 +371,7 @@ function PublikasiAdminContent() {
                   placeholder="Cari berdasarkan judul atau penulis..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/60 outline-none focus:border-accent/40 focus:bg-background"
+                  className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/60 outline-none focus:border-primary/40 focus:bg-background"
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -379,7 +379,7 @@ function PublikasiAdminContent() {
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="rounded-xl border border-border bg-background/50 px-3.5 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 cursor-pointer"
+                  className="rounded-xl border border-border bg-background/50 px-3.5 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 cursor-pointer"
                 >
                   <option value="Semua">Semua Kategori</option>
                   {CATEGORIES.map((c) => (
@@ -390,11 +390,11 @@ function PublikasiAdminContent() {
             </div>
 
             {/* List / Table */}
-            <div className="overflow-hidden rounded-2xl border border-border bg-surface/20 shadow-xl">
+            <div className="overflow-hidden rounded-2xl border border-border bg-surface/20 shadow-md">
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="border-b border-border/70 bg-surface/60 text-xs font-extrabold uppercase tracking-widest text-text-secondary">
+                    <tr className="border-b border-border/70 bg-surface text-xs font-extrabold uppercase tracking-widest text-text-secondary">
                       <th className="p-4 pl-6">Publikasi</th>
                       <th className="p-4">Kategori</th>
                       <th className="p-4">Tanggal</th>
@@ -404,7 +404,7 @@ function PublikasiAdminContent() {
                   </thead>
                   <tbody className="divide-y divide-border/40">
                     {filteredItems.map((item) => (
-                      <tr key={item.id} className="hover:bg-surface/30 transition-colors group">
+                      <tr key={item.id} className="hover:bg-surface transition-colors group">
                         <td className="p-4 pl-6 min-w-[280px]">
                           <div className="flex items-center gap-3.5">
                             {item.image ? (
@@ -415,12 +415,12 @@ function PublikasiAdminContent() {
                                 className="h-11 w-11 rounded-lg object-cover border border-border/80"
                               />
                             ) : (
-                              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-surface/60 text-text-secondary border border-border/60">
+                              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-surface text-text-secondary border border-border/60">
                                 <FileText size={18} />
                               </div>
                             )}
                             <div className="min-w-0">
-                              <p className="font-bold text-text-primary group-hover:text-accent transition-colors truncate">
+                              <p className="font-bold text-text-primary group-hover:text-primary transition-colors truncate">
                                 {item.title}
                               </p>
                               <p className="text-xs text-text-secondary flex items-center gap-1 mt-0.5">
@@ -457,14 +457,14 @@ function PublikasiAdminContent() {
                                 startEdit(item);
                                 router.replace(`/admin/publikasi?edit=${item.id}`);
                               }}
-                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-surface/50 text-text-secondary transition-all hover:border-accent/40 hover:text-accent cursor-pointer"
+                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-surface text-text-secondary transition-all hover:border-primary/40 hover:text-primary cursor-pointer"
                               title="Edit"
                             >
                               <Edit3 size={14} />
                             </button>
                             <button
                               onClick={() => handleDelete(item.id)}
-                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-surface/50 text-red-400 transition-all hover:border-red-500/40 hover:bg-red-500/10 cursor-pointer"
+                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-surface text-red-400 transition-all hover:border-red-500/40 hover:bg-red-500/10 cursor-pointer"
                               title="Hapus"
                             >
                               <Trash2 size={14} />
@@ -496,7 +496,7 @@ function PublikasiAdminContent() {
             className="space-y-6"
           >
             {/* Form Top Actions Bar */}
-            <div className="flex items-center gap-3 rounded-2xl border border-border bg-surface/40 p-4">
+            <div className="flex items-center gap-3 rounded-2xl border border-border bg-surface p-4">
               <button
                 type="button"
                 onClick={() => {
@@ -504,7 +504,7 @@ function PublikasiAdminContent() {
                   setActiveTab("list");
                   router.replace("/admin/publikasi");
                 }}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface/50 text-text-secondary hover:text-accent hover:bg-accent/5 transition-colors cursor-pointer"
+                className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-border bg-surface text-text-secondary hover:text-primary hover:bg-primary/5 transition-colors cursor-pointer"
               >
                 <ArrowLeft size={16} />
               </button>
@@ -520,7 +520,7 @@ function PublikasiAdminContent() {
 
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
               {/* Left Column - Main Content (2/3 width) */}
-              <div className="lg:col-span-2 space-y-5 rounded-3xl border border-border bg-surface/20 p-6 shadow-md">
+              <div className="lg:col-span-2 space-y-5 rounded-2xl border border-border bg-surface/20 p-6 shadow-md">
                 <div className="space-y-1.5">
                   <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Judul Artikel</label>
                   <input
@@ -528,7 +528,7 @@ function PublikasiAdminContent() {
                     placeholder="Masukkan judul publikasi yang menarik..."
                     value={form.title}
                     onChange={(e) => setForm({ ...form, title: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all"
+                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-primary/40 focus:bg-background transition-all"
                     required
                   />
                 </div>
@@ -539,7 +539,7 @@ function PublikasiAdminContent() {
                     placeholder="Berikan 1-2 kalimat ringkasan artikel sebagai pratinjau..."
                     value={form.excerpt}
                     onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all"
+                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-primary/40 focus:bg-background transition-all"
                     rows={3}
                     maxLength={300}
                     required
@@ -557,7 +557,7 @@ function PublikasiAdminContent() {
                     placeholder="Ketik konten artikel secara lengkap di sini..."
                     value={form.content}
                     onChange={(e) => setForm({ ...form, content: e.target.value })}
-                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all font-sans leading-relaxed"
+                    className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-primary/40 focus:bg-background transition-all font-sans leading-relaxed"
                     rows={12}
                     required
                   />
@@ -565,9 +565,9 @@ function PublikasiAdminContent() {
               </div>
 
               {/* Right Column - Sidebar Metadata (1/3 width) */}
-              <div className="space-y-5 rounded-3xl border border-border bg-surface/20 p-6 shadow-md">
+              <div className="space-y-5 rounded-2xl border border-border bg-surface/20 p-6 shadow-md">
                 <h4 className="font-bold text-text-primary text-sm border-b border-border pb-3 flex items-center gap-1.5">
-                  <BookOpen size={16} className="text-accent" />
+                  <BookOpen size={16} className="text-primary" />
                   Metadata & Media
                 </h4>
 
@@ -580,7 +580,7 @@ function PublikasiAdminContent() {
                       placeholder="Nama Penulis / Tim Media"
                       value={form.author}
                       onChange={(e) => setForm({ ...form, author: e.target.value })}
-                      className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all"
+                      className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 focus:bg-background transition-all"
                       required
                     />
                   </div>
@@ -593,7 +593,7 @@ function PublikasiAdminContent() {
                     onChange={(e) =>
                       setForm({ ...form, category: e.target.value as PublicationCategory })
                     }
-                    className="w-full rounded-xl border border-border/60 bg-gradient-to-br from-background/60 to-background/40 px-4 py-3 text-sm text-text-primary outline-none focus:border-accent/50 focus:ring-2 focus:ring-accent/20 focus:bg-gradient-to-br focus:from-background/80 focus:to-background/60 transition-all cursor-pointer appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMiA0TDYgOEwxMCA0IiBzdHJva2U9IiM5Q0EzQUYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4')] bg-no-repeat bg-[right_14px_center] pr-10 hover:border-accent/40 hover:shadow-md hover:shadow-accent/5"
+                    className="w-full rounded-xl border border-border/60 bg-gradient-to-br from-background/60 to-background/40 px-4 py-3 text-sm text-text-primary outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 focus:bg-gradient-to-br focus:from-background/80 focus:to-background/60 transition-all cursor-pointer appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMiA0TDYgOEwxMCA0IiBzdHJva2U9IiM5Q0EzQUYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4')] bg-no-repeat bg-[right_14px_center] pr-10 hover:border-primary/40 hover:shadow-md hover:shadow-primary/5"
                   >
                     {CATEGORIES.map((c) => (
                       <option key={c} value={c}>{c}</option>
@@ -609,7 +609,7 @@ function PublikasiAdminContent() {
                       type="date"
                       value={form.date}
                       onChange={(e) => setForm({ ...form, date: e.target.value })}
-                      className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all cursor-pointer"
+                      className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 focus:bg-background transition-all cursor-pointer"
                       required
                     />
                   </div>
@@ -624,7 +624,7 @@ function PublikasiAdminContent() {
                       placeholder="Contoh: 4 menit"
                       value={form.read_time}
                       onChange={(e) => setForm({ ...form, read_time: e.target.value })}
-                      className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-background transition-all"
+                      className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 focus:bg-background transition-all"
                     />
                   </div>
                 </div>
@@ -632,7 +632,7 @@ function PublikasiAdminContent() {
                 {/* File Upload Component */}
                 <div className="space-y-2">
                   <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Gambar Publikasi</label>
-                  <div className="relative flex flex-col items-center justify-center rounded-xl border border-dashed border-border hover:border-accent/40 bg-background/20 p-4 transition-all group">
+                  <div className="relative flex flex-col items-center justify-center rounded-xl border border-dashed border-border hover:border-primary/40 bg-background/20 p-4 transition-all group">
                     <input
                       type="file"
                       accept="image/*"
@@ -640,13 +640,13 @@ function PublikasiAdminContent() {
                       disabled={uploading}
                       className="absolute inset-0 z-10 w-full h-full opacity-0 cursor-pointer"
                     />
-                    <Upload size={22} className="text-text-secondary group-hover:text-accent transition-colors" />
+                    <Upload size={22} className="text-text-secondary group-hover:text-primary transition-colors" />
                     <span className="text-xs font-semibold text-text-primary mt-2">Pilih File Gambar</span>
                     <span className="text-[10px] text-text-secondary/70 mt-1">PNG/JPG, otomatis dikompres ke ~500KB</span>
                   </div>
                   
                   {uploading && (
-                    <div className="flex items-center gap-2 justify-center py-2 text-xs text-accent">
+                    <div className="flex items-center gap-2 justify-center py-2 text-xs text-primary">
                       <svg className="animate-spin h-3.5 w-3.5" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                       Mengunggah gambar...
                     </div>
@@ -672,7 +672,7 @@ function PublikasiAdminContent() {
                 {/* Galeri Gambar Tambahan (banyak gambar, tampil di halaman detail) */}
                 <div className="space-y-2">
                   <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Galeri Gambar Tambahan</label>
-                  <div className="relative flex flex-col items-center justify-center rounded-xl border border-dashed border-border hover:border-accent/40 bg-background/20 p-4 transition-all group">
+                  <div className="relative flex flex-col items-center justify-center rounded-xl border border-dashed border-border hover:border-primary/40 bg-background/20 p-4 transition-all group">
                     <input
                       type="file"
                       accept={PUBLIKASI_IMAGE_ACCEPT}
@@ -681,13 +681,13 @@ function PublikasiAdminContent() {
                       disabled={uploadingGallery}
                       className="absolute inset-0 z-10 w-full h-full opacity-0 cursor-pointer"
                     />
-                    <Upload size={22} className="text-text-secondary group-hover:text-accent transition-colors" />
+                    <Upload size={22} className="text-text-secondary group-hover:text-primary transition-colors" />
                     <span className="text-xs font-semibold text-text-primary mt-2">Tambah Gambar Galeri</span>
                     <span className="text-[10px] text-text-secondary/70 mt-1">Bisa pilih beberapa sekaligus, otomatis dikompres</span>
                   </div>
 
                   {uploadingGallery && (
-                    <div className="flex items-center gap-2 justify-center py-2 text-xs text-accent">
+                    <div className="flex items-center gap-2 justify-center py-2 text-xs text-primary">
                       <svg className="animate-spin h-3.5 w-3.5" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                       Mengunggah gambar galeri...
                     </div>
@@ -717,7 +717,7 @@ function PublikasiAdminContent() {
                 {/* Lampiran Dokumen (PDF/DOC/XLS, banyak file, video tidak diizinkan) */}
                 <div className="space-y-2">
                   <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Lampiran Dokumen</label>
-                  <div className="relative flex flex-col items-center justify-center rounded-xl border border-dashed border-border hover:border-accent/40 bg-background/20 p-4 transition-all group">
+                  <div className="relative flex flex-col items-center justify-center rounded-xl border border-dashed border-border hover:border-primary/40 bg-background/20 p-4 transition-all group">
                     <input
                       type="file"
                       accept={PUBLIKASI_DOCUMENT_ACCEPT}
@@ -726,13 +726,13 @@ function PublikasiAdminContent() {
                       disabled={uploadingDocs}
                       className="absolute inset-0 z-10 w-full h-full opacity-0 cursor-pointer"
                     />
-                    <FileText size={22} className="text-text-secondary group-hover:text-accent transition-colors" />
+                    <FileText size={22} className="text-text-secondary group-hover:text-primary transition-colors" />
                     <span className="text-xs font-semibold text-text-primary mt-2">Unggah Dokumen</span>
                     <span className="text-[10px] text-text-secondary/70 mt-1">PDF / DOC / XLS, maks 20MB per file</span>
                   </div>
 
                   {uploadingDocs && (
-                    <div className="flex items-center gap-2 justify-center py-2 text-xs text-accent">
+                    <div className="flex items-center gap-2 justify-center py-2 text-xs text-primary">
                       <svg className="animate-spin h-3.5 w-3.5" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                       Mengunggah dokumen...
                     </div>
@@ -744,7 +744,7 @@ function PublikasiAdminContent() {
                       {form.documents.map((doc, i) => (
                         <div key={i} className="flex items-center justify-between gap-2 rounded-lg border border-border bg-background/40 px-3 py-2">
                           <div className="flex items-center gap-2 min-w-0">
-                            <FileText size={14} className="text-accent shrink-0" />
+                            <FileText size={14} className="text-primary shrink-0" />
                             <span className="text-xs font-medium text-text-primary truncate">{doc.name}</span>
                             <span className="text-[10px] text-text-secondary shrink-0">{doc.size}</span>
                           </div>
@@ -775,7 +775,7 @@ function PublikasiAdminContent() {
                     type="checkbox"
                     checked={form.is_featured}
                     onChange={(e) => setForm({ ...form, is_featured: e.target.checked })}
-                    className="h-4.5 w-4.5 rounded border-border bg-background/50 text-primary focus:ring-accent/40 cursor-pointer"
+                    className="h-4.5 w-4.5 rounded border-border bg-background/50 text-primary focus:ring-primary/40 cursor-pointer"
                   />
                 </div>
 
@@ -804,7 +804,7 @@ function PublikasiAdminContent() {
                       setActiveTab("list");
                       router.replace("/admin/publikasi");
                     }}
-                    className="w-full py-3 border border-border text-text-secondary text-xs font-bold rounded-xl hover:text-accent hover:bg-background/40 transition-all cursor-pointer"
+                    className="w-full py-3 border border-border text-text-secondary text-xs font-bold rounded-xl hover:text-primary hover:bg-background/40 transition-all cursor-pointer"
                   >
                     Batal
                   </button>

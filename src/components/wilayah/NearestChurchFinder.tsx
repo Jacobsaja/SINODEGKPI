@@ -59,10 +59,10 @@ export default function NearestChurchFinder({
   // Active state — show compact reset bar
   if (isActive) {
     return (
-      <div className="flex items-center justify-between px-5 py-3 bg-primary/20 border-b border-accent/30">
+      <div className="flex items-center justify-between px-5 py-3 bg-primary/20 border-b border-primary/30">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-          <p className="text-sm font-semibold text-accent">
+          <div className="w-2 h-2 rounded-md bg-primary animate-pulse" />
+          <p className="text-sm font-semibold text-primary">
             Menampilkan gereja terdekat
           </p>
         </div>
@@ -93,7 +93,7 @@ export default function NearestChurchFinder({
           onClick={handleFindNearest}
           disabled={status === "loading"}
           id="btn-find-nearest-church"
-          className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-dark disabled:opacity-60 text-white font-bold text-sm rounded-full shadow-lg transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 min-h-[44px]"
+          className="shrink-0 inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary-dark disabled:opacity-60 text-white font-bold text-sm rounded-full shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 min-h-[44px]"
         >
           {status === "loading" ? (
             <>
@@ -134,7 +134,7 @@ export default function NearestChurchFinder({
             onKeyDown={(e) => {
               if (e.key === "Enter") handleManualSearch();
             }}
-            className="flex-1 bg-surface border border-border text-text-primary placeholder:text-text-secondary/40 text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:border-accent/40 transition-all"
+            className="flex-1 bg-surface border border-border text-text-primary placeholder:text-text-secondary/40 text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:border-primary/40 transition-all"
           />
           <button
             onClick={handleManualSearch}
@@ -178,7 +178,7 @@ function StatusAlert({ type, message }: { type: "warning" | "info"; message: str
       className={`mt-3 flex items-start gap-2 px-4 py-3 rounded-xl text-sm ${
         type === "warning"
           ? "bg-amber-500/10 border border-amber-500/20 text-amber-400"
-          : "bg-primary/10 border border-primary/20 text-accent"
+          : "bg-primary/10 border border-primary/20 text-primary"
       }`}
     >
       <AlertCircle size={15} className="shrink-0 mt-0.5" />

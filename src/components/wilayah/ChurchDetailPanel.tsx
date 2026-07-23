@@ -53,7 +53,7 @@ export default function ChurchDetailPanel({
             onClick={onClose}
           />
         )}
-        <div className="relative bg-surface rounded-t-3xl border-t border-border shadow-2xl max-h-[80vh] overflow-y-auto no-scrollbar">
+        <div className="relative bg-surface rounded-t-3xl border-t border-border shadow-sm max-h-[80vh] overflow-y-auto no-scrollbar">
           {/* Drag handle */}
           <div className="flex justify-center pt-3 pb-1">
             <div className="w-12 h-1 rounded-full bg-border" />
@@ -99,7 +99,7 @@ function PanelContent({
         {imgError && (
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/40 to-background">
             <div className="text-center opacity-50">
-              <MapPin size={32} className="mx-auto text-accent mb-2" />
+              <MapPin size={32} className="mx-auto text-primary mb-2" />
               <p className="text-xs text-white">Foto belum tersedia</p>
             </div>
           </div>
@@ -118,7 +118,7 @@ function PanelContent({
 
         {/* Distance badge */}
         {distance !== undefined && (
-          <div className="absolute bottom-3 left-3 px-3 py-1 bg-accent text-white text-xs font-bold rounded-full shadow">
+          <div className="absolute bottom-3 left-3 px-3 py-1 bg-primary text-white text-xs font-bold rounded-full shadow">
             📍 {formatDistance(distance)}
           </div>
         )}
@@ -127,7 +127,7 @@ function PanelContent({
       {/* Info */}
       <div className="p-5 flex-1 space-y-4">
         {/* Location tag */}
-        <p className="text-xs font-bold uppercase tracking-widest text-accent">
+        <p className="text-xs font-bold uppercase tracking-widest text-primary">
           {jemaat.kota} · {jemaat.provinsi}
         </p>
 
@@ -170,7 +170,7 @@ function PanelContent({
             href={googleMapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-1 items-center justify-center gap-2 py-3.5 bg-primary hover:bg-primary-dark text-white font-bold text-sm rounded-2xl transition-colors shadow-lg"
+            className="flex flex-1 items-center justify-center gap-2 py-3.5 bg-primary hover:bg-primary-dark text-white font-bold text-sm rounded-2xl transition-colors shadow-sm"
           >
             <Navigation size={16} />
             Petunjuk Arah
@@ -213,7 +213,7 @@ function DetailRow({
 }) {
   return (
     <div className="flex gap-3 items-start">
-      <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center text-accent shrink-0 mt-0.5">
+      <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0 mt-0.5">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
@@ -221,7 +221,7 @@ function DetailRow({
           {label}
         </p>
         {href ? (
-          <a href={href} className="text-sm text-accent hover:underline underline-offset-4">
+          <a href={href} className="text-sm text-primary hover:underline underline-offset-4">
             {value}
           </a>
         ) : (

@@ -42,7 +42,7 @@ export default function Navbar() {
         role="navigation"
         aria-label="Navigasi utama"
         className={`fixed top-0 w-full z-[1000] transition-all duration-300 ${isScrolled
-          ? "bg-surface/80 backdrop-blur-md border-b border-border shadow-lg py-3"
+          ? "bg-surface backdrop-blur-md border-b border-border shadow-sm py-3"
           : "bg-transparent py-5"
           }`}
       >
@@ -79,7 +79,7 @@ export default function Navbar() {
                 >
                   {link.name}
                   {isActive && (
-                    <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-accent rounded-full" />
+                    <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1/2 h-0.5 bg-primary rounded-full" />
                   )}
                 </Link>
               );
@@ -137,7 +137,7 @@ export default function Navbar() {
                   className="object-contain"
                 />
               </div>
-              <span className="text-xl font-sans font-bold text-white">GKPI</span>
+              <span className="text-xl font-sans font-bold text-text-primary">GKPI</span>
             </Link>
             <button
               className="p-2.5 rounded-xl text-text-secondary hover:text-text-primary transition-colors"
@@ -155,7 +155,7 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`py-4 text-xl font-sans border-b border-border/30 transition-colors duration-200 ${isActive ? "text-accent font-bold" : "text-text-secondary hover:text-text-primary"
+                  className={`py-4 text-xl font-sans border-b border-border/30 transition-colors duration-200 ${isActive ? "text-primary font-bold" : "text-text-secondary hover:text-text-primary"
                     }`}
                   style={{ transitionDelay: isOpen ? `${i * 30}ms` : "0ms" }}
                   onClick={() => setIsOpen(false)}
@@ -169,7 +169,7 @@ export default function Navbar() {
           {/* <div className="px-8 pb-12">
             <Link
               href="/login"
-              className="block w-full text-center py-4 bg-primary text-white font-bold rounded-2xl text-lg hover:bg-primary-dark transition-all shadow-lg"
+              className="block w-full text-center py-4 bg-primary text-white font-bold rounded-2xl text-lg hover:bg-primary-dark transition-all shadow-sm"
               onClick={() => setIsOpen(false)}
             >
               Masuk

@@ -119,16 +119,16 @@ export default function KontakPage() {
           <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2">
             <Link
               href="/"
-              className="flex items-center gap-1.5 text-sm text-text-primary/75 transition-colors hover:text-accent"
+              className="flex items-center gap-1.5 text-sm text-text-primary/75 transition-colors hover:text-primary"
             >
               Beranda
             </Link>
             <ChevronRight size={14} className="text-text-primary/30" />
-            <span className="text-sm font-medium text-accent">Kontak</span>
+            <span className="text-sm font-medium text-primary">Kontak</span>
           </nav>
 
           <ScrollReveal>
-            <p className="mb-4 text-xs font-bold uppercase tracking-[0.28em] text-accent">
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.28em] text-primary">
               Hubungi Kami
             </p>
             <h1
@@ -172,20 +172,20 @@ export default function KontakPage() {
                 ].map((item, idx) => (
                   <div
                     key={idx}
-                    className="flex items-start gap-4 p-5 rounded-2xl bg-surface/50 border border-border/70 hover:border-accent/30 transition-all duration-300"
+                    className="flex items-start gap-4 p-5 rounded-2xl bg-surface border border-border/70 hover:border-primary/30 transition-all duration-300"
                     style={{ backdropFilter: "blur(12px)" }}
                   >
-                    <div className="w-10 h-10 rounded-xl bg-primary/15 border border-accent/20 flex items-center justify-center shrink-0">
-                      <item.icon size={18} className="text-accent" />
+                    <div className="w-10 h-10 rounded-xl bg-primary/15 border border-primary/20 flex items-center justify-center shrink-0">
+                      <item.icon size={18} className="text-primary" />
                     </div>
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wider text-accent">
+                      <p className="text-xs font-bold uppercase tracking-wider text-primary">
                         {item.title}
                       </p>
                       {item.isLink ? (
                         <a
                           href={item.href}
-                          className="text-sm text-text-primary hover:underline hover:text-accent mt-1 block font-medium"
+                          className="text-sm text-text-primary hover:underline hover:text-primary mt-1 block font-medium"
                         >
                           {item.content}
                         </a>
@@ -203,11 +203,11 @@ export default function KontakPage() {
             {/* Jam Operasional (Office Hours) */}
             <ScrollReveal>
               <div
-                className="p-6 rounded-3xl border border-border/80 bg-surface/30 space-y-4"
+                className="p-6 rounded-2xl border border-border/80 bg-surface space-y-4"
                 style={{ backdropFilter: "blur(12px)" }}
               >
                 <h3 className="text-lg font-bold text-text-primary flex items-center gap-2">
-                  <Clock size={18} className="text-accent" />
+                  <Clock size={18} className="text-primary" />
                   Jam Operasional
                 </h3>
                 <div className="space-y-3 text-sm">
@@ -229,7 +229,7 @@ export default function KontakPage() {
           <div className="lg:col-span-3">
             <ScrollReveal>
               <div
-                className="rounded-[2rem] p-8 md:p-12 shadow-2xl border border-border"
+                className="rounded-2xl p-8 md:p-12 shadow-sm border border-border"
                 style={{
                   background: "linear-gradient(135deg, #F8FAFC 0%, #FFFFFF 100%)",
                   boxShadow: "0 20px 50px rgba(14, 99, 233, 0.15)",
@@ -262,7 +262,7 @@ export default function KontakPage() {
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                           placeholder="Nama"
-                          className="w-full bg-background/50 border border-border text-text-primary placeholder:text-text-secondary/35 text-sm rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 focus:bg-background/80 transition-all"
+                          className="w-full bg-background/50 border border-border text-text-primary placeholder:text-text-secondary/35 text-sm rounded-2xl px-5 py-4 focus:outline-none focus:border-primary/50 focus:bg-background/80 transition-all"
                         />
                       </div>
                       <div className="space-y-2">
@@ -275,7 +275,7 @@ export default function KontakPage() {
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                           placeholder="Email"
-                          className="w-full bg-background/50 border border-border text-text-primary placeholder:text-text-secondary/35 text-sm rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 focus:bg-background/80 transition-all"
+                          className="w-full bg-background/50 border border-border text-text-primary placeholder:text-text-secondary/35 text-sm rounded-2xl px-5 py-4 focus:outline-none focus:border-primary/50 focus:bg-background/80 transition-all"
                         />
                       </div>
                     </div>
@@ -288,7 +288,7 @@ export default function KontakPage() {
                         value={formData.subject}
                         onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                         placeholder="Perihal"
-                        className="w-full bg-background/50 border border-border text-text-primary placeholder:text-text-secondary/35 text-sm rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 focus:bg-background/80 transition-all"
+                        className="w-full bg-background/50 border border-border text-text-primary placeholder:text-text-secondary/35 text-sm rounded-2xl px-5 py-4 focus:outline-none focus:border-primary/50 focus:bg-background/80 transition-all"
                       />
                     </div>
                     <div className="space-y-2">
@@ -301,17 +301,17 @@ export default function KontakPage() {
                         value={formData.message}
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         placeholder="Pesan"
-                        className="w-full bg-background/50 border border-border text-text-primary placeholder:text-text-secondary/35 text-sm rounded-2xl px-5 py-4 focus:outline-none focus:border-accent/50 focus:bg-background/80 transition-all resize-none"
+                        className="w-full bg-background/50 border border-border text-text-primary placeholder:text-text-secondary/35 text-sm rounded-2xl px-5 py-4 focus:outline-none focus:border-primary/50 focus:bg-background/80 transition-all resize-none"
                       />
                     </div>
                     {submitError && (
-                      <p className="text-sm font-medium text-accent -mt-2">{submitError}</p>
+                      <p className="text-sm font-medium text-primary -mt-2">{submitError}</p>
                     )}
 
                     <button
                       type="submit"
                       disabled={isSending}
-                      className="w-full py-4 bg-primary text-white text-sm font-bold rounded-2xl hover:bg-primary-dark shadow-xl hover:shadow-primary/20 transition-all duration-300 mt-4 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+                      className="w-full py-4 bg-primary text-white text-sm font-bold rounded-md hover:bg-primary-dark shadow-md hover:shadow-primary/20 transition-all duration-300 mt-4 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
                     >
                       <Send size={15} />
                       {isSending ? "Mengirim..." : "Kirim Pesan"}
@@ -327,11 +327,11 @@ export default function KontakPage() {
         <ScrollReveal>
           <div className="mt-16 space-y-6">
             <h2 className="text-2xl font-bold text-text-primary tracking-wide flex items-center gap-2">
-              <MapPin size={22} className="text-accent" />
+              <MapPin size={22} className="text-primary" />
               Peta Lokasi Kantor Pusat
             </h2>
             <div
-              className="relative w-full h-[400px] overflow-hidden rounded-[2rem] border border-border/80 flex items-center justify-center p-8 bg-surface/30"
+              className="relative w-full h-[400px] overflow-hidden rounded-2xl border border-border/80 flex items-center justify-center p-8 bg-surface"
               style={{ backdropFilter: "blur(12px)" }}
             >
               {/* Dark Map Mockup */}
@@ -353,12 +353,12 @@ export default function KontakPage() {
 
               {/* Pulsing Pin marker */}
               <div className="relative z-10 flex flex-col items-center">
-                <div className="absolute -inset-4 bg-accent/20 rounded-full animate-ping pointer-events-none" />
-                <div className="relative w-12 h-12 bg-accent rounded-full border border-white flex items-center justify-center shadow-lg shadow-accent/40">
+                <div className="absolute -inset-4 bg-primary/20 rounded-full animate-ping pointer-events-none" />
+                <div className="relative w-12 h-12 bg-primary rounded-full border border-white flex items-center justify-center shadow-sm shadow-primary/40">
                   <MapPin size={20} className="text-background" />
                 </div>
-                <div className="mt-4 px-4 py-2 bg-surface/90 border border-border rounded-xl text-xs font-bold text-text-primary shadow-xl max-w-xs text-center backdrop-blur">
-                  <p className="text-accent uppercase tracking-widest text-[9px] mb-0.5">Kantor Pusat</p>
+                <div className="mt-4 px-4 py-2 bg-surface border border-border rounded-xl text-xs font-bold text-text-primary shadow-md max-w-xs text-center backdrop-blur">
+                  <p className="text-primary uppercase tracking-widest text-[9px] mb-0.5">Kantor Pusat</p>
                   <p>Alamat</p>
                 </div>
               </div>
@@ -371,7 +371,7 @@ export default function KontakPage() {
           <div className="mt-20 max-w-3xl mx-auto space-y-6">
             <div className="text-center space-y-2">
               <h2 className="text-2xl font-bold text-text-primary flex items-center justify-center gap-2">
-                <Info size={20} className="text-accent" />
+                <Info size={20} className="text-primary" />
                 Pertanyaan Umum
               </h2>
               <p className="text-sm text-text-secondary">
@@ -386,7 +386,7 @@ export default function KontakPage() {
                   <div
                     key={idx}
                     className={`rounded-2xl border transition-all duration-300 overflow-hidden
-                      ${isOpen ? "border-accent/30 bg-surface/50" : "border-border/60 bg-surface/20 hover:border-border"}`}
+                      ${isOpen ? "border-primary/30 bg-surface" : "border-border/60 bg-surface/20 hover:border-border"}`}
                   >
                     <button
                       onClick={() => toggleFaq(idx)}
@@ -397,7 +397,7 @@ export default function KontakPage() {
                       </h4>
                       <ChevronDown
                         size={18}
-                        className={`text-text-secondary transition-transform duration-300 shrink-0 ${isOpen ? "rotate-180 text-accent" : ""}`}
+                        className={`text-text-secondary transition-transform duration-300 shrink-0 ${isOpen ? "rotate-180 text-primary" : ""}`}
                       />
                     </button>
                     {isOpen && (

@@ -17,13 +17,13 @@ export default function Card({
   href = "#",
 }: CardProps) {
   return (
-    <article className="group bg-surface rounded-3xl border border-border hover:border-accent/30 hover:shadow-2xl hover:shadow-black/20 transition-all duration-300 flex flex-col h-full overflow-hidden">
+    <article className="group bg-surface rounded-2xl border border-border hover:border-primary hover:shadow-md transition-all duration-300 flex flex-col h-full overflow-hidden">
       {/* Card body */}
       <div className="flex-1 p-8 space-y-5">
         {/* Meta row */}
         <div className="flex items-center gap-3 flex-wrap">
           {category && (
-            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent bg-accent/10 px-3 py-1.5 rounded-full">
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary bg-primary/10 px-3 py-1.5 rounded-full">
               {category}
             </span>
           )}
@@ -36,7 +36,7 @@ export default function Card({
         </div>
 
         {/* Title */}
-        <h3 className="text-xl font-sans font-bold text-text-primary group-hover:text-accent transition-colors duration-200 leading-tight">
+        <h3 className="text-xl font-sans font-bold text-text-primary group-hover:text-primary transition-colors duration-200 leading-tight">
           {title}
         </h3>
 
@@ -51,7 +51,7 @@ export default function Card({
         <div className="pt-6 border-t border-border/50">
           <Link
             href="/publikasi"
-            className="inline-flex items-center gap-2 text-sm text-accent font-bold hover:gap-3 transition-all duration-200"
+            className="inline-flex items-center gap-2 text-sm text-primary font-bold hover:text-primary-dark hover:gap-3 transition-all duration-200"
           >
             Baca Selengkapnya
             <ArrowRight size={16} />

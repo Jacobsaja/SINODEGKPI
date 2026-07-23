@@ -93,7 +93,7 @@ export default function AdminKontakPage() {
 
   const statusBadge = (status: ContactMessage["status"]) => {
     const map = {
-      unread: { label: "Belum Dibaca", cls: "bg-accent/10 text-accent border-accent/30" },
+      unread: { label: "Belum Dibaca", cls: "bg-primary/10 text-primary border-primary/30" },
       read: { label: "Sudah Dibaca", cls: "bg-primary/10 text-primary border-primary/30" },
       replied: { label: "Sudah Dibalas", cls: "bg-success/10 text-success border-success/30" },
     };
@@ -130,8 +130,8 @@ export default function AdminKontakPage() {
             onClick={() => setFilter("unread")}
             className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-colors cursor-pointer ${
               filter === "unread"
-                ? "bg-accent text-white border-accent"
-                : "bg-surface text-text-secondary border-border hover:border-accent/40"
+                ? "bg-primary text-white border-primary"
+                : "bg-surface text-text-secondary border-border hover:border-primary/40"
             }`}
           >
             Belum Dibaca ({unreadCount})
@@ -158,7 +158,7 @@ export default function AdminKontakPage() {
                 key={msg.id}
                 className={`rounded-2xl border transition-all overflow-hidden ${
                   msg.status === "unread"
-                    ? "border-accent/30 bg-accent/5"
+                    ? "border-primary/30 bg-primary/5"
                     : "border-border bg-surface"
                 }`}
               >
@@ -168,7 +168,7 @@ export default function AdminKontakPage() {
                 >
                   <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
                     {msg.status === "unread" ? (
-                      <Mail size={16} className="text-accent" />
+                      <Mail size={16} className="text-primary" />
                     ) : (
                       <MailOpen size={16} className="text-primary" />
                     )}
@@ -228,7 +228,7 @@ export default function AdminKontakPage() {
 
                       <button
                         onClick={() => handleDelete(msg.id)}
-                        className="ml-auto flex items-center gap-1.5 text-xs font-bold text-accent hover:underline cursor-pointer"
+                        className="ml-auto flex items-center gap-1.5 text-xs font-bold text-primary hover:underline cursor-pointer"
                       >
                         <Trash2 size={13} />
                         Hapus

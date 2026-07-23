@@ -33,7 +33,7 @@ export default async function WilayahResortPage() {
       <ResortHero />
 
       {/* Stats bar */}
-      <div className="bg-surface/80 border-b border-border backdrop-blur-sm">
+      <div className="bg-surface border-b border-border backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 py-4 flex items-center gap-8 overflow-x-auto">
           <StatChip value={total} label="Jemaat Terdaftar" />
           <div className="w-px h-6 bg-border shrink-0" />
@@ -75,7 +75,7 @@ function MapExplorerFallback() {
 function StatChip({ value, label }: { value: string | number; label: string }) {
   return (
     <div className="shrink-0 flex items-baseline gap-2">
-      <span className="text-xl font-bold text-accent">{value}</span>
+      <span className="text-xl font-bold text-primary">{value}</span>
       <span className="text-xs text-text-secondary">{label}</span>
     </div>
   );

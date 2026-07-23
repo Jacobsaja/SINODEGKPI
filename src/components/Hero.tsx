@@ -136,28 +136,28 @@ export default function Hero() {
                         alt="Logo GKPI"
                         fill
                         sizes="(max-width: 768px) 96px, 128px"
-                        className="object-contain drop-shadow-2xl"
+                        className="object-contain drop-shadow-sm"
                         priority
                       />
                     </div>
-                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-sans font-black text-white tracking-wide mb-6 drop-shadow-2xl">
+                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-sans font-black text-white tracking-wide mb-6 drop-shadow-sm">
                       {slide.title}
                     </h1>
-                    <p className="text-sm md:text-lg text-accent font-black tracking-[0.2em] uppercase [text-shadow:0_2px_10px_rgba(0,0,0,0.9)]">
+                    <p className="text-sm md:text-lg text-white/90 font-black tracking-[0.2em] uppercase [text-shadow:0_2px_10px_rgba(0,0,0,0.9)]">
                       {slide.subtitle}
                     </p>
                   </>
                 ) : (
                   <>
-                    <p className="text-2xl md:text-4xl lg:text-5xl font-serif italic text-white leading-relaxed mb-8 drop-shadow-lg">
+                    <p className="text-2xl md:text-4xl lg:text-5xl font-serif italic text-white leading-relaxed mb-8 drop-shadow-sm">
                       &quot;{slide.verse}&quot;
                     </p>
-                    <p className="text-sm md:text-base text-accent font-black tracking-[0.15em] uppercase mb-12 [text-shadow:0_2px_10px_rgba(0,0,0,0.9)]">
+                    <p className="text-sm md:text-base text-white/90 font-black tracking-[0.15em] uppercase mb-12 [text-shadow:0_2px_10px_rgba(0,0,0,0.9)]">
                      — {slide.reference}
                     </p>
                     <Link
                       href={slide.href!}
-                      className="px-10 py-4 bg-transparent border border-white/30 text-white text-sm uppercase tracking-widest hover:bg-white hover:text-primary-dark transition-all duration-500 rounded-sm"
+                      className="px-10 py-4 bg-transparent border border-white/30 text-white text-sm uppercase tracking-widest hover:bg-white hover:text-primary-dark transition-all duration-500 rounded-md"
                     >
                       {slide.cta}
                     </Link>
@@ -180,7 +180,7 @@ export default function Hero() {
           >
             <div
               className={`h-0.5 transition-all duration-500 ${current === index
-                ? "w-8 bg-accent"
+                ? "w-8 bg-white"
                 : "w-4 bg-white/20 group-hover:bg-white/50"
                 }`}
             />

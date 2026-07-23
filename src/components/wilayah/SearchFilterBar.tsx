@@ -66,7 +66,7 @@ export default function SearchFilterBar({
   };
 
   return (
-    <div className="px-4 pt-4 pb-3 border-b border-border bg-surface/50 space-y-3 shrink-0">
+    <div className="px-4 pt-4 pb-3 border-b border-border bg-surface space-y-3 shrink-0">
       {/* Search Input */}
       <div className="relative">
         <Search
@@ -78,7 +78,7 @@ export default function SearchFilterBar({
           placeholder="Cari gereja, kota, atau pendeta…"
           value={localQuery}
           onChange={(e) => setLocalQuery(e.target.value)}
-          className="w-full bg-background border border-border text-text-primary placeholder:text-text-secondary/40 text-sm rounded-xl pl-10 pr-10 py-3 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all shadow-sm"
+          className="w-full bg-background border border-border text-text-primary placeholder:text-text-secondary/40 text-sm rounded-xl pl-10 pr-10 py-3 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all shadow-sm"
         />
         {localQuery && (
           <button
@@ -134,7 +134,7 @@ function FilterChip({
         ${
           isActive
             ? "bg-primary text-white border-primary shadow-sm"
-            : "bg-surface text-text-secondary border-border hover:border-accent/40 hover:text-text-primary"
+            : "bg-surface text-text-secondary border-border hover:border-primary/40 hover:text-text-primary"
         }
       `}
     >

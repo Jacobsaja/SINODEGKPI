@@ -66,16 +66,16 @@ export default function LaporanKeuanganPage() {
           <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2">
             <Link
               href="/"
-              className="flex items-center gap-1.5 text-sm text-text-primary/75 transition-colors hover:text-accent"
+              className="flex items-center gap-1.5 text-sm text-text-primary/75 transition-colors hover:text-primary"
             >
               Beranda
             </Link>
             <ChevronRight size={14} className="text-text-primary/30" />
-            <span className="text-sm font-medium text-accent">Laporan Keuangan</span>
+            <span className="text-sm font-medium text-primary">Laporan Keuangan</span>
           </nav>
 
           <ScrollReveal>
-            <p className="mb-4 text-xs font-bold uppercase tracking-[0.28em] text-accent">
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.28em] text-primary">
               Transparansi Pelayanan
             </p>
             <h1
@@ -100,7 +100,7 @@ export default function LaporanKeuanganPage() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Cari nama laporan, bulan, atau tahun..."
-                  className="w-full rounded-xl border border-border bg-surface/60 py-3 pl-11 pr-4 text-sm text-text-primary outline-none focus:border-accent/40 focus:bg-surface transition-all"
+                  className="w-full rounded-xl border border-border bg-surface py-3 pl-11 pr-4 text-sm text-text-primary outline-none focus:border-primary/40 focus:bg-surface transition-all"
                 />
               </div>
               <select
@@ -108,7 +108,7 @@ export default function LaporanKeuanganPage() {
                 onChange={(e) =>
                   setSelectedYear(e.target.value === "Semua" ? "Semua" : parseInt(e.target.value))
                 }
-                className="rounded-xl border border-border bg-surface/60 px-4 py-3 text-sm text-text-primary outline-none focus:border-accent/40 cursor-pointer"
+                className="rounded-xl border border-border bg-surface px-4 py-3 text-sm text-text-primary outline-none focus:border-primary/40 cursor-pointer"
               >
                 <option value="Semua">Semua Tahun</option>
                 {availableYears.map((y) => (
@@ -167,7 +167,7 @@ export default function LaporanKeuanganPage() {
                           </div>
                           <div className="min-w-0">
                             <div className="flex flex-wrap items-center gap-2">
-                              <p className="truncate font-bold text-text-primary transition-colors group-hover:text-accent">
+                              <p className="truncate font-bold text-text-primary transition-colors group-hover:text-primary">
                                 {report.name}
                               </p>
                               <span className="shrink-0 rounded-md bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-primary">
@@ -198,7 +198,7 @@ export default function LaporanKeuanganPage() {
                           </a>
                           <a
                             href={getDownloadUrl(report)}
-                            className="inline-flex items-center gap-1.5 rounded-xl border border-accent/20 bg-accent/5 px-3.5 py-2 text-xs font-bold text-accent transition-all hover:bg-accent/10"
+                            className="inline-flex items-center gap-1.5 rounded-xl border border-primary/20 bg-primary/5 px-3.5 py-2 text-xs font-bold text-primary transition-all hover:bg-primary/10"
                           >
                             <Download size={13} /> Unduh
                           </a>

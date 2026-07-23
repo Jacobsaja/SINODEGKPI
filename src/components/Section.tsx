@@ -25,19 +25,15 @@ export default function Section({
     <section
       id={id}
       className={`relative py-12 md:py-20 px-5 sm:px-8 overflow-hidden ${
-        !pattern && !dark ? "bg-background" : ""
+        pattern ? "bg-alternate" : (!dark ? "bg-background" : "bg-primary-dark")
       } ${className}`}
-      style={pattern ? {
-        background: "linear-gradient(135deg, #0E63E9 0%, #0A3D91 40%, #0E63E9 70%, #0A3D91 100%)",
-      } : {}}
     >
       {pattern && (
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-primary/10 blur-[120px]" />
           <div
-            className="absolute inset-0 opacity-[0.02]"
+            className="absolute inset-0 opacity-[0.03]"
             style={{
-              backgroundImage: "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
+              backgroundImage: "linear-gradient(var(--color-primary) 1px, transparent 1px), linear-gradient(90deg, var(--color-primary) 1px, transparent 1px)",
               backgroundSize: "80px 80px",
             }}
           />
@@ -50,20 +46,20 @@ export default function Section({
             <div className="text-center mb-12 md:mb-16 space-y-4">
               {title && (
                 <h2 className={`text-3xl sm:text-4xl md:text-5xl font-sans font-bold tracking-tight ${
-                  pattern || dark ? "text-white" : "text-text-primary"
+                  dark ? "text-white" : "text-text-primary"
                 }`}>
                   {title}
                 </h2>
               )}
               {subtitle && (
                 <p className={`text-base sm:text-lg max-w-2xl mx-auto leading-relaxed ${
-                  pattern || dark ? "text-blue-100/90" : "text-text-secondary"
+                  dark ? "text-blue-100/90" : "text-text-secondary"
                 }`}>
                   {subtitle}
                 </p>
               )}
               <div className={`w-16 h-1 mx-auto rounded-full ${
-                pattern || dark ? "bg-accent" : "bg-primary/40"
+                dark ? "bg-white/40" : "bg-primary/40"
               }`} />
             </div>
           )}

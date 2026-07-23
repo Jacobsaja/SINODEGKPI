@@ -123,16 +123,16 @@ export default function PublikasiPage() {
           <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2">
             <Link
               href="/"
-              className="flex items-center gap-1.5 text-sm text-text-primary/75 transition-colors hover:text-accent"
+              className="flex items-center gap-1.5 text-sm text-text-primary/75 transition-colors hover:text-primary"
             >
               Beranda
             </Link>
             <ChevronRight size={14} className="text-text-primary/30" />
-            <span className="text-sm font-medium text-accent">Publikasi</span>
+            <span className="text-sm font-medium text-primary">Publikasi</span>
           </nav>
 
           <ScrollReveal>
-            <p className="mb-4 text-xs font-bold uppercase tracking-[0.28em] text-accent">
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.28em] text-primary">
               Portal Informasi
             </p>
             <h1
@@ -152,7 +152,7 @@ export default function PublikasiPage() {
       <section className="relative mx-auto max-w-7xl px-5 py-12 sm:px-8 md:py-16">
         {/* Search & Filter Panel */}
         <ScrollReveal>
-          <div className="mb-12 flex flex-col gap-6 rounded-3xl border border-border/60 bg-surface/40 p-6 backdrop-blur-xl md:flex-row md:items-center md:justify-between">
+          <div className="mb-12 flex flex-col gap-6 rounded-2xl border border-border/60 bg-surface p-6 backdrop-blur-xl md:flex-row md:items-center md:justify-between">
             {/* Search Input */}
             <div className="relative flex-1 max-w-md">
               <Search
@@ -164,7 +164,7 @@ export default function PublikasiPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Cari..."
-                className="w-full rounded-2xl border border-border bg-background/50 py-3 pl-11 pr-4 text-sm text-white placeholder-text-secondary outline-none transition-all focus:border-accent/40 focus:bg-background/80"
+                className="w-full rounded-2xl border border-border bg-background/50 py-3 pl-11 pr-4 text-sm text-white placeholder-text-secondary outline-none transition-all focus:border-primary/40 focus:bg-background/80"
               />
               {searchQuery && (
                 <button
@@ -190,8 +190,8 @@ export default function PublikasiPage() {
                     className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition-all cursor-pointer
                       ${
                         isActive
-                          ? "bg-accent text-background shadow-lg shadow-accent/25"
-                          : "border border-border bg-surface/60 text-text-secondary hover:border-accent/20 hover:text-accent"
+                          ? "bg-primary text-background shadow-sm shadow-primary/25"
+                          : "border border-border bg-surface text-text-secondary hover:border-primary/20 hover:text-primary"
                       }`}
                   >
                     {getCategoryIcon(cat)}
@@ -207,12 +207,12 @@ export default function PublikasiPage() {
         {featuredPost && (
           <ScrollReveal>
             <div className="mb-14">
-              <p className="mb-4 text-xs font-bold uppercase tracking-widest text-accent flex items-center gap-2">
+              <p className="mb-4 text-xs font-bold uppercase tracking-widest text-primary flex items-center gap-2">
                 <Bookmark size={14} className="animate-pulse" /> Renungan Harian
               </p>
               <Link
                 href={`/publikasi/${featuredPost.id}`}
-                className="group relative grid grid-cols-1 overflow-hidden rounded-[2rem] border border-border bg-surface/30 transition-all duration-500 hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/5 md:grid-cols-12 cursor-pointer"
+                className="group relative grid grid-cols-1 overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-500 hover:border-primary/30 hover:shadow-sm hover:shadow-primary/5 md:grid-cols-12 cursor-pointer"
                 style={{ backdropFilter: "blur(12px)" }}
               >
                 {/* Image side */}
@@ -225,7 +225,7 @@ export default function PublikasiPage() {
                     className="object-cover transition-transform duration-[6000ms] group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-background/30 md:to-background/95" />
-                  <div className="absolute left-6 top-6 rounded-xl border border-border bg-surface/80 px-3 py-1.5 text-xs font-bold text-text-primary backdrop-blur">
+                  <div className="absolute left-6 top-6 rounded-xl border border-border bg-surface px-3 py-1.5 text-xs font-bold text-text-primary backdrop-blur">
                     {featuredPost.category}
                   </div>
                 </div>
@@ -235,16 +235,16 @@ export default function PublikasiPage() {
                   <div className="space-y-4">
                     <div className="flex items-center gap-4 text-xs text-text-secondary">
                       <span className="flex items-center gap-1">
-                        <Calendar size={14} className="text-accent" />
+                        <Calendar size={14} className="text-primary" />
                         {formatDateID(featuredPost.date)}
                       </span>
                       <span className="flex items-center gap-1">
-                        <Clock size={14} className="text-accent" />
+                        <Clock size={14} className="text-primary" />
                         {featuredPost.read_time}
                       </span>
                     </div>
                     <h2
-                      className="font-serif text-2xl font-bold text-text-primary transition-colors group-hover:text-accent md:text-3xl lg:text-4xl"
+                      className="font-serif text-2xl font-bold text-text-primary transition-colors group-hover:text-primary md:text-3xl lg:text-4xl"
                       style={{ fontFamily: "'Playfair Display', serif" }}
                     >
                       {featuredPost.title}
@@ -256,14 +256,14 @@ export default function PublikasiPage() {
 
                   <div className="mt-8 flex items-center justify-between border-t border-border/40 pt-6">
                     <div className="flex items-center gap-2">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/15 text-accent">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/15 text-primary">
                         <User size={14} />
                       </div>
                       <span className="text-sm font-semibold text-white">
                         {featuredPost.author}
                       </span>
                     </div>
-                    <div className="inline-flex items-center gap-1 text-sm font-bold text-accent group-hover:underline">
+                    <div className="inline-flex items-center gap-1 text-sm font-bold text-primary group-hover:underline">
                       <span>Baca Lengkap</span>
                       <ArrowRight
                         size={16}
@@ -283,7 +283,7 @@ export default function PublikasiPage() {
             <ScrollReveal key={post.id}>
               <Link
                 href={`/publikasi/${post.id}`}
-                className="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-border bg-surface/40 shadow-lg shadow-black/5 hover:-translate-y-1.5 hover:border-accent/30 hover:bg-surface/60 hover:shadow-2xl hover:shadow-accent/5 transition-all duration-300 cursor-pointer"
+                className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-sm shadow-black/5 hover:-translate-y-1 hover:border-primary/30 hover:bg-surface hover:shadow-sm hover:shadow-primary/5 transition-all duration-300 cursor-pointer"
                 style={{ backdropFilter: "blur(12px)" }}
               >
                 {/* Card Thumbnail */}
@@ -296,7 +296,7 @@ export default function PublikasiPage() {
                     className="object-contain transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
-                  <span className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full border border-border bg-surface/80 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-text-primary backdrop-blur">
+                  <span className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-text-primary backdrop-blur">
                     {getCategoryIcon(post.category)}
                     {post.category}
                   </span>
@@ -307,18 +307,18 @@ export default function PublikasiPage() {
                   {/* Meta */}
                   <div className="mb-3.5 flex items-center gap-4 text-xs text-text-secondary">
                     <span className="flex items-center gap-1">
-                      <Calendar size={13} className="text-accent" />
+                      <Calendar size={13} className="text-primary" />
                       {formatDateID(post.date)}
                     </span>
                     <span className="flex items-center gap-1">
-                      <Clock size={13} className="text-accent" />
+                      <Clock size={13} className="text-primary" />
                       {post.read_time}
                     </span>
                   </div>
 
                   {/* Title & Desc */}
                   <h3
-                    className="font-serif text-lg font-bold text-text-primary mb-2 leading-snug group-hover:text-accent transition-colors"
+                    className="font-serif text-lg font-bold text-text-primary mb-2 leading-snug group-hover:text-primary transition-colors"
                     style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     {post.title}
@@ -330,14 +330,14 @@ export default function PublikasiPage() {
                   {/* Author / Footer */}
                   <div className="mt-auto flex items-center justify-between border-t border-border/40 pt-4">
                     <div className="flex items-center gap-2">
-                      <div className="flex h-7.5 w-7.5 items-center justify-center rounded-full bg-accent/10 text-accent">
+                      <div className="flex h-7.5 w-7.5 items-center justify-center rounded-md bg-primary/10 text-primary">
                         <User size={13} />
                       </div>
                       <span className="text-xs font-semibold text-text-primary">
                         {post.author}
                       </span>
                     </div>
-                    <span className="text-xs font-semibold text-accent flex items-center gap-1 group-hover:underline">
+                    <span className="text-xs font-semibold text-primary flex items-center gap-1 group-hover:underline">
                       <span>Buka</span>
                       <ChevronRight size={14} className="transition-transform group-hover:translate-x-0.5" />
                     </span>
@@ -351,7 +351,7 @@ export default function PublikasiPage() {
         {/* Loading State */}
         {isLoading && (
           <div className="my-20 flex flex-col items-center justify-center text-center p-8">
-            <div className="h-10 w-10 rounded-full border-2 border-accent/30 border-t-accent animate-spin" />
+            <div className="h-10 w-10 rounded-full border-2 border-primary/30 border-t-primary animate-spin" />
             <p className="text-sm text-text-secondary mt-4">Memuat publikasi...</p>
           </div>
         )}
@@ -359,7 +359,7 @@ export default function PublikasiPage() {
         {/* Empty State */}
         {!isLoading && filteredPublications.length === 0 && (
           <ScrollReveal>
-            <div className="my-20 flex flex-col items-center justify-center text-center p-8 rounded-3xl border border-border/40 bg-surface/20">
+            <div className="my-20 flex flex-col items-center justify-center text-center p-8 rounded-2xl border border-border/40 bg-surface/20">
               <FileText size={48} className="text-text-secondary mb-4 opacity-50" />
               <h3 className="text-lg font-bold text-white">Tidak ada publikasi ditemukan</h3>
               <p className="text-sm text-text-secondary mt-1">Coba gunakan kata kunci pencarian atau kategori lain.</p>
@@ -373,7 +373,7 @@ export default function PublikasiPage() {
             <div className="mt-16 text-center">
               <button
                 onClick={handleLoadMore}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-border bg-surface/50 px-8 text-sm font-bold text-text-primary transition-all duration-300 hover:border-accent/40 hover:bg-surface hover:-translate-y-0.5 cursor-pointer"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-border bg-surface px-8 text-sm font-bold text-text-primary transition-all duration-300 hover:border-primary/40 hover:bg-surface hover:-translate-y-0.5 cursor-pointer"
               >
                 Muat Lebih Banyak
               </button>

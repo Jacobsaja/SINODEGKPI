@@ -27,7 +27,7 @@ export default function GalleryLightbox({ images, title }: Props) {
     <>
       <div
         onClick={() => setIsZoomed(true)}
-        className="group/image relative aspect-[16/9] w-full cursor-zoom-in overflow-hidden rounded-2xl border border-border/40 bg-surface shadow-2xl"
+        className="group/image relative aspect-[16/9] w-full cursor-zoom-in overflow-hidden rounded-2xl border border-border/40 bg-surface shadow-sm"
       >
         <Image
           src={images[activeIndex]}
@@ -38,7 +38,7 @@ export default function GalleryLightbox({ images, title }: Props) {
           priority
         />
         <div className="absolute inset-0 flex items-center justify-center bg-background/0 opacity-0 transition-opacity duration-300 group-hover/image:bg-background/10 group-hover/image:opacity-100">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface/90 text-text-primary shadow-lg backdrop-blur">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface text-text-primary shadow-sm backdrop-blur">
             <Maximize2 size={18} />
           </div>
         </div>
@@ -53,7 +53,7 @@ export default function GalleryLightbox({ images, title }: Props) {
               onClick={() => setActiveIndex(i)}
               className={`relative h-16 w-24 shrink-0 cursor-pointer overflow-hidden rounded-xl border-2 transition-all ${
                 activeIndex === i
-                  ? "border-accent"
+                  ? "border-primary"
                   : "border-border/50 opacity-70 hover:opacity-100"
               }`}
             >
@@ -73,7 +73,7 @@ export default function GalleryLightbox({ images, title }: Props) {
 
           <button
             onClick={() => setIsZoomed(false)}
-            className="absolute right-5 top-5 z-10 flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl border border-border bg-surface/80 text-text-primary transition-all duration-300 hover:border-red-500/40 hover:text-red-500"
+            className="absolute right-5 top-5 z-10 flex h-11 w-11 cursor-pointer items-center justify-center rounded-xl border border-border bg-surface text-text-primary transition-all duration-300 hover:border-red-500/40 hover:text-red-500"
             aria-label="Tutup"
           >
             <X size={20} />
@@ -86,7 +86,7 @@ export default function GalleryLightbox({ images, title }: Props) {
                   e.stopPropagation();
                   goPrev();
                 }}
-                className="absolute left-5 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-xl border border-border bg-surface/80 text-text-primary transition-all hover:text-accent"
+                className="absolute left-5 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-xl border border-border bg-surface text-text-primary transition-all hover:text-primary"
                 aria-label="Gambar sebelumnya"
               >
                 <ChevronLeft size={20} />
@@ -96,7 +96,7 @@ export default function GalleryLightbox({ images, title }: Props) {
                   e.stopPropagation();
                   goNext();
                 }}
-                className="absolute right-5 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-xl border border-border bg-surface/80 text-text-primary transition-all hover:text-accent"
+                className="absolute right-5 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-xl border border-border bg-surface text-text-primary transition-all hover:text-primary"
                 aria-label="Gambar berikutnya"
               >
                 <ChevronRight size={20} />

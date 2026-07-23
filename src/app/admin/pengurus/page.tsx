@@ -59,7 +59,7 @@ function Modal({
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-lg rounded-3xl border border-border/85 bg-surface/95 p-7 md:p-8 shadow-2xl backdrop-blur-2xl my-auto"
+        className="relative w-full max-w-lg rounded-2xl border border-border/85 bg-surface/95 p-7 md:p-8 shadow-md backdrop-blur-2xl my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
@@ -67,7 +67,7 @@ function Modal({
           <button
             type="button"
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background/50 text-text-secondary hover:text-primary hover:border-accent/40 transition-all cursor-pointer"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background/50 text-text-secondary hover:text-primary hover:border-primary/40 transition-all cursor-pointer"
             aria-label="Tutup"
           >
             <X size={15} />
@@ -95,13 +95,13 @@ function Field({
 }
 
 const inputClass =
-  "w-full rounded-xl border border-border bg-background/40 px-4 py-3 text-sm text-text-primary placeholder-text-secondary/50 outline-none transition-all focus:border-accent/50 focus:bg-background/80 focus:ring-4 focus:ring-accent/10";
+  "w-full rounded-xl border border-border bg-background/40 px-4 py-3 text-sm text-text-primary placeholder-text-secondary/50 outline-none transition-all focus:border-primary/50 focus:bg-background/80 focus:ring-4 focus:ring-primary/10";
 
 const btnPrimary =
-  "inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-white shadow-lg shadow-primary/20 transition-all hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer";
+  "inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-white shadow-sm shadow-primary/20 transition-all hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer";
 
 const btnGhost =
-  "inline-flex items-center gap-1.5 text-xs font-bold text-accent hover:text-red-700 px-2.5 py-1.5 rounded-lg hover:bg-accent/15 border border-transparent hover:border-accent/30 transition-all cursor-pointer";
+  "inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:text-red-700 px-2.5 py-1.5 rounded-lg hover:bg-primary/15 border border-transparent hover:border-primary/30 transition-all cursor-pointer";
 
 const btnDanger =
   "inline-flex items-center gap-1.5 text-xs font-bold text-red-500 hover:text-red-700 px-2.5 py-1.5 rounded-lg hover:bg-red-500/10 border border-transparent hover:border-red-500/30 transition-all cursor-pointer";
@@ -472,7 +472,7 @@ function AnggotaFormModal({
               <User size={30} className="text-text-secondary/30" strokeWidth={1.5} />
             )}
           </div>
-          <label className="inline-flex items-center gap-2 text-xs font-bold text-accent hover:text-red-700 px-3.5 py-2.5 rounded-xl border border-border hover:border-accent/40 hover:bg-accent/5 bg-background/30 cursor-pointer transition-all">
+          <label className="inline-flex items-center gap-2 text-xs font-bold text-primary hover:text-red-700 px-3.5 py-2.5 rounded-xl border border-border hover:border-primary/40 hover:bg-primary/5 bg-background/30 cursor-pointer transition-all">
             {uploading ? <Loader2 size={14} className="animate-spin" /> : <ImagePlus size={14} />}
             {uploading ? "Mengunggah..." : "Unggah Foto"}
             <input type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} disabled={uploading} />
@@ -621,7 +621,7 @@ function AnggotaRow({
   return (
     <div className="flex items-center justify-between gap-3 rounded-xl border border-border/45 bg-background/20 hover:bg-background/40 p-3 transition-all">
       <div className="flex items-center gap-3 min-w-0">
-        <div className="relative h-9 w-9 shrink-0 rounded-lg overflow-hidden border border-border/60 bg-surface/50 flex items-center justify-center">
+        <div className="relative h-9 w-9 shrink-0 rounded-lg overflow-hidden border border-border/60 bg-surface flex items-center justify-center">
           {anggota.photo_url ? (
             <Image src={anggota.photo_url} alt="" fill sizes="36px" className="object-cover" />
           ) : (
@@ -749,7 +749,7 @@ export default function AdminPengurusPage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/40 pb-6">
         <div>
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-accent">Struktur Organisasi</p>
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-primary">Struktur Organisasi</p>
           <h1 className="text-3xl font-extrabold text-text-primary mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>
             Kelola Pengurus
           </h1>
@@ -782,7 +782,7 @@ export default function AdminPengurusPage() {
           const ctxDirect: AnggotaCtx = { seksiId: seksi.id, grupId: null, layoutType: seksi.layout_type };
 
           return (
-            <div key={seksi.id} className="rounded-2xl border border-border bg-surface/30 overflow-hidden">
+            <div key={seksi.id} className="rounded-2xl border border-border bg-surface overflow-hidden">
               {/* Seksi header */}
               <div className="flex flex-wrap items-center justify-between gap-3 p-5">
                 <button
@@ -792,12 +792,12 @@ export default function AdminPengurusPage() {
                 >
                   <ChevronRightIcon
                     size={16}
-                    className={`shrink-0 text-accent transition-transform duration-300 ${isOpen ? "rotate-90" : ""}`}
+                    className={`shrink-0 text-primary transition-transform duration-300 ${isOpen ? "rotate-90" : ""}`}
                   />
                   <div className="min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <h2 className="font-bold text-text-primary text-base truncate">{seksi.title}</h2>
-                      <span className="shrink-0 rounded-md border border-accent/20 bg-accent/10 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-accent">
+                      <span className="shrink-0 rounded-md border border-primary/20 bg-primary/10 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-primary">
                         {LAYOUT_TYPE_LABELS[seksi.layout_type].split(" (")[0]}
                       </span>
                     </div>
@@ -905,7 +905,7 @@ export default function AdminPengurusPage() {
                             {seksi.layout_type === "komisi_groups" && (
                               <div className="flex items-center justify-between mb-3">
                                 <div className="flex items-center gap-2">
-                                  <Layers size={14} className="text-accent" />
+                                  <Layers size={14} className="text-primary" />
                                   <p className="text-sm font-bold text-text-primary">{grup.name}</p>
                                 </div>
                                 <div className="flex items-center gap-1">

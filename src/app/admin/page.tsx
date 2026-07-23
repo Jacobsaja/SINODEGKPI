@@ -73,7 +73,7 @@ export default async function AdminDashboardPage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/40 pb-6">
         <div>
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-accent">
+          <p className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-primary">
             Ringkasan Sistem
           </p>
           <h1
@@ -96,21 +96,21 @@ export default async function AdminDashboardPage() {
             <Link
               key={stat.label}
               href={stat.href}
-              className="group relative overflow-hidden rounded-2xl border border-border bg-surface/30 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:bg-surface/50 shadow-lg hover:shadow-accent/5"
+              className="group relative overflow-hidden rounded-2xl border border-border bg-surface p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:bg-surface shadow-sm hover:shadow-primary/5"
             >
               <div className="flex items-start justify-between">
                 <div className={`flex h-12 w-12 items-center justify-center rounded-2xl border ${stat.colorClass}`}>
                   <Icon size={22} />
                 </div>
-                <span className="text-[10px] font-bold text-text-secondary/70 uppercase tracking-widest bg-background/50 px-2.5 py-1 rounded-lg border border-border/40 transition-colors group-hover:border-accent/30 group-hover:text-accent">
+                <span className="text-[10px] font-bold text-text-secondary/70 uppercase tracking-widest bg-background/50 px-2.5 py-1 rounded-lg border border-border/40 transition-colors group-hover:border-primary/30 group-hover:text-primary">
                   Kelola
                 </span>
               </div>
               <div className="mt-4">
-                <p className="text-3xl font-bold text-accent tracking-tight">{stat.value}</p>
+                <p className="text-3xl font-bold text-primary tracking-tight">{stat.value}</p>
                 <p className="mt-1 text-sm font-semibold text-text-primary">{stat.label}</p>
                 <p className="mt-2.5 text-xs text-text-secondary/80 flex items-center gap-1 font-medium">
-                  <TrendingUp size={12} className="text-accent" />
+                  <TrendingUp size={12} className="text-primary" />
                   {stat.trend}
                 </p>
               </div>
@@ -121,29 +121,29 @@ export default async function AdminDashboardPage() {
 
       {/* Quick Actions Deck */}
       <div className="rounded-2xl border border-border/80 bg-surface/20 p-6">
-        <h2 className="text-xs font-extrabold uppercase tracking-wider text-accent mb-4">Aksi Cepat Admin</h2>
+        <h2 className="text-xs font-extrabold uppercase tracking-wider text-primary mb-4">Aksi Cepat Admin</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Link
             href="/admin/publikasi?tab=form"
-            className="flex items-center gap-4 rounded-2xl border border-border bg-surface/40 p-4 transition-all hover:border-accent/40 hover:bg-surface/60 hover:-translate-y-0.5"
+            className="flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 transition-all hover:border-primary/40 hover:bg-surface hover:-translate-y-0.5"
           >
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/20 text-accent">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/20 text-primary">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
             </div>
             <div>
-              <p className="text-sm font-bold text-accent">Tulis Publikasi</p>
+              <p className="text-sm font-bold text-primary">Tulis Publikasi</p>
               <p className="text-xs text-text-secondary mt-0.5">Tambah warta, berita & renungan</p>
             </div>
           </Link>
           <Link
             href="/admin/toko?tab=form"
-            className="flex items-center gap-4 rounded-2xl border border-border bg-surface/40 p-4 transition-all hover:border-accent/40 hover:bg-surface/60 hover:-translate-y-0.5"
+            className="flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 transition-all hover:border-primary/40 hover:bg-surface hover:-translate-y-0.5"
           >
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-500/20 text-purple-300">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
             </div>
             <div>
-              <p className="text-sm font-bold text-accent">Tambah Produk</p>
+              <p className="text-sm font-bold text-primary">Tambah Produk</p>
               <p className="text-xs text-text-secondary mt-0.5">Tambah merchandise & buku baru</p>
             </div>
           </Link>
@@ -151,13 +151,13 @@ export default async function AdminDashboardPage() {
             href="/"
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-4 rounded-2xl border border-border bg-surface/40 p-4 transition-all hover:border-accent/40 hover:bg-surface/60 hover:-translate-y-0.5"
+            className="flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 transition-all hover:border-primary/40 hover:bg-surface hover:-translate-y-0.5"
           >
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-300">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="m21 3-9 9" /><path d="M15 3h6v6" /></svg>
             </div>
             <div>
-              <p className="text-sm font-bold text-accent">Lihat Website</p>
+              <p className="text-sm font-bold text-primary">Lihat Website</p>
               <p className="text-xs text-text-secondary mt-0.5">Buka halaman publik utama</p>
             </div>
           </a>
@@ -170,12 +170,12 @@ export default async function AdminDashboardPage() {
       {/* Recent activity grid */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Publikasi terbaru */}
-        <div className="rounded-2xl border border-border bg-surface/30 p-6 flex flex-col h-full">
+        <div className="rounded-2xl border border-border bg-surface p-6 flex flex-col h-full">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="font-bold text-accent text-base">Publikasi Terkini</h2>
+            <h2 className="font-bold text-primary text-base">Publikasi Terkini</h2>
             <Link
               href="/admin/publikasi"
-              className="flex items-center gap-1.5 text-xs font-bold text-accent hover:text-red-700 transition-colors"
+              className="flex items-center gap-1.5 text-xs font-bold text-primary hover:text-red-700 transition-colors"
             >
               Lihat Semua <ArrowRight size={14} />
             </Link>
@@ -200,12 +200,12 @@ export default async function AdminDashboardPage() {
                       className="h-10 w-10 shrink-0 rounded-lg object-cover border border-border/60"
                     />
                   ) : (
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface/50 text-text-secondary border border-border/50">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface text-text-secondary border border-border/50">
                       <Newspaper size={16} />
                     </div>
                   )}
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-bold text-text-primary group-hover:text-accent transition-colors">
+                    <p className="truncate text-sm font-bold text-text-primary group-hover:text-primary transition-colors">
                       {item.title}
                     </p>
                     <div className="flex items-center gap-2 mt-1">
@@ -226,7 +226,7 @@ export default async function AdminDashboardPage() {
                   )}
                   <Link
                     href={`/admin/publikasi?edit=${item.id}`}
-                    className="text-xs font-bold text-accent hover:text-red-700 px-2.5 py-1 rounded-lg hover:bg-accent/10 border border-transparent hover:border-accent/20 transition-all"
+                    className="text-xs font-bold text-primary hover:text-red-700 px-2.5 py-1 rounded-lg hover:bg-primary/10 border border-transparent hover:border-primary/20 transition-all"
                   >
                     Edit
                   </Link>
@@ -237,12 +237,12 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Produk terbaru */}
-        <div className="rounded-2xl border border-border bg-surface/30 p-6 flex flex-col h-full">
+        <div className="rounded-2xl border border-border bg-surface p-6 flex flex-col h-full">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="font-bold text-accent text-base">Produk Terkini</h2>
+            <h2 className="font-bold text-primary text-base">Produk Terkini</h2>
             <Link
               href="/admin/toko"
-              className="flex items-center gap-1.5 text-xs font-bold text-accent hover:text-red-700 transition-colors"
+              className="flex items-center gap-1.5 text-xs font-bold text-primary hover:text-red-700 transition-colors"
             >
               Lihat Semua <ArrowRight size={14} />
             </Link>
@@ -267,19 +267,19 @@ export default async function AdminDashboardPage() {
                       className="h-10 w-10 shrink-0 rounded-lg object-cover border border-border/60"
                     />
                   ) : (
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface/50 text-text-secondary border border-border/50">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface text-text-secondary border border-border/50">
                       <ShoppingBag size={16} />
                     </div>
                   )}
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-bold text-text-primary group-hover:text-accent transition-colors">
+                    <p className="truncate text-sm font-bold text-text-primary group-hover:text-primary transition-colors">
                       {item.name}
                     </p>
                     <div className="flex items-center gap-2 mt-1">
                       <span className="rounded-md border border-purple-500/20 bg-purple-500/10 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-purple-300">
                         {item.category || "Umum"}
                       </span>
-                      <span className="text-[10px] font-bold text-accent">
+                      <span className="text-[10px] font-bold text-primary">
                         {formatRupiah(item.price)}
                       </span>
                     </div>
@@ -293,7 +293,7 @@ export default async function AdminDashboardPage() {
                   )}
                   <Link
                     href={`/admin/toko?edit=${item.id}`}
-                    className="text-xs font-bold text-accent hover:text-red-700 px-2.5 py-1 rounded-lg hover:bg-accent/10 border border-transparent hover:border-accent/20 transition-all"
+                    className="text-xs font-bold text-primary hover:text-red-700 px-2.5 py-1 rounded-lg hover:bg-primary/10 border border-transparent hover:border-primary/20 transition-all"
                   >
                     Edit
                   </Link>

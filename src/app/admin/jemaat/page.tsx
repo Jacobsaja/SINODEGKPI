@@ -89,7 +89,7 @@ export default function AdminJemaatPage() {
         </div>
         <button
           onClick={openAddModal}
-          className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-primary hover:bg-primary-dark text-white font-bold text-sm rounded-full shadow-lg transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 shrink-0"
+          className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-primary hover:bg-primary-dark text-white font-bold text-sm rounded-full shadow-sm transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 shrink-0"
         >
           <Plus size={16} />
           Tambah Jemaat
@@ -104,12 +104,12 @@ export default function AdminJemaatPage() {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Cari gereja, kota, atau pendeta…"
-          className="w-full bg-surface border border-border text-text-primary placeholder:text-text-placeholder text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:border-accent/50 focus:ring-1 focus:ring-accent/50 transition-all shadow-sm"
+          className="w-full bg-surface border border-border text-text-primary placeholder:text-text-placeholder text-sm rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:border-primary/50 focus:ring-1 focus:ring-primary/50 transition-all shadow-sm"
         />
       </div>
 
       {loadError && (
-        <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-accent/10 border border-accent/20 text-sm text-accent">
+        <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-primary/10 border border-primary/20 text-sm text-primary">
           <AlertCircle size={15} className="shrink-0" />
           {loadError}
         </div>
@@ -132,10 +132,10 @@ export default function AdminJemaatPage() {
           {filtered.map((jemaat) => (
             <div
               key={jemaat.id}
-              className="bg-surface border border-border rounded-2xl p-4 flex flex-col gap-3 shadow-sm hover:shadow-lg hover:shadow-primary/5 transition-shadow"
+              className="bg-surface border border-border rounded-2xl p-4 flex flex-col gap-3 shadow-sm hover:shadow-sm hover:shadow-primary/5 transition-shadow"
             >
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-accent">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-primary">
                   {jemaat.kota} · {jemaat.provinsi}
                 </p>
                 <p className="font-bold text-sm text-text-primary mt-1 leading-snug">{jemaat.nama}</p>
@@ -161,7 +161,7 @@ export default function AdminJemaatPage() {
               <div className="flex gap-2 mt-auto pt-2 border-t border-border/60">
                 <button
                   onClick={() => openEditModal(jemaat)}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl border border-border text-xs font-semibold text-text-secondary hover:text-text-primary hover:border-accent/40 transition-colors"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl border border-border text-xs font-semibold text-text-secondary hover:text-text-primary hover:border-primary/40 transition-colors"
                 >
                   <Pencil size={12} />
                   Edit
@@ -171,7 +171,7 @@ export default function AdminJemaatPage() {
                   <button
                     onClick={() => handleDelete(jemaat.id)}
                     disabled={deletingId === jemaat.id}
-                    className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl bg-accent hover:bg-accent/90 disabled:opacity-60 text-white text-xs font-bold transition-colors"
+                    className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl bg-primary hover:bg-primary/90 disabled:opacity-60 text-white text-xs font-bold transition-colors"
                   >
                     {deletingId === jemaat.id ? (
                       <Loader2 size={12} className="animate-spin" />
@@ -182,7 +182,7 @@ export default function AdminJemaatPage() {
                 ) : (
                   <button
                     onClick={() => setConfirmDeleteId(jemaat.id)}
-                    className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl border border-border text-xs font-semibold text-text-secondary hover:text-accent hover:border-accent/40 transition-colors"
+                    className="flex-1 inline-flex items-center justify-center gap-1.5 py-2 rounded-xl border border-border text-xs font-semibold text-text-secondary hover:text-primary hover:border-primary/40 transition-colors"
                   >
                     <Trash2 size={12} />
                     Hapus

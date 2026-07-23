@@ -121,16 +121,16 @@ export default function TokoPage() {
           <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2">
             <Link
               href="/"
-              className="flex items-center gap-1.5 text-sm text-text-primary/75 transition-colors hover:text-accent"
+              className="flex items-center gap-1.5 text-sm text-text-primary/75 transition-colors hover:text-primary"
             >
               Beranda
             </Link>
             <ChevronRight size={14} className="text-text-primary/30" />
-            <span className="text-sm font-medium text-accent">Toko</span>
+            <span className="text-sm font-medium text-primary">Toko</span>
           </nav>
 
           <ScrollReveal>
-            <p className="mb-4 text-xs font-bold uppercase tracking-[0.28em] text-accent">
+            <p className="mb-4 text-xs font-bold uppercase tracking-[0.28em] text-primary">
               Toko Resmi
             </p>
             <h1
@@ -150,7 +150,7 @@ export default function TokoPage() {
       <section className="relative mx-auto max-w-7xl px-5 py-12 sm:px-8 md:py-16">
         {/* Search & Filter Panel */}
         <ScrollReveal>
-          <div className="mb-12 flex flex-col gap-6 rounded-3xl border border-border/60 bg-surface/40 p-6 backdrop-blur-xl md:flex-row md:items-center md:justify-between">
+          <div className="mb-12 flex flex-col gap-6 rounded-2xl border border-border/60 bg-surface p-6 backdrop-blur-xl md:flex-row md:items-center md:justify-between">
             {/* Search Input */}
             <div className="relative max-w-md flex-1">
               <Search
@@ -162,7 +162,7 @@ export default function TokoPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Cari produk..."
-                className="w-full rounded-2xl border border-border bg-background/50 py-3 pl-11 pr-4 text-sm text-white placeholder-text-secondary outline-none transition-all focus:border-accent/40 focus:bg-background/80"
+                className="w-full rounded-2xl border border-border bg-background/50 py-3 pl-11 pr-4 text-sm text-white placeholder-text-secondary outline-none transition-all focus:border-primary/40 focus:bg-background/80"
               />
               {searchQuery && (
                 <button
@@ -188,8 +188,8 @@ export default function TokoPage() {
                     className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition-all
                       ${
                         isActive
-                          ? "bg-accent text-background shadow-lg shadow-accent/25"
-                          : "border border-border bg-surface/60 text-text-secondary hover:border-accent/20 hover:text-accent"
+                          ? "bg-primary text-background shadow-sm shadow-primary/25"
+                          : "border border-border bg-surface text-text-secondary hover:border-primary/20 hover:text-primary"
                       }`}
                   >
                     {getCategoryIcon(cat)}
@@ -204,7 +204,7 @@ export default function TokoPage() {
         {/* ── Loading State ── */}
         {isLoading && (
           <div className="my-20 flex flex-col items-center justify-center text-center">
-            <div className="mb-4 h-8 w-8 animate-spin rounded-full border-2 border-accent border-t-transparent" />
+            <div className="mb-4 h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
             <p className="text-sm text-text-secondary">Memuat produk...</p>
           </div>
         )}
@@ -213,13 +213,13 @@ export default function TokoPage() {
         {!isLoading && featuredProduct && (
           <ScrollReveal>
             <div className="mb-14">
-              <p className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent">
+              <p className="mb-4 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-primary">
                 <Sparkles size={14} className="animate-pulse" /> Produk
                 Unggulan
               </p>
               <div
                 onClick={() => setSelectedProduct(featuredProduct)}
-                className="group relative grid cursor-pointer grid-cols-1 overflow-hidden rounded-[2rem] border border-border bg-surface/30 transition-all duration-500 hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/5 md:grid-cols-12"
+                className="group relative grid cursor-pointer grid-cols-1 overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-500 hover:border-primary/30 hover:shadow-sm hover:shadow-primary/5 md:grid-cols-12"
                 style={{ backdropFilter: "blur(12px)" }}
               >
                 {/* Image side */}
@@ -230,7 +230,7 @@ export default function TokoPage() {
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-[6000ms] group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-background/30 md:to-background/95" />
-                  <div className="absolute left-6 top-6 rounded-xl border border-border bg-surface/80 px-3 py-1.5 text-xs font-bold text-text-primary backdrop-blur">
+                  <div className="absolute left-6 top-6 rounded-xl border border-border bg-surface px-3 py-1.5 text-xs font-bold text-text-primary backdrop-blur">
                     {featuredProduct.category}
                   </div>
                 </div>
@@ -239,7 +239,7 @@ export default function TokoPage() {
                 <div className="flex flex-col justify-between p-8 md:col-span-5 md:p-10">
                   <div className="space-y-4">
                     <h2
-                      className="font-serif text-2xl font-bold text-text-primary transition-colors group-hover:text-accent md:text-3xl lg:text-4xl"
+                      className="font-serif text-2xl font-bold text-text-primary transition-colors group-hover:text-primary md:text-3xl lg:text-4xl"
                       style={{ fontFamily: "'Playfair Display', serif" }}
                     >
                       {featuredProduct.name}
@@ -254,7 +254,7 @@ export default function TokoPage() {
                       {formatRupiah(featuredProduct.price)}
                     </p>
                     <div className="flex flex-wrap items-center justify-between gap-3">
-                      <div className="inline-flex items-center gap-1 text-sm font-bold text-accent group-hover:underline">
+                      <div className="inline-flex items-center gap-1 text-sm font-bold text-primary group-hover:underline">
                         <span>Lihat Detail</span>
                         <ArrowRight
                           size={16}
@@ -286,7 +286,7 @@ export default function TokoPage() {
               <ScrollReveal key={product.id}>
                 <article
                   onClick={() => setSelectedProduct(product)}
-                  className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-[2rem] border border-border bg-surface/40 shadow-lg shadow-black/5 transition-all duration-300 hover:-translate-y-1.5 hover:border-accent/30 hover:bg-surface/60 hover:shadow-2xl hover:shadow-accent/5"
+                  className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-border bg-surface shadow-sm shadow-black/5 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:bg-surface hover:shadow-sm hover:shadow-primary/5"
                   style={{ backdropFilter: "blur(12px)" }}
                 >
                   {/* Card Thumbnail */}
@@ -297,7 +297,7 @@ export default function TokoPage() {
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
-                    <span className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full border border-border bg-surface/80 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-text-primary backdrop-blur">
+                    <span className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-text-primary backdrop-blur">
                       {getCategoryIcon(product.category)}
                       {product.category}
                     </span>
@@ -306,7 +306,7 @@ export default function TokoPage() {
                   {/* Card Body */}
                   <div className="flex flex-1 flex-col p-6">
                     <h3
-                      className="mb-2 font-serif text-lg font-bold leading-snug text-text-primary transition-colors group-hover:text-accent"
+                      className="mb-2 font-serif text-lg font-bold leading-snug text-text-primary transition-colors group-hover:text-primary"
                       style={{ fontFamily: "'Playfair Display', serif" }}
                     >
                       {product.name}
@@ -319,7 +319,7 @@ export default function TokoPage() {
                       <span className="text-base font-bold text-text-primary">
                         {formatRupiah(product.price)}
                       </span>
-                      <span className="flex items-center gap-1 text-xs font-semibold text-accent group-hover:underline">
+                      <span className="flex items-center gap-1 text-xs font-semibold text-primary group-hover:underline">
                         <span>Lihat</span>
                         <ChevronRight
                           size={14}
@@ -348,7 +348,7 @@ export default function TokoPage() {
         {/* Empty State */}
         {!isLoading && filteredProducts.length === 0 && (
           <ScrollReveal>
-            <div className="my-20 flex flex-col items-center justify-center rounded-3xl border border-border/40 bg-surface/20 p-8 text-center">
+            <div className="my-20 flex flex-col items-center justify-center rounded-2xl border border-border/40 bg-surface/20 p-8 text-center">
               <ShoppingBag
                 size={48}
                 className="mb-4 text-text-secondary opacity-50"
@@ -369,7 +369,7 @@ export default function TokoPage() {
             <div className="mt-16 text-center">
               <button
                 onClick={handleLoadMore}
-                className="inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-full border border-border bg-surface/50 px-8 text-sm font-bold text-text-primary transition-all duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:bg-surface"
+                className="inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-full border border-border bg-surface px-8 text-sm font-bold text-text-primary transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-surface"
               >
                 Muat Lebih Banyak
               </button>
@@ -389,7 +389,7 @@ export default function TokoPage() {
 
           {/* Modal Box */}
           <div
-            className="relative flex h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-[2rem] border border-border/50 shadow-2xl animate-slide-up md:h-[80vh]"
+            className="relative flex h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-border/50 shadow-sm animate-slide-up md:h-[80vh]"
             style={{
               background: "linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)",
               boxShadow: "0 28px 90px rgba(0,0,0,0.25)",
@@ -468,7 +468,7 @@ export default function TokoPage() {
                       href={selectedProduct.tokopedia_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-1.5 rounded-2xl border-2 border-[#03AC0E] bg-[#03AC0E] px-4 py-3 text-xs md:text-sm font-bold text-white transition-all hover:bg-[#02A00D] hover:border-[#02A00D] hover:shadow-lg hover:shadow-green-500/25 text-center"
+                      className="inline-flex items-center justify-center gap-1.5 rounded-2xl border-2 border-[#03AC0E] bg-[#03AC0E] px-4 py-3 text-xs md:text-sm font-bold text-white transition-all hover:bg-[#02A00D] hover:border-[#02A00D] hover:shadow-sm hover:shadow-green-500/25 text-center"
                     >
                       <span className="hidden sm:inline">Beli di </span>Tokopedia
                       <ExternalLink size={14} />
@@ -477,7 +477,7 @@ export default function TokoPage() {
                       href={selectedProduct.shopee_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-1.5 rounded-2xl border-2 border-[#EE4D2D] bg-[#EE4D2D] px-4 py-3 text-xs md:text-sm font-bold text-white transition-all hover:bg-[#D64520] hover:border-[#D64520] hover:shadow-lg hover:shadow-orange-500/25 text-center"
+                      className="inline-flex items-center justify-center gap-1.5 rounded-2xl border-2 border-[#EE4D2D] bg-[#EE4D2D] px-4 py-3 text-xs md:text-sm font-bold text-white transition-all hover:bg-[#D64520] hover:border-[#D64520] hover:shadow-sm hover:shadow-orange-500/25 text-center"
                     >
                       <span className="hidden sm:inline">Beli di </span>Shopee
                       <ExternalLink size={14} />
@@ -489,7 +489,7 @@ export default function TokoPage() {
                     href={getWhatsAppLink(selectedProduct.name)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-[#25D366] bg-[#25D366] px-4 py-3 text-sm font-bold text-white transition-all hover:bg-[#1FAF5C] hover:border-[#1FAF5C] hover:shadow-lg hover:shadow-emerald-500/25"
+                    className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-[#25D366] bg-[#25D366] px-4 py-3 text-sm font-bold text-white transition-all hover:bg-[#1FAF5C] hover:border-[#1FAF5C] hover:shadow-sm hover:shadow-emerald-500/25"
                   >
                     <MessageCircle size={16} />
                     Tanya Admin via WhatsApp
