@@ -98,7 +98,7 @@ const regions = [
   "Medan I - Langkat",
   "Medan II - Deli Serdang",
   "Siantar - Simalungun - Tebing - Sergai",
-  "Dairi - Tanah Karo - Alas - Pakpak",
+  "Dairi - Tanah Karo - Alas - Pakpak Barat",
   "Asahan - Labuhan Batu",
   "Silindung - Pahae - Tapteng - Tapsel",
   "Humbang - Samosir - Toba",
@@ -106,7 +106,6 @@ const regions = [
   "Riau",
   "Kepulauan Riau",
   "Jabodetabek - Jawa - Kalimantan",
-  "Kalimantan",
 ];
 
 // ─── Data from info ──────────────────────────────────────────────────────────
@@ -441,18 +440,16 @@ function AccordionItem({
             }`}
         >
           <span
-            className={`font-serif font-bold text-xs md:text-sm ${
-              isOpen ? "text-background" : "text-primary"
-            }`}
+            className={`font-serif font-bold text-xs md:text-sm ${isOpen ? "text-background" : "text-primary"
+              }`}
           >
             {item.tahun.slice(-2)}
           </span>
         </button>
         {index < sejarahTimeline.length - 1 && (
           <div
-            className={`w-0.5 flex-1 mt-2 transition-colors duration-500 ${
-              isOpen ? "bg-primary/30" : "bg-border/50"
-            }`}
+            className={`w-0.5 flex-1 mt-2 transition-colors duration-500 ${isOpen ? "bg-primary/30" : "bg-border/50"
+              }`}
           />
         )}
       </div>
@@ -482,27 +479,24 @@ function AccordionItem({
                 {item.tahun}
               </span>
               <h3
-                className={`font-serif text-lg md:text-xl font-bold transition-colors duration-300 ${
-                  isOpen ? "text-text-primary" : "text-text-secondary"
-                }`}
+                className={`font-serif text-lg md:text-xl font-bold transition-colors duration-300 ${isOpen ? "text-text-primary" : "text-text-secondary"
+                  }`}
               >
                 {item.judul}
               </h3>
             </div>
             <ChevronDown
               size={20}
-              className={`shrink-0 text-primary transition-transform duration-300 ${
-                isOpen ? "rotate-180" : ""
-              }`}
+              className={`shrink-0 text-primary transition-transform duration-300 ${isOpen ? "rotate-180" : ""
+                }`}
             />
           </div>
         </button>
 
         {/* Expandable body */}
         <div
-          className={`overflow-hidden transition-all duration-500 ease-in-out ${
-            isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-          }`}
+          className={`overflow-hidden transition-all duration-500 ease-in-out ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+            }`}
         >
           <div className="px-5 md:px-6 pt-3 pb-2">
             <p className="text-text-secondary leading-relaxed text-base md:text-lg">
@@ -1061,7 +1055,7 @@ export default function ProfilGKPIPage() {
                   Wilayah Pelayanan
                 </p>
                 <h2 className="mt-3 text-3xl font-bold text-text-primary">
-                  Melayani dalam 12 wilayah.
+                  Melayani dalam 11 wilayah.
                 </h2>
               </div>
               <p className="max-w-xl text-sm leading-relaxed text-text-secondary">
@@ -1273,10 +1267,10 @@ export default function ProfilGKPIPage() {
                   <div className="max-w-2xl mx-auto space-y-8 pb-8">
                     {/* Beautiful Audio Player Card */}
                     <div className="p-6 rounded-2xl border border-primary/20 bg-surface flex flex-col md:flex-row items-center gap-6"
-                         style={{ background: "linear-gradient(135deg, rgba(14,99,233,0.07) 0%, rgba(248,250,252,0.9) 100%)" }}>
+                      style={{ background: "linear-gradient(135deg, rgba(14,99,233,0.07) 0%, rgba(248,250,252,0.9) 100%)" }}>
                       <audio
                         ref={audioRef}
-                        src="https://gkpisinode.org/wp-content/plugins/gkpi-library/music/music.mp3"
+                        src="/mars_gkpi.mp3"
                         onTimeUpdate={handleTimeUpdate}
                         onLoadedMetadata={handleAudioLoaded}
                         onEnded={handleAudioEnded}
