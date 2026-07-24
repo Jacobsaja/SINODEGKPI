@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { X, MapPin, Phone, User, Navigation, ExternalLink } from "lucide-react";
+import { X, MapPin, Phone, User, Navigation, ExternalLink, Clock } from "lucide-react";
 import { Jemaat } from "@/data/jemaat";
 import { formatDistance } from "@/lib/haversine";
 import Image from "next/image";
@@ -159,6 +159,9 @@ function PanelContent({
           )}
           {jemaat.wilayah_id && (
             <DetailRow icon={<MapPin size={15} />} label="Wilayah" value={jemaat.wilayah_id} />
+          )}
+          {jemaat.jadwal_ibadah && jemaat.jadwal_ibadah.length > 0 && (
+            <DetailRow icon={<Clock size={15} />} label="Jadwal Ibadah" value={jemaat.jadwal_ibadah.join(", ")} />
           )}
         </div>
       </div>
