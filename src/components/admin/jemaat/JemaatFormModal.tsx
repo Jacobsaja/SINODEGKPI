@@ -11,6 +11,7 @@ import {
   uploadJemaatPhoto,
   slugify,
 } from "@/data/jemaat";
+import { compressBeforeUpload, validateInputSize } from "@/lib/image-compress";
 
 interface JemaatFormModalProps {
   /** Pass an existing jemaat to edit it, or null to create a new one. */
@@ -40,6 +41,7 @@ export default function JemaatFormModal({ jemaat, onClose, onSaved }: JemaatForm
   const [jadwalInput, setJadwalInput] = useState("");
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [compressing, setCompressing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -72,11 +74,26 @@ export default function JemaatFormModal({ jemaat, onClose, onSaved }: JemaatForm
     setForm((f) => ({ ...f, [key]: value }));
   }
 
-  function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    setPhotoFile(file);
-    setPhotoPreview(URL.createObjectURL(file));
+
+    const sizeError = validateInputSize(file, "jemaat");
+    if (sizeError) {
+      setError(sizeError);
+      e.target.value = ""; // reset input, biar user bisa pilih ulang file yang sama
+      return;
+    }
+
+    setError(null);
+    setCompressing(true);
+    try {
+      const compressed = await compressBeforeUpload(file, "jemaat");
+      setPhotoFile(compressed);
+      setPhotoPreview(URL.createObjectURL(compressed));
+    } finally {
+      setCompressing(false);
+    }
   }
 
   function addJadwal() {
@@ -178,12 +195,36 @@ export default function JemaatFormModal({ jemaat, onClose, onSaved }: JemaatForm
                   </div>
                 )}
               </div>
-              <label className="flex items-center gap-2 px-4 py-2.5 bg-background border border-border rounded-xl text-sm font-semibold text-text-secondary hover:border-primary/40 hover:text-text-primary cursor-pointer transition-all">
-                <Upload size={14} />
-                Pilih Foto
-                <input type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} />
+              <label
+                className={`flex items-center gap-2 px-4 py-2.5 bg-background border border-border rounded-xl text-sm font-semibold transition-all ${
+                  compressing
+                    ? "text-text-secondary/50 cursor-not-allowed"
+                    : "text-text-secondary hover:border-primary/40 hover:text-text-primary cursor-pointer"
+                }`}
+              >
+                {compressing ? (
+                  <>
+                    <Loader2 size={14} className="animate-spin" />
+                    Mengompres…
+                  </>
+                ) : (
+                  <>
+                    <Upload size={14} />
+                    Pilih Foto
+                  </>
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handlePhotoChange}
+                  disabled={compressing}
+                />
               </label>
             </div>
+            <p className="text-[11px] text-text-secondary/60 mt-1.5">
+              Maks. 1MB per file, otomatis dikompres ke ~300KB.
+            </p>
           </div>
 
           {/* Nama & Pendeta */}
@@ -312,7 +353,7 @@ export default function JemaatFormModal({ jemaat, onClose, onSaved }: JemaatForm
             </button>
             <button
               type="submit"
-              disabled={saving}
+              disabled={saving || compressing}
               className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-primary hover:bg-primary-dark disabled:opacity-60 text-white font-bold text-sm shadow-sm transition-colors"
             >
               {saving ? (
