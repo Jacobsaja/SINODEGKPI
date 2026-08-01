@@ -43,6 +43,38 @@ export const metadata: Metadata = {
   },
 };
 
+// JSON-LD structured data: kasih tau Google identitas resmi organisasi ini.
+// Ditaruh di root layout (bukan per-halaman) karena ini identitas GLOBAL
+// situs, bukan konten spesifik satu halaman.
+//
+// CATATAN: begitu domain final (.or.id) sudah aktif, ganti SEMUA URL
+// "https://sinodegkpi.vercel.app" di bawah (dan di metadataBase atas)
+// ke domain final. Isi juga array `sameAs` dengan link medsos resmi
+// GKPI Sinode kalau/ketika sudah ada.
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": ["Church", "Organization"],
+  name: "GKPI Sinode - Gereja Kristen Protestan Indonesia",
+  alternateName: "GKPI",
+  url: "https://sinodegkpi.vercel.app",
+  logo: "https://sinodegkpi.vercel.app/mitra/Logo_GKPI.png",
+  image: "https://sinodegkpi.vercel.app/og-image.jpg",
+  description:
+    "GKPI Sinode - Komunitas yang bertumbuh dalam iman, melayani dengan kasih, dan berdampak bagi sesama.",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Pematang Siantar",
+    addressRegion: "Sumatera Utara",
+    addressCountry: "ID",
+  },
+  sameAs: [
+    // Isi link medsos resmi di sini kalau/ketika sudah ada, contoh:
+    // "https://www.facebook.com/gkpisinode",
+    // "https://www.instagram.com/gkpisinode",
+    // "https://www.youtube.com/@gkpisinode",
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -55,6 +87,10 @@ export default function RootLayout({
       data-scroll-behavior="smooth"
     >
       <body className="min-h-full flex flex-col selection:bg-primary/20 selection:text-primary-dark font-sans">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         {children}
       </body>
     </html>

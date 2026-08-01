@@ -55,6 +55,7 @@ export default function Navbar() {
                 src={assets.logo}
                 alt="Logo GKPI"
                 fill
+                sizes="36px"
                 className="object-contain"
                 priority
               />
@@ -108,10 +109,17 @@ export default function Navbar() {
       </nav>
 
       {/* Mobile Overlay */}
+      {/*
+        Pakai `inert` (bukan aria-hidden) waktu menu tertutup. `inert` otomatis
+        mencegah elemen di dalamnya menerima focus keyboard SEKALIGUS
+        menyembunyikannya dari assistive technology — jadi tidak ada lagi
+        konflik "elemen disembunyikan tapi masih bisa difokus" yang tadi
+        di-warning oleh browser.
+      */}
       <div
         className={`fixed inset-0 z-[1100] lg:hidden transition-all duration-300 ${isOpen ? "visible" : "invisible"
           }`}
-        aria-hidden={!isOpen}
+        inert={!isOpen}
       >
         <div
           className={`absolute inset-0 bg-background/95 backdrop-blur-lg transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0"
@@ -134,6 +142,7 @@ export default function Navbar() {
                   src={assets.logo}
                   alt="Logo GKPI"
                   fill
+                  sizes="36px"
                   className="object-contain"
                 />
               </div>

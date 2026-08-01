@@ -67,6 +67,8 @@ export async function generateMetadata({ params }: Props) {
       title: post.title,
       description: post.excerpt,
       images: post.image ? [post.image] : undefined,
+      type: "article",         
+      publishedTime: post.date,
     },
   };
 }

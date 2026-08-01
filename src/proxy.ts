@@ -71,6 +71,14 @@ export function proxy(request: NextRequest) {
     ].join(", ")
   );
 
+  // Cegah Google & search engine lain nge-index halaman admin.
+  // Ditaruh di sini (bukan lewat `export const metadata` di admin/layout.tsx)
+  // karena admin/layout.tsx adalah "use client" component, dan Next.js tidak
+  // mengizinkan export metadata dari client component.
+  if (request.nextUrl.pathname.startsWith("/admin")) {
+    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+  }
+
   return response;
 }
 
