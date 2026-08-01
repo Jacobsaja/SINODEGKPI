@@ -11,7 +11,7 @@ import { assets } from "@/lib/assets";
 import { ArrowRight, Globe, HandHeart, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { mitraDetails } from "@/data/mitraDetails";
-
+import DOMPurify from "dompurify";
 // ─── Data ────────────────────────────────────────────────────────────────────
 
 const mitraInternasional = [
@@ -491,7 +491,11 @@ export default function MitraPage() {
                         [&_strong]:text-text-primary [&_strong]:font-semibold
                         [&_span]:inline"
                       dangerouslySetInnerHTML={{
-                        __html: mitraDetails[selectedMitra.name] || "",
+                        __html: DOMPurify.sanitize(mitraDetails[selectedMitra.name] || "", {
+                          ALLOWED_TAGS: ["p", "h1", "h2", "h3", "a", "ul", "ol", "li", "strong", "em", "span", "br", "b", "i"],
+                          ALLOWED_ATTR: ["href", "target", "rel"],
+                          ALLOW_DATA_ATTR: false,
+                        }),
                       }}
                     />
                   ) : (
