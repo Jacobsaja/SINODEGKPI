@@ -1,5 +1,18 @@
 import type { Metadata } from "next";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://sinodegkpi.vercel.app"),
@@ -36,7 +49,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className="h-full antialiased" data-scroll-behavior="smooth">
+    <html
+      lang="id"
+      className={`h-full antialiased ${inter.variable} ${playfairDisplay.variable}`}
+      data-scroll-behavior="smooth"
+    >
       <body className="min-h-full flex flex-col selection:bg-primary/20 selection:text-primary-dark font-sans">
         {children}
       </body>
