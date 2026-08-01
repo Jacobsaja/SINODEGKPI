@@ -103,7 +103,7 @@ export default function TokoPage() {
       <section className="relative flex min-h-[50vh] items-end overflow-hidden bg-background pb-12 pt-32 md:min-h-[55vh] md:pb-16">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/hero-bg.png"
+            src="/hero-bg.webp"
             alt="Toko Latar Belakang"
             fill
             priority

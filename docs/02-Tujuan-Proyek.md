@@ -52,13 +52,13 @@ Menyediakan sistem berbagi file terproteksi (Share Files) untuk distribusi dokum
 
 ## Indikator Keberhasilan
 
-| Tujuan | Indikator |
-|---|---|
-| Transparansi | Laporan keuangan tersedia secara publik |
-| Jangkauan digital | Renungan dan berita dapat dibaca online |
-| Kemudahan navigasi | Jemaat dapat menemukan gereja terdekat di peta |
-| Kemandirian admin | Tim dapat membuat, mengedit, dan menghapus konten tanpa bantuan developer |
-| Penjualan produk | Produk dapat dilihat dan diarahkan ke marketplace |
+| Tujuan                                | Indikator                                                                 |
+|---------------------------------------|---------------------------------------------------------------------------|
+| Transparansi                          | Laporan keuangan tersedia secara publik                                   |
+| Jangkauan digital                     | Renungan dan berita dapat dibaca online                                   |
+| Kemudahan navigasi                    | Jemaat dapat menemukan gereja terdekat di peta                            |
+| Kemandirian admin                     | Tim dapat membuat, mengedit, dan menghapus konten tanpa bantuan developer |
+| Penjualan produk                      | Produk dapat dilihat dan diarahkan ke marketplace                         |
 
 ---
 

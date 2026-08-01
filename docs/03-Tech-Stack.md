@@ -119,10 +119,10 @@ graph TD
 
 ## Versi Node & npm
 
-| Tool | Versi Minimum |
-|---|---|
-| Node.js | `>= 18.x` |
-| npm | `>= 9.x` |
+| Tool    | Versi Minimum |
+|---------|---------------|
+| Node.js | `>= 18.x`     |
+| npm     | `>= 9.x`      |
 
 ---
 

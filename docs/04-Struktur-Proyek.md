@@ -28,12 +28,12 @@ PROGRAM/
 │
 ├── public/                         # Aset statis (diakses langsung oleh browser)
 │   ├── logo.png                    # Logo GKPI
-│   ├── hero-bg.png                 # Background gambar "Tentang Kami"
-│   ├── hero_slide_1.png            # Slide hero 1
-│   ├── hero_slide_2.png            # Slide hero 2
-│   ├── hero_slide_3.png            # Slide hero 3
-│   ├── hero_slide_4.png            # Slide hero 4
-│   ├── resort-hero-bg.png          # Background halaman Wilayah & Resort
+│   ├── hero-bg.webp                 # Background gambar "Tentang Kami"
+│   ├── hero_slide_1.webp            # Slide hero 1
+│   ├── hero_slide_2.webp            # Slide hero 2
+│   ├── hero_slide_3.webp            # Slide hero 3
+│   ├── hero_slide_4.webp            # Slide hero 4
+│   ├── resort-hero-bg.webp          # Background halaman Wilayah & Resort
 │   └── mitra/                      # Folder logo mitra pelayanan
 │       ├── desain/                 # Subfolder logo mitra (versi desain)
 │       │   ├── abdi-sabda.png
