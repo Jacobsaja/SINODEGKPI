@@ -9,6 +9,5 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
-// Client tunggal, dipakai baik di server component maupun client component
-// untuk request publik (read) dan, setelah login, untuk request admin (write).
+// Singleton Supabase anon client instance (SSG & Client)
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);

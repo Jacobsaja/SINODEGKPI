@@ -24,8 +24,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Folder tidak tersedia" }, { status: 403 });
     }
 
-    // Verifikasi ulang di server -- jangan percaya klien begitu saja,
-    // walau user sudah "masuk" lewat halaman verifikasi sebelumnya.
+    // Server-side authorization check (Zero Trust)
     let accessId: string | null = null;
     const trimmed = String(identifier).trim();
 

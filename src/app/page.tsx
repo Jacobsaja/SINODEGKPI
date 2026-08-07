@@ -26,8 +26,7 @@ import {
   Store,
 } from "lucide-react";
 
-// ─── Data ────────────────────────────────────────────────────────────────────
-
+// Nav Data
 const misiPoints = [
   "Koinonia",
   "Marturia",
@@ -53,7 +52,6 @@ const partners = [
 { name: "WCC", logo: "/mitra/world-council-churches.png" },
 ];
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
 export const metadata: Metadata = {
   title: "Beranda",
   description: "GKPI (Gereja Kristen Protestan Indonesia) — berdiri sejak 1964 di Pematangsiantar. Bertumbuh dalam iman, melayani dengan kasih.",
@@ -73,7 +71,7 @@ export default async function Home() {
       <Navbar />
       <Hero />
 
-      {/* ── Feature Navigation ─────────────────────────────────────────── */}
+      {/* Navigation section */}
       <section id="fitur-navigasi" className="relative py-16 px-4 md:px-8 max-w-7xl mx-auto border-b border-border/50">
         <ScrollReveal>
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6">
@@ -130,7 +128,7 @@ export default async function Home() {
         </ScrollReveal>
       </section>
 
-      {/* ── About ──────────────────────────────────────────────────────── */}
+      {/* About section */}
       <Section id="tentang">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           {/* Text side */}

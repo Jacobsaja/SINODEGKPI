@@ -5,25 +5,24 @@ export type PublicationCategory =
   | "Dokumen"
   | "Renungan Harian";
 
-// Satu lampiran dokumen di dalam kolom `documents` (jsonb array).
 export interface PublicationDocument {
   name: string;
   url: string;
-  size?: string; // contoh: "2.4 MB"
+  size?: string;
 }
 
-// Bentuk data persis seperti kolom di tabel `publications` pada Supabase.
+// Supabase `publications` DTO
 export interface Publication {
   id: number;
   title: string;
   excerpt: string;
   content: string;
   category: PublicationCategory;
-  date: string; // format ISO, mis. "2026-07-03"
+  date: string; // ISO 8601 string
   author: string;
   image: string;
-  images: string[]; // galeri gambar tambahan, kolom `images` (text[])
-  documents: PublicationDocument[]; // lampiran dokumen, kolom `documents` (jsonb)
+  images: string[];
+  documents: PublicationDocument[];
   read_time: string;
   views: number;
   is_featured: boolean;
@@ -32,11 +31,9 @@ export interface Publication {
   updated_at: string;
 }
 
-// Kategori bersifat bebas (text) karena daftar produk toko bisa terus
-// bertambah kategorinya seiring waktu, tidak seketat kategori publikasi.
 export type ProductCategory = string;
 
-// Bentuk data persis seperti kolom di tabel `products` pada Supabase.
+// Supabase `products` DTO
 export interface Product {
   id: number;
   name: string;
@@ -60,7 +57,7 @@ export interface FinancialReportEntry {
   amount: number;
 }
 
-// Bentuk data persis seperti kolom di tabel `financial_reports` pada Supabase.
+// Supabase `financial_reports` DTO
 export interface FinancialReport {
   id: number;
   month: number;

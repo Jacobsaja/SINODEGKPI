@@ -6,9 +6,8 @@ import Footer from "@/components/Footer";
 import MapExplorer from "@/components/wilayah/MapExplorer";
 import { getAllJemaat } from "@/data/jemaat";
 
-// Always fetch fresh data so churches added/edited in the admin panel show
-// up immediately on the public page.
-export const dynamic = "force-dynamic";
+// Cache Edge CDN 1 jam (ISR)
+export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Resort & Wilayah | GKPI Sinode",

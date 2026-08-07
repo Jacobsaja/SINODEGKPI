@@ -9,22 +9,20 @@ const PRESETS = {
   jemaat:    { maxSizeMB: 0.3, maxWidthOrHeight: 1200 },
 } as const
 
-// Batas ukuran file INPUT (sebelum kompresi), per preset.
-// Jemaat: user hanya boleh upload file mentah maksimal 1MB.
+// Maximum uncompressed payload threshold per preset (MB)
 export const MAX_INPUT_SIZE_MB: Partial<Record<keyof typeof PRESETS, number>> = {
   jemaat: 1,
 }
 
 /**
- * Validasi ukuran file sebelum kompresi.
- * Return null kalau lolos, atau pesan error kalau file terlalu besar.
+ * Validates raw payload file size against preset limits.
  */
 export function validateInputSize(
   file: File,
   preset: keyof typeof PRESETS
 ): string | null {
   const maxMB = MAX_INPUT_SIZE_MB[preset];
-  if (!maxMB) return null; // preset tanpa batas input tetap jalan seperti biasa
+  if (!maxMB) return null;
 
   const sizeMB = file.size / 1024 / 1024;
   if (sizeMB > maxMB) {
@@ -40,13 +38,13 @@ export async function compressBeforeUpload(
   const options = {
     ...PRESETS[preset],
     useWebWorker: true,
-    fileType: 'image/webp' as const, // konsisten, lebih kecil dari jpeg
+    fileType: 'image/webp' as const, // WebP conversion for optimal compression ratio
   }
 
   try {
     return await imageCompression(file, options)
   } catch (err) {
     console.error('Compress gagal, upload asli:', err)
-    return file // fallback, jangan blokir upload kalau compress error
+    return file // Fallback to raw file stream on error
   }
 }

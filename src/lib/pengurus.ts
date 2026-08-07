@@ -190,12 +190,12 @@ export async function updateSeksi(id: string, input: Partial<PengurusSeksiInput>
 }
 
 export async function deleteSeksi(id: string) {
-  // grup & anggota ikut terhapus otomatis lewat ON DELETE CASCADE
+// CASCADE delete handles associated groups & members via DB constraints
   const { error } = await supabase.from("pengurus_seksi").delete().eq("id", id);
   if (error) throw error;
 }
 
-// ─── CRUD: Grup ──────────────────────────────────────────────────────────────
+// ─── CRUD: Group ─────────────────────────────────────────────────────────────
 
 export async function createGrup(input: PengurusGrupInput, existing: PengurusGrup[]) {
   const { data, error } = await supabase
@@ -221,7 +221,7 @@ export async function deleteGrup(id: string) {
   if (error) throw error;
 }
 
-// ─── CRUD: Anggota ───────────────────────────────────────────────────────────
+// ─── CRUD: Member ───────────────────────────────────────────────────────────
 
 export async function createAnggota(input: PengurusAnggotaInput, existing: PengurusAnggota[]) {
   const { error } = await supabase.from("pengurus_anggota").insert({
@@ -250,7 +250,7 @@ export async function deleteAnggota(id: string) {
   if (error) throw error;
 }
 
-// ─── Foto (Supabase Storage) ─────────────────────────────────────────────────
+// ─── Photo Upload (Supabase Storage) ─────────────────────────────────────────
 
 const PHOTO_BUCKET = "pengurus";
 
@@ -278,7 +278,7 @@ export async function uploadPengurusPhoto(file: File): Promise<string> {
   return data.publicUrl;
 }
 
-// ─── Reorder helpers (tombol naik/turun di admin) ───────────────────────────
+// ─── Reorder Helpers ─────────────────────────────────────────────────────────
 
 export async function swapSeksiOrder(a: PengurusSeksi, b: PengurusSeksi) {
   await Promise.all([

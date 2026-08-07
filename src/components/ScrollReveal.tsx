@@ -39,7 +39,7 @@ export default function ScrollReveal({
       transition={{
         duration: 0.8,
         delay: delay / 1000,
-        ease: [0.21, 0.47, 0.32, 0.98], // Custom bezier for premium feel
+        ease: [0.21, 0.47, 0.32, 0.98], // Cubic bezier curve
       }}
       className={className}
     >

@@ -28,7 +28,7 @@ const slides = [
     id: 3,
     title: "Tata Gereja dan Pengakuan Iman",
     description: "Akses rangkuman dokumen resmi yang menjadi dasar iman, tata kelola, dan kehidupan pelayanan GKPI.",
-    image: "/resort-hero-bg.webp",
+    image: "/resort-hero-bg.png",
     meta: "Tata Gereja",
     date: "Diperbarui 2026",
     href: "/profil-gkpi#dokumen",

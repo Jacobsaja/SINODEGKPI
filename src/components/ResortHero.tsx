@@ -6,7 +6,7 @@ export default function ResortHero() {
     <section className="relative flex h-[85vh] min-h-[560px] w-full items-center justify-center overflow-hidden bg-background lg:h-[90vh]">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/resort-hero-bg.webp"
+          src="/resort-hero-bg.png"
           alt="Suasana gereja GKPI"
           fill
           priority

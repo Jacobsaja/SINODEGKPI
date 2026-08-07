@@ -48,6 +48,8 @@ function getFileLabel(url: string): string {
 // NOTE: Jika project ini sudah di Next.js 15+ dan `params` datang sebagai
 // Promise, ubah tipe di bawah jadi `Promise<{ id: string }>` lalu
 // `const { id } = await params;` di kedua fungsi.
+export const revalidate = 3600; // Cache Edge CDN 1 jam
+
 type Props = {
   params: Promise<{ id: string }>;
 };

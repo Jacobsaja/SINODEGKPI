@@ -1,4 +1,4 @@
-// src/components/ProductCard.tsx
+import Image from "next/image";
 import { formatRupiah, type Product } from "@/lib/products";
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -10,12 +10,13 @@ export default function ProductCard({ product }: { product: Product }) {
         </span>
       )}
 
-      <div className="aspect-[4/3] w-full overflow-hidden bg-primary-dark/40">
-        <img
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-primary-dark/40">
+        <Image
           src={product.image}
           alt={product.name}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
 
