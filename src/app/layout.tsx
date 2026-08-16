@@ -57,7 +57,7 @@ const jsonLd = {
   name: "GKPI Sinode - Gereja Kristen Protestan Indonesia",
   alternateName: "GKPI",
   url: "https://sinodegkpi.vercel.app",
-  logo: "https://sinodegkpi.vercel.app/mitra/Logo_GKPI.png",
+  logo: "https://sinodegkpi.vercel.app/mitra/Logo_GKPI.webp",
   image: "https://sinodegkpi.vercel.app/og-image.jpg",
   description:
     "GKPI Sinode - Komunitas yang bertumbuh dalam iman, melayani dengan kasih, dan berdampak bagi sesama.",

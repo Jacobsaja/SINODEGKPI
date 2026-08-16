@@ -17,7 +17,7 @@ import DOMPurify from "dompurify";
 const mitraInternasional = [
   {
     name: "LNM – Norwegia",
-    logo: "/mitra/lnm-norwegian.png",
+    logo: "/mitra/lnm-norwegian.webp",
     region: "Norwegia",
     description:
       "Lembaga misi Norwegia yang menjadi salah satu mitra pelayanan terkemuka GKPI dalam bidang penginjilan dan pengembangan jemaat.",
@@ -25,7 +25,7 @@ const mitraInternasional = [
   },
   {
     name: "Presbyterian Church of Korea (PCK) Klasis Seoul Seobuk",
-    logo: "/mitra/presbyterian-church-korea.png",
+    logo: "/mitra/presbyterian-church-korea.webp",
     region: "Korea Selatan",
     description:
       "Gereja Presbiterian Korea, Klasis Seoul Seobuk, yang menjalin persekutuan dan kerjasama pelayanan lintas budaya bersama GKPI.",
@@ -33,7 +33,7 @@ const mitraInternasional = [
   },
   {
     name: "HBM – Jerman",
-    logo: "/mitra/Logo_GKPI.png",
+    logo: "/mitra/Logo_GKPI.webp",
     region: "Jerman",
     description:
       "Mitra GKPI dengan Hildesheimer Blindenmission (HBM) Jerman dalam bidang Pendidikan Tuna Netra. Kunjungi: www.h-bm.de",
@@ -41,7 +41,7 @@ const mitraInternasional = [
   },
   {
     name: "Gereja Wilayah Kleve – German",
-    logo: "/mitra/gereja-wilayah-kleve.png",
+    logo: "/mitra/gereja-wilayah-kleve.webp",
     region: "Jerman",
     description:
       "Gereja Wilayah Kleve di Jerman, salah satu mitra luar negeri GKPI yang menjalin hubungan persaudaraan gerejawi.",
@@ -49,7 +49,7 @@ const mitraInternasional = [
   },
   {
     name: "The Lutheran Church (LCA) – Australia",
-    logo: "/mitra/lutheran-church-australia.png",
+    logo: "/mitra/lutheran-church-australia.webp",
     region: "Australia",
     description:
       "The Lutheran Church of Australia menyatukan umat Lutheran di Australia dan Selandia Baru, mengikut Yesus Kristus — di mana kasih menjadi nyata.",
@@ -57,7 +57,7 @@ const mitraInternasional = [
   },
   {
     name: "The Evangelical Lutheran Church in America (ELCA)",
-    logo: "/mitra/elca.png",
+    logo: "/mitra/elca.webp",
     region: "Amerika Serikat",
     description:
       "Salah satu denominasi Kristen terbesar di Amerika Serikat dengan hampir 3,3 juta anggota di lebih dari 8.900 komunitas ibadah.",
@@ -65,7 +65,7 @@ const mitraInternasional = [
   },
   {
     name: "Jemaat Bonn-Beuel – Jerman",
-    logo: "/mitra/evangelish.png",
+    logo: "/mitra/evangelish.webp",
     region: "Jerman",
     description:
       "Gereja di kota Bonn-Beuel, Jerman, yang menjalin persekutuan sebagai salah satu mitra luar negeri GKPI.",
@@ -73,7 +73,7 @@ const mitraInternasional = [
   },
   {
     name: "The Christian Conference of Asia (CCA) – Hongkong",
-    logo: "/mitra/christian-conference-asia.png",
+    logo: "/mitra/christian-conference-asia.webp",
     region: "Hongkong",
     description:
       "CCA dimulai sebagai East Asia Christian Conference (EACC) yang dibentuk dalam pertemuan di Prapat, Indonesia, tahun 1957 dan diresmikan di Kuala Lumpur, 1959.",
@@ -81,7 +81,7 @@ const mitraInternasional = [
   },
   {
     name: "LWF – Lutheran World Federation",
-    logo: "/mitra/lutheran-world-federation.png",
+    logo: "/mitra/lutheran-world-federation.webp",
     region: "Swiss (Global)",
     description:
       "Persekutuan global gereja-gereja Lutheran yang berkomitmen membarui iman dan mewujudkan kasih dalam tindakan nyata di seluruh dunia.",
@@ -89,7 +89,7 @@ const mitraInternasional = [
   },
   {
     name: "World Council of Churches (WCC)",
-    logo: "/mitra/world-council-churches.png",
+    logo: "/mitra/world-council-churches.webp",
     region: "Swiss (Global)",
     description:
       "Persekutuan gereja-gereja yang mengaku Tuhan Yesus Kristus sebagai Allah dan Juruselamat, bersama memuliakan Allah Bapa, Putra, dan Roh Kudus.",
@@ -97,7 +97,7 @@ const mitraInternasional = [
   },
   {
     name: "UEM – United Evangelical Mission",
-    logo: "/mitra/uem.png",
+    logo: "/mitra/uem.webp",
     region: "Jerman (Global)",
     description:
       "Misi Injili Bersatu yang bekerja di dunia yang terpecah, mendorong semua anggota Tubuh Kristus untuk bertumbuh bersama.",
@@ -105,7 +105,7 @@ const mitraInternasional = [
   },
   {
     name: "Komite Nasional LWF (KN-LWF)",
-    logo: "/mitra/komite-nasional-lwf.png",
+    logo: "/mitra/komite-nasional-lwf.webp",
     region: "Indonesia (Internasional)",
     description:
       "Wadah koordinasi gereja-gereja Lutheran di Indonesia dalam kerangka Lutheran World Federation, mewakili ~140 gereja anggota di 78 negara.",
@@ -116,7 +116,7 @@ const mitraInternasional = [
 const mitraNasional = [
   {
     name: "Persekutuan Gereja Indonesia (PGI)",
-    logo: "/mitra/persekutuan-gereja-indonesia.png",
+    logo: "/mitra/persekutuan-gereja-indonesia.webp",
     region: "Jakarta, Indonesia",
     description:
       "Lembaga ekumenis nasional yang mewadahi gereja-gereja di Indonesia, didirikan sejak Konferensi Persiapan Dewan Gereja-Gereja Indonesia, November 1949.",
@@ -124,7 +124,7 @@ const mitraNasional = [
   },
   {
     name: "PGI Wilayah Sumatera Utara",
-    logo: "/mitra/persekutuan-gereja-indonesia.png",
+    logo: "/mitra/persekutuan-gereja-indonesia.webp",
     region: "Sumatera Utara",
     description:
       "Persekutuan Gereja Indonesia wilayah Sumatera Utara yang berperan sebagai wadah kerjasama gereja-gereja di tingkat daerah.",
@@ -132,7 +132,7 @@ const mitraNasional = [
   },
   {
     name: "STT Abdi Sabda Medan",
-    logo: "/mitra/abdi-sabda.png",
+    logo: "/mitra/abdi-sabda.webp",
     region: "Medan, Sumatera Utara",
     description:
       "Sekolah Tinggi Teologi yang berdiri sejak 1967, mendidik calon pelayan Gereja — Guru Injil dan Guru Agama Kristen — bagi gereja dan sekolah.",
@@ -140,7 +140,7 @@ const mitraNasional = [
   },
   {
     name: "YASUMA – Yayasan Sumber Sejahtera",
-    logo: "/mitra/yasuma.png",
+    logo: "/mitra/yasuma.webp",
     region: "Indonesia",
     description:
       "Pelayanan Kristen sejak 1996 yang menempatkan Alkitab ke tangan yang membutuhkan — gereja, lembaga, sekolah, universitas, penjara, dan panti asuhan.",
@@ -148,7 +148,7 @@ const mitraNasional = [
   },
   {
     name: "Pusat Pelatihan Misi Terpadu (PPMT) – GKY Jakarta",
-    logo: "/mitra/Logo_GKPI.png",
+    logo: "/mitra/Logo_GKPI.webp",
     region: "Jakarta, Indonesia",
     description:
       'Misi GKY terdiri dari lima unsur Missio Ecclesiae: Ibadah, Persekutuan, Kesaksian, Pelayanan, dan Pembaruan — dengan visi "Gereja yang Mulia dan Misioner".',
@@ -156,7 +156,7 @@ const mitraNasional = [
   },
   {
     name: "Evangelism Explosion (EE Indonesia)",
-    logo: "/mitra/Logo_GKPI.png",
+    logo: "/mitra/Logo_GKPI.webp",
     region: "Indonesia",
     description:
       "Gerakan penginjilan yang dimulai tahun 1962 oleh Dr. D. James Kennedy, hadir di Indonesia untuk memperlengkapi jemaat dalam memberitakan Injil.",
@@ -164,7 +164,7 @@ const mitraNasional = [
   },
   {
     name: "Badan Penerbit Kristen (BPK)",
-    logo: "/mitra/Logo_GKPI.png",
+    logo: "/mitra/Logo_GKPI.webp",
     region: "Jakarta, Indonesia",
     description:
       "Penerbit buku rohani Kristen, buku umum, dan humaniora dengan kantor pusat di Jakarta. Menerbitkan buku teologi akademis untuk menunjang pendidikan Teologi di Indonesia.",
@@ -172,7 +172,7 @@ const mitraNasional = [
   },
   {
     name: "Lembaga Alkitab Indonesia (LAI)",
-    logo: "/mitra/Logo_GKPI.png",
+    logo: "/mitra/Logo_GKPI.webp",
     region: "Jakarta, Indonesia",
     description:
       "Meneruskan warisan Lembaga Alkitab yang pertama kali berdiri di Batavia sejak 4 Juni 1814. LAI berkomitmen menyebarkan firman Tuhan ke seluruh pelosok Indonesia.",

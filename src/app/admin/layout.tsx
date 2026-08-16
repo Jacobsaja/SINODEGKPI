@@ -67,7 +67,7 @@ export default function AdminLayout({
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-primary to-primary p-0.5 shadow-sm shadow-primary/20">
               <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-[14px] bg-background">
                 <img
-                  src="/mitra/Logo_GKPI.png"
+                  src="/mitra/Logo_GKPI.webp"
                   alt="Logo GKPI"
                   className="h-full w-full object-contain p-1"
                 />

@@ -36,20 +36,20 @@ const misiPoints = [
 ];
 
 const partners = [
-{ name: "STT ABDI SABDA", logo: "/mitra/abdi-sabda.png" },
-{ name: "CCA", logo: "/mitra/christian-conference-asia.png" },
-{ name: "ELCA", logo: "/mitra/elca.png" },
-{ name: "EGB", logo: "/mitra/evangelish.png" },
-{ name: "EKK", logo: "/mitra/gereja-wilayah-kleve.png" },
-{ name: "KN-LWF", logo: "/mitra/komite-nasional-lwf.png" },
-{ name: "LNM", logo: "/mitra/lnm-norwegian.png" },
-{ name: "LCA", logo: "/mitra/lutheran-church-australia.png" },
-{ name: "LFW", logo: "/mitra/lutheran-world-federation.png" },
-{ name: "Yasuma", logo: "/mitra/yasuma.png" },
-{ name: "PGI", logo: "/mitra/persekutuan-gereja-indonesia.png" },
-{ name: "PCK", logo: "/mitra/presbyterian-church-korea.png" },
-{ name: "UEM", logo: "/mitra/uem.png" },
-{ name: "WCC", logo: "/mitra/world-council-churches.png" },
+  { name: "STT ABDI SABDA", logo: "/mitra/abdi-sabda.webp" },
+  { name: "CCA", logo: "/mitra/christian-conference-asia.webp" },
+  { name: "ELCA", logo: "/mitra/elca.webp" },
+  { name: "EGB", logo: "/mitra/evangelish.webp" },
+  { name: "EKK", logo: "/mitra/gereja-wilayah-kleve.webp" },
+  { name: "KN-LWF", logo: "/mitra/komite-nasional-lwf.webp" },
+  { name: "LNM", logo: "/mitra/lnm-norwegian.webp" },
+  { name: "LCA", logo: "/mitra/lutheran-church-australia.webp" },
+  { name: "LFW", logo: "/mitra/lutheran-world-federation.webp" },
+  { name: "Yasuma", logo: "/mitra/yasuma.webp" },
+  { name: "PGI", logo: "/mitra/persekutuan-gereja-indonesia.webp" },
+  { name: "PCK", logo: "/mitra/presbyterian-church-korea.webp" },
+  { name: "UEM", logo: "/mitra/uem.webp" },
+  { name: "WCC", logo: "/mitra/world-council-churches.webp" },
 ];
 
 export const metadata: Metadata = {
