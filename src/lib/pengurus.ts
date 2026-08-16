@@ -105,65 +105,79 @@ function nextOrder(items: { order_index: number }[]): number {
  * /pengurus maupun admin /admin/pengurus.
  */
 export async function getAllSeksi(): Promise<PengurusSeksi[]> {
-  const [seksiRes, grupRes, anggotaRes] = await Promise.all([
-    supabase.from("pengurus_seksi").select("*").order("order_index", { ascending: true }),
-    supabase.from("pengurus_grup").select("*").order("order_index", { ascending: true }),
-    supabase.from("pengurus_anggota").select("*").order("order_index", { ascending: true }),
-  ]);
+  try {
+    const [seksiRes, grupRes, anggotaRes] = await Promise.all([
+      supabase.from("pengurus_seksi").select("*").order("order_index", { ascending: true }),
+      supabase.from("pengurus_grup").select("*").order("order_index", { ascending: true }),
+      supabase.from("pengurus_anggota").select("*").order("order_index", { ascending: true }),
+    ]);
 
-  if (seksiRes.error) throw seksiRes.error;
-  if (grupRes.error) throw grupRes.error;
-  if (anggotaRes.error) throw anggotaRes.error;
-
-  const seksiList: PengurusSeksi[] = (seksiRes.data ?? []).map((s) => ({
-    id: s.id,
-    title: s.title,
-    tab_label: s.tab_label,
-    slug: s.slug,
-    layout_type: s.layout_type,
-    order_index: s.order_index,
-    groups: [],
-    members: [],
-  }));
-
-  const seksiById = new Map(seksiList.map((s) => [s.id, s]));
-  const grupById = new Map<string, PengurusGrup>();
-
-  for (const g of grupRes.data ?? []) {
-    const grup: PengurusGrup = {
-      id: g.id,
-      seksi_id: g.seksi_id,
-      name: g.name,
-      order_index: g.order_index,
-      anggota: [],
-    };
-    grupById.set(g.id, grup);
-    seksiById.get(g.seksi_id)?.groups.push(grup);
-  }
-
-  for (const a of anggotaRes.data ?? []) {
-    const anggota: PengurusAnggota = {
-      id: a.id,
-      seksi_id: a.seksi_id,
-      grup_id: a.grup_id,
-      name: a.name,
-      role: a.role,
-      description: a.description,
-      bio: a.bio,
-      email: a.email,
-      phone: a.phone,
-      photo_url: a.photo_url,
-      variant: a.variant,
-      order_index: a.order_index,
-    };
-    if (a.grup_id && grupById.has(a.grup_id)) {
-      grupById.get(a.grup_id)!.anggota.push(anggota);
-    } else {
-      seksiById.get(a.seksi_id)?.members.push(anggota);
+    if (seksiRes.error) {
+      console.error("Gagal mengambil pengurus_seksi:", seksiRes.error.message);
+      return [];
     }
-  }
+    if (grupRes.error) {
+      console.error("Gagal mengambil pengurus_grup:", grupRes.error.message);
+      return [];
+    }
+    if (anggotaRes.error) {
+      console.error("Gagal mengambil pengurus_anggota:", anggotaRes.error.message);
+      return [];
+    }
 
-  return seksiList;
+    const seksiList: PengurusSeksi[] = (seksiRes.data ?? []).map((s) => ({
+      id: s.id,
+      title: s.title,
+      tab_label: s.tab_label,
+      slug: s.slug,
+      layout_type: s.layout_type,
+      order_index: s.order_index,
+      groups: [],
+      members: [],
+    }));
+
+    const seksiById = new Map(seksiList.map((s) => [s.id, s]));
+    const grupById = new Map<string, PengurusGrup>();
+
+    for (const g of grupRes.data ?? []) {
+      const grup: PengurusGrup = {
+        id: g.id,
+        seksi_id: g.seksi_id,
+        name: g.name,
+        order_index: g.order_index,
+        anggota: [],
+      };
+      grupById.set(g.id, grup);
+      seksiById.get(g.seksi_id)?.groups.push(grup);
+    }
+
+    for (const a of anggotaRes.data ?? []) {
+      const anggota: PengurusAnggota = {
+        id: a.id,
+        seksi_id: a.seksi_id,
+        grup_id: a.grup_id,
+        name: a.name,
+        role: a.role,
+        description: a.description,
+        bio: a.bio,
+        email: a.email,
+        phone: a.phone,
+        photo_url: a.photo_url,
+        variant: a.variant,
+        order_index: a.order_index,
+      };
+      if (a.grup_id && grupById.has(a.grup_id)) {
+        grupById.get(a.grup_id)!.anggota.push(anggota);
+      } else {
+        seksiById.get(a.seksi_id)?.members.push(anggota);
+      }
+    }
+
+    return seksiList;
+  } catch (error: any) {
+    console.error("Gagal mengambil data pengurus:", error?.message || error);
+    return [];
+  }
 }
 
 // ─── CRUD: Seksi ─────────────────────────────────────────────────────────────

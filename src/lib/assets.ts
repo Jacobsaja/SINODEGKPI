@@ -1,5 +1,5 @@
 export const assets = {
-  logo: "/logo.png",
+  logo: "/logo.webp",
   heroBg: "/hero-publikasi.webp",
   heroKontak: "/hero-kontak.webp",
   heroPublikasi: "/hero-publikasi.webp",

@@ -29,13 +29,13 @@ export const metadata: Metadata = {
     siteName: "GKPI Sinode",
     locale: "id_ID",
     type: "website",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "GKPI Sinode" }],
+    images: [{ url: "/og-image.webp", width: 1200, height: 630, alt: "GKPI Sinode" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "GKPI Sinode - Gereja Kristen Protestan Indonesia",
     description: "Komunitas yang bertumbuh dalam iman, melayani dengan kasih, dan berdampak bagi sesama.",
-    images: ["/og-image.jpg"],
+    images: ["/og-image.webp"],
   },
   robots: {
     index: true,
@@ -58,7 +58,7 @@ const jsonLd = {
   alternateName: "GKPI",
   url: "https://sinodegkpi.vercel.app",
   logo: "https://sinodegkpi.vercel.app/mitra/Logo_GKPI.webp",
-  image: "https://sinodegkpi.vercel.app/og-image.jpg",
+  image: "https://sinodegkpi.vercel.app/og-image.webp",
   description:
     "GKPI Sinode - Komunitas yang bertumbuh dalam iman, melayani dengan kasih, dan berdampak bagi sesama.",
   address: {
