@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { supabase } from "@/lib/supabase";
+import type { PublicationDepartment } from "@/lib/types";
 import {
   LayoutDashboard,
   Newspaper,
@@ -42,9 +43,16 @@ interface AdminSidebarProps {
   onLogout: () => void;
   isOpen: boolean;
   onClose: () => void;
+  adminDepartment?: PublicationDepartment | null;
 }
 
-export default function AdminSidebar({ email, onLogout, isOpen, onClose }: AdminSidebarProps) {
+export default function AdminSidebar({
+  email,
+  onLogout,
+  isOpen,
+  onClose,
+  adminDepartment = null,
+}: AdminSidebarProps) {
   const pathname = usePathname();
   const [unreadCount, setUnreadCount] = useState(0);
 
@@ -101,6 +109,8 @@ export default function AdminSidebar({ email, onLogout, isOpen, onClose }: Admin
         {NAV_ITEMS.map((item) => {
           const active = !item.external && isActive(item.href, item.exact);
           const Icon = item.icon;
+          const isDisabled =
+            adminDepartment !== null && item.label !== "Publikasi";
 
           if (item.external) {
             return (
@@ -110,7 +120,10 @@ export default function AdminSidebar({ email, onLogout, isOpen, onClose }: Admin
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={onClose}
-                className="group relative flex items-center gap-3.5 rounded-xl border border-transparent px-4 py-3.5 text-sm font-semibold text-text-secondary transition-all hover:border-border/60 hover:bg-background/40 hover:text-primary"
+                aria-disabled={isDisabled}
+                className={`group relative flex items-center gap-3.5 rounded-xl border border-transparent px-4 py-3.5 text-sm font-semibold text-text-secondary transition-all hover:border-border/60 hover:bg-background/40 hover:text-primary ${
+                  isDisabled ? "opacity-40 pointer-events-none cursor-not-allowed" : ""
+                }`}
               >
                 <Icon size={18} className="text-text-secondary transition-colors group-hover:text-primary" />
                 <span>{item.label}</span>
@@ -124,11 +137,12 @@ export default function AdminSidebar({ email, onLogout, isOpen, onClose }: Admin
               key={item.href}
               href={item.href}
               onClick={onClose}
+              aria-disabled={isDisabled}
               className={`group relative flex items-center gap-3.5 rounded-xl border px-4 py-3.5 text-sm font-semibold transition-all ${
                 active
                   ? "border-primary/20 bg-primary/10 text-text-primary shadow-inner"
                   : "border-transparent text-text-secondary hover:border-border/60 hover:bg-background/40 hover:text-primary"
-              }`}
+              } ${isDisabled ? "opacity-40 pointer-events-none cursor-not-allowed" : ""}`}
             >
               {/* Active Indicator Bar */}
               {active && (

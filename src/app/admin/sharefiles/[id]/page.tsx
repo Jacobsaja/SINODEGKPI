@@ -323,7 +323,7 @@ export default function ShareFolderDetailPage() {
             <div className="relative aspect-[21/9] bg-background/40 flex items-center justify-center">
               {coverUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={coverUrl} alt={folder.title} className="h-full w-full object-cover" />
+                <img src={coverUrl || undefined} alt={folder.title} className="h-full w-full object-cover" />
               ) : (
                 <ImageIcon size={32} className="text-text-secondary/40" />
               )}

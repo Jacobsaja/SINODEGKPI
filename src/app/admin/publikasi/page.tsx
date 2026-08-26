@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, useContext, Suspense } from "react";
+import { AdminDepartmentContext } from "@/app/admin/layout";
 import { supabase } from "@/lib/supabase";
 import { compressBeforeUpload } from "@/lib/image-compress";
 import {
@@ -9,7 +10,7 @@ import {
   PUBLIKASI_IMAGE_ACCEPT,
   PUBLIKASI_DOCUMENT_ACCEPT,
 } from "@/lib/publikasi-upload";
-import type { Publication, PublicationCategory, PublicationDocument } from "@/lib/types";
+import type { Publication, PublicationCategory, PublicationDepartment, PublicationDocument } from "@/lib/types";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -39,11 +40,19 @@ const CATEGORIES: PublicationCategory[] = [
   "Dokumen",
 ];
 
+const DEPARTMENTS_LIST: PublicationDepartment[] = [
+  "Sinode",
+  "Diakonat",
+  "Apostolat",
+  "Pastorat",
+];
+
 const emptyForm = {
   title: "",
   excerpt: "",
   content: "",
   category: "Berita" as PublicationCategory,
+  department: "Sinode" as PublicationDepartment,
   date: new Date().toISOString().slice(0, 10),
   author: "",
   image: "",
@@ -57,6 +66,9 @@ const emptyForm = {
 function PublikasiAdminContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  // Ambil department dari context layout (null = super admin, string = scoped admin).
+  const adminDepartment = useContext(AdminDepartmentContext);
   
   const [items, setItems] = useState<Publication[]>([]);
   const [activeTab, setActiveTab] = useState<"list" | "form">("list");
@@ -77,6 +89,13 @@ function PublikasiAdminContent() {
   useEffect(() => {
     loadItems();
   }, []);
+
+  // Sync form.department ke adminDepartment ketika context tersedia dan bukan null
+  useEffect(() => {
+    if (adminDepartment !== null) {
+      setForm((prev) => ({ ...prev, department: adminDepartment }));
+    }
+  }, [adminDepartment]);
 
   // Pantau perubahan searchParams untuk deep link
   useEffect(() => {
@@ -224,6 +243,7 @@ function PublikasiAdminContent() {
       excerpt: item.excerpt,
       content: item.content,
       category: item.category,
+      department: adminDepartment ?? item.department ?? "Sinode",
       date: item.date,
       author: item.author,
       image: item.image,
@@ -238,7 +258,10 @@ function PublikasiAdminContent() {
 
   function resetForm() {
     setEditingId(null);
-    setForm(emptyForm);
+    setForm({
+      ...emptyForm,
+      department: adminDepartment ?? "Sinode",
+    });
     setUploadError("");
     setGalleryError("");
     setDocError("");
@@ -247,10 +270,14 @@ function PublikasiAdminContent() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
+    // Jika admin scoped, selalu gunakan adminDepartment dari context (bukan state form)
+    // agar tidak bisa dimanipulasi dari client meskipun dropdown di-disabled secara visual.
+    const safeDepartment: PublicationDepartment = adminDepartment ?? form.department;
+    const payload = { ...form, department: safeDepartment };
     if (editingId) {
-      await supabase.from("publications").update(form).eq("id", editingId);
+      await supabase.from("publications").update(payload).eq("id", editingId);
     } else {
-      await supabase.from("publications").insert(form);
+      await supabase.from("publications").insert(payload);
     }
     setSaving(false);
     resetForm();
@@ -277,7 +304,10 @@ function PublikasiAdminContent() {
     const matchesCategory = 
       selectedCategory === "Semua" || item.category === selectedCategory;
 
-    return matchesSearch && matchesCategory;
+    const matchesDepartment =
+      adminDepartment !== null ? (item.department ?? "Sinode") === adminDepartment : true;
+
+    return matchesSearch && matchesCategory && matchesDepartment;
   });
 
   const getPubCategoryStyle = (category: string) => {
@@ -410,7 +440,7 @@ function PublikasiAdminContent() {
                             {item.image ? (
                               // eslint-disable-next-line @next/next/no-img-element
                               <img
-                                src={item.image}
+                                src={item.image || undefined}
                                 alt={item.title}
                                 className="h-11 w-11 rounded-lg object-cover border border-border/80"
                               />
@@ -431,9 +461,14 @@ function PublikasiAdminContent() {
                           </div>
                         </td>
                         <td className="p-4">
-                          <span className={`inline-block rounded-md border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${getPubCategoryStyle(item.category)}`}>
-                            {item.category}
-                          </span>
+                          <div className="flex flex-col items-start gap-1">
+                            <span className={`inline-block rounded-md border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${getPubCategoryStyle(item.category)}`}>
+                              {item.category}
+                            </span>
+                            <span className="inline-block rounded-md border border-border/60 bg-surface/60 px-2 py-0.5 text-[10px] font-semibold text-text-secondary">
+                              {item.department ?? "Sinode"}
+                            </span>
+                          </div>
                         </td>
                         <td className="p-4 text-xs font-semibold text-text-secondary whitespace-nowrap">
                           {new Date(item.date).toLocaleDateString("id-ID", {
@@ -602,6 +637,34 @@ function PublikasiAdminContent() {
                 </div>
 
                 <div className="space-y-1.5">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Departemen Pengunggah</label>
+                  <select
+                    value={adminDepartment ?? form.department}
+                    disabled={adminDepartment !== null}
+                    onChange={(e) =>
+                      setForm({ ...form, department: e.target.value as PublicationDepartment })
+                    }
+                    className={`w-full rounded-xl border px-4 py-3 text-sm text-text-primary outline-none transition-all appearance-none bg-no-repeat bg-[right_14px_center] pr-10 ${
+                      adminDepartment !== null
+                        ? "border-border/30 bg-[var(--color-surface)] opacity-60 cursor-not-allowed text-text-secondary"
+                        : "border-border/60 bg-gradient-to-br from-background/60 to-background/40 cursor-pointer focus:border-primary/50 focus:ring-2 focus:ring-primary/20 hover:border-primary/40 hover:shadow-md hover:shadow-primary/5"
+                    } bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMiA0TDYgOEwxMCA0IiBzdHJva2U9IiM5Q0EzQUYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4')]`}
+                  >
+                    {DEPARTMENTS_LIST.map((d) => (
+                      <option key={d} value={d}>
+                        {d === "Sinode" ? "Sinode / Umum" : `Departemen ${d}`}
+                      </option>
+                    ))}
+                  </select>
+                  {adminDepartment !== null && (
+                    <p className="text-[10px] text-amber-400/80 font-semibold mt-1 flex items-center gap-1">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                      Terkunci — akun departemen {adminDepartment}
+                    </p>
+                  )}
+                </div>
+
+                <div className="space-y-1.5">
                   <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Tanggal Terbit</label>
                   <div className="relative">
                     <Calendar size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary" />
@@ -656,7 +719,7 @@ function PublikasiAdminContent() {
                   {form.image && !uploading && (
                     <div className="relative group mt-3 aspect-video w-full overflow-hidden rounded-xl border border-border bg-background/40">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={form.image} alt="Pratinjau" className="h-full w-full object-cover" />
+                      <img src={form.image || undefined} alt="Pratinjau" className="h-full w-full object-cover" />
                       <button
                         type="button"
                         onClick={() => setForm((prev) => ({ ...prev, image: "" }))}
@@ -699,7 +762,7 @@ function PublikasiAdminContent() {
                       {form.images.map((url, i) => (
                         <div key={i} className="relative group aspect-square overflow-hidden rounded-lg border border-border bg-background/40">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={url} alt={`Galeri ${i + 1}`} className="h-full w-full object-cover" />
+                          <img src={url || undefined} alt={`Galeri ${i + 1}`} className="h-full w-full object-cover" />
                           <button
                             type="button"
                             onClick={() => removeGalleryImage(i)}

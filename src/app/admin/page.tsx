@@ -195,7 +195,7 @@ export default async function AdminDashboardPage() {
                   {item.image ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={item.image}
+                      src={item.image || undefined}
                       alt={item.title}
                       className="h-10 w-10 shrink-0 rounded-lg object-cover border border-border/60"
                     />
@@ -262,7 +262,7 @@ export default async function AdminDashboardPage() {
                   {item.image ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={item.image}
+                      src={item.image || undefined}
                       alt={item.name}
                       className="h-10 w-10 shrink-0 rounded-lg object-cover border border-border/60"
                     />

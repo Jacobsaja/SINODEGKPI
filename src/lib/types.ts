@@ -5,6 +5,12 @@ export type PublicationCategory =
   | "Dokumen"
   | "Renungan Harian";
 
+export type PublicationDepartment =
+  | "Sinode"
+  | "Diakonat"
+  | "Apostolat"
+  | "Pastorat";
+
 export interface PublicationDocument {
   name: string;
   url: string;
@@ -18,6 +24,7 @@ export interface Publication {
   excerpt: string;
   content: string;
   category: PublicationCategory;
+  department?: PublicationDepartment;
   date: string; // ISO 8601 string
   author: string;
   image: string;

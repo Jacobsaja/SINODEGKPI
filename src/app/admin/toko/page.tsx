@@ -307,7 +307,7 @@ function TokoAdminContent() {
                             {item.image ? (
                               // eslint-disable-next-line @next/next/no-img-element
                               <img
-                                src={item.image}
+                                src={item.image || undefined}
                                 alt={item.name}
                                 className="h-11 w-11 rounded-lg object-cover border border-border/80"
                               />
@@ -551,7 +551,7 @@ function TokoAdminContent() {
                   {form.image && !uploading && (
                     <div className="relative group mt-3 aspect-square w-full overflow-hidden rounded-xl border border-border bg-background/40">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={form.image} alt="Pratinjau Produk" className="h-full w-full object-cover" />
+                      <img src={form.image || undefined} alt="Pratinjau Produk" className="h-full w-full object-cover" />
                       <button
                         type="button"
                         onClick={() => setForm((prev) => ({ ...prev, image: "" }))}

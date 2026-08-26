@@ -12,7 +12,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-primary-dark/40">
         <Image
-          src={product.image}
+          src={product.image || "/hero-bg.webp"}
           alt={product.name}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

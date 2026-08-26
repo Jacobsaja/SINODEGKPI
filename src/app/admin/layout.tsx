@@ -1,8 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import AdminSidebar from "@/components/admin/AdminSidebar";
+import type { PublicationDepartment } from "@/lib/types";
+
+/**
+ * Context yang menyimpan departemen dari admin yang sedang login.
+ * null  = super admin (akses penuh)
+ * string = admin scoped ke departemen tersebut (Diakonat/Apostolat/Pastorat)
+ */
+export const AdminDepartmentContext = createContext<PublicationDepartment | null>(null);
 
 export default function AdminLayout({
   children,
@@ -17,6 +26,14 @@ export default function AdminLayout({
   const [loggingIn, setLoggingIn] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  // State department admin (null = super admin, terisi = scoped admin)
+  const [adminDepartment, setAdminDepartment] = useState<PublicationDepartment | null>(null);
+  // Flag: sudah selesai cek profile admin_profiles atau belum (cegah flash konten sebelum redirect)
+  const [authChecked, setAuthChecked] = useState(false);
+
+  const router = useRouter();
+  const pathname = usePathname();
+
   // Inisialisasi status auth saat mount dan ikuti perubahan auth.
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -29,6 +46,35 @@ export default function AdminLayout({
     });
     return () => listener.subscription.unsubscribe();
   }, []);
+
+  // Fetch department admin dari tabel admin_profiles setelah sesi diketahui aktif.
+  useEffect(() => {
+    if (session !== true) return; // belum login atau belum resolve, tunggu dulu
+    (async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { data: profile } = await supabase
+            .from("admin_profiles")
+            .select("department")
+            .eq("id", user.id)
+            .maybeSingle();
+          const dept = (profile?.department ?? null) as PublicationDepartment | null;
+          setAdminDepartment(dept);
+        }
+      } finally {
+        setAuthChecked(true);
+      }
+    })();
+  }, [session]);
+
+  // Guard redirect: scoped admin hanya boleh akses /admin/publikasi dan turunannya.
+  useEffect(() => {
+    if (!authChecked) return;
+    if (adminDepartment !== null && !pathname.startsWith("/admin/publikasi")) {
+      router.replace("/admin/publikasi");
+    }
+  }, [authChecked, adminDepartment, pathname, router]);
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -48,6 +94,11 @@ export default function AdminLayout({
 
   // Tunggu resolusi auth agar UI tidak berkedip.
   if (session === null) {
+    return <main className="min-h-screen bg-background" />;
+  }
+
+  // Sesi aktif tapi profile department belum selesai di-fetch — tampilkan blank agar tidak flash konten.
+  if (session && !authChecked) {
     return <main className="min-h-screen bg-background" />;
   }
 
@@ -146,6 +197,7 @@ export default function AdminLayout({
 
   // Render shell admin saat sesi aktif.
   return (
+    <AdminDepartmentContext.Provider value={adminDepartment}>
     <div className="flex min-h-screen bg-background text-text-primary overflow-hidden">
       {/* Backdrop for mobile */}
       {sidebarOpen && (
@@ -161,6 +213,7 @@ export default function AdminLayout({
         onLogout={handleLogout}
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
+        adminDepartment={adminDepartment}
       />
 
       {/* Main Content Area */}
@@ -200,5 +253,6 @@ export default function AdminLayout({
         </main>
       </div>
     </div>
+    </AdminDepartmentContext.Provider>
   );
 }

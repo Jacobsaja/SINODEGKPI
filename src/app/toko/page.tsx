@@ -225,7 +225,7 @@ export default function TokoPage() {
                 {/* Image side */}
                 <div className="relative min-h-[300px] overflow-hidden md:col-span-7 md:min-h-[420px]">
                   <img
-                    src={featuredProduct.image}
+                    src={featuredProduct.image || undefined}
                     alt={featuredProduct.name}
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-[6000ms] group-hover:scale-105"
                   />
@@ -292,7 +292,7 @@ export default function TokoPage() {
                   {/* Card Thumbnail */}
                   <div className="relative aspect-[16/10] w-full overflow-hidden">
                     <img
-                      src={product.image}
+                      src={product.image || undefined}
                       alt={product.name}
                       className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
@@ -424,7 +424,7 @@ export default function TokoPage() {
               {/* Left Panel: Image */}
               <div className="w-full h-44 sm:h-52 md:h-full md:w-[45%] flex-shrink-0 relative overflow-hidden bg-slate-50 border-b md:border-b-0 md:border-r border-border/40">
                 <img
-                  src={selectedProduct.image}
+                  src={selectedProduct.image || undefined}
                   alt={selectedProduct.name}
                   className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-700"
                 />

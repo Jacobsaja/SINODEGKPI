@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 import { getAllPublications, formatDateID } from "@/lib/publications";
-import type { Publication } from "@/lib/types";
+import type { Publication, PublicationDepartment } from "@/lib/types";
 import {
   Search,
   Calendar,
@@ -21,6 +21,9 @@ import {
   Sparkles,
   Bookmark,
   CalendarDays,
+  HeartHandshake,
+  Compass,
+  Users,
 } from "lucide-react";
 
 const categories: ("Semua" | "Berita" | "Pengumuman" | "Kegiatan" | "Dokumen" | "Renungan Harian")[] = [
@@ -30,6 +33,14 @@ const categories: ("Semua" | "Berita" | "Pengumuman" | "Kegiatan" | "Dokumen" | 
   "Pengumuman",
   "Kegiatan",
   "Dokumen",
+];
+
+const departmentsFilter: ("Semua" | PublicationDepartment)[] = [
+  "Semua",
+  "Sinode",
+  "Diakonat",
+  "Apostolat",
+  "Pastorat",
 ];
 
 const getCategoryIcon = (category: string) => {
@@ -54,6 +65,7 @@ export default function PublikasiPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<string>("Semua");
+  const [activeDepartment, setActiveDepartment] = useState<string>("Semua");
   const [visibleCount, setVisibleCount] = useState(6);
 
   // Ambil data publikasi saat halaman dimuat.
@@ -75,16 +87,18 @@ export default function PublikasiPage() {
   const filteredPublications = publicationsData.filter((post) => {
     const matchesCategory =
       activeCategory === "Semua" || post.category === activeCategory;
+    const matchesDepartment =
+      activeDepartment === "Semua" || (post.department ?? "Sinode") === activeDepartment;
     const matchesSearch =
       post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.category.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+    return matchesCategory && matchesDepartment && matchesSearch;
   });
 
   // Postingan renungan unggulan dari kategori aktif atau data pertama
   const featuredPost =
-    activeCategory === "Semua" && searchQuery === "" && publicationsData.length > 0
+    activeCategory === "Semua" && activeDepartment === "Semua" && searchQuery === "" && publicationsData.length > 0
       ? publicationsData.find((p) => p.is_featured) || publicationsData[0]
       : null;
 
@@ -150,55 +164,154 @@ export default function PublikasiPage() {
 
       {/* ── Main Layout (Content Area) ───────────────────────────────────── */}
       <section className="relative mx-auto max-w-7xl px-5 py-12 sm:px-8 md:py-16">
+        {/* Quick Links Sub-Laman Departemen */}
+        <ScrollReveal>
+          <div className="mb-10">
+            <div className="mb-3 flex items-center justify-between">
+              <p className="text-xs font-bold uppercase tracking-wider text-text-secondary">
+                Sub-Laman Publikasi Departemen
+              </p>
+            </div>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <Link
+                href="/publikasi/departemen/diakonat"
+                className="group flex items-center justify-between rounded-2xl border border-border/80 bg-surface/40 p-4 transition-all hover:border-emerald-400/40 hover:bg-surface/80 hover:shadow-md cursor-pointer backdrop-blur"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-400/10 text-emerald-400">
+                    <HeartHandshake size={20} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-text-primary group-hover:text-emerald-400 transition-colors">
+                      Diakonat
+                    </h4>
+                    <p className="text-[11px] text-text-secondary">Pelayanan Kasih & Sosial</p>
+                  </div>
+                </div>
+                <ChevronRight size={16} className="text-text-secondary transition-transform group-hover:translate-x-1 group-hover:text-emerald-400" />
+              </Link>
+
+              <Link
+                href="/publikasi/departemen/apostolat"
+                className="group flex items-center justify-between rounded-2xl border border-border/80 bg-surface/40 p-4 transition-all hover:border-sky-400/40 hover:bg-surface/80 hover:shadow-md cursor-pointer backdrop-blur"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-400/10 text-sky-400">
+                    <Compass size={20} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-text-primary group-hover:text-sky-400 transition-colors">
+                      Apostolat
+                    </h4>
+                    <p className="text-[11px] text-text-secondary">Pekabaran Injil & Misi</p>
+                  </div>
+                </div>
+                <ChevronRight size={16} className="text-text-secondary transition-transform group-hover:translate-x-1 group-hover:text-sky-400" />
+              </Link>
+
+              <Link
+                href="/publikasi/departemen/pastorat"
+                className="group flex items-center justify-between rounded-2xl border border-border/80 bg-surface/40 p-4 transition-all hover:border-purple-400/40 hover:bg-surface/80 hover:shadow-md cursor-pointer backdrop-blur"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-400/10 text-purple-400">
+                    <Users size={20} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-text-primary group-hover:text-purple-400 transition-colors">
+                      Pastorat
+                    </h4>
+                    <p className="text-[11px] text-text-secondary">Penggembalaan & Pembinaan</p>
+                  </div>
+                </div>
+                <ChevronRight size={16} className="text-text-secondary transition-transform group-hover:translate-x-1 group-hover:text-purple-400" />
+              </Link>
+            </div>
+          </div>
+        </ScrollReveal>
+
         {/* Search & Filter Panel */}
         <ScrollReveal>
-          <div className="mb-12 flex flex-col gap-6 rounded-2xl border border-border/60 bg-surface p-6 backdrop-blur-xl md:flex-row md:items-center md:justify-between">
-            {/* Search Input */}
-            <div className="relative flex-1 max-w-md">
-              <Search
-                size={18}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary"
-              />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Cari..."
-                className="w-full rounded-2xl border border-border bg-background/50 py-3 pl-11 pr-4 text-sm text-white placeholder-text-secondary outline-none transition-all focus:border-primary/40 focus:bg-background/80"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary hover:text-white"
-                >
-                  ×
-                </button>
-              )}
+          <div className="mb-12 flex flex-col gap-6 rounded-2xl border border-border/60 bg-surface p-6 backdrop-blur-xl">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              {/* Search Input */}
+              <div className="relative flex-1 max-w-md">
+                <Search
+                  size={18}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary"
+                />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Cari publikasi..."
+                  className="w-full rounded-2xl border border-border bg-background/50 py-3 pl-11 pr-4 text-sm text-white placeholder-text-secondary outline-none transition-all focus:border-primary/40 focus:bg-background/80"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-text-secondary hover:text-white"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
             </div>
 
-            {/* Categories scrollable tabs */}
-            <div className="flex flex-wrap gap-2.5">
-              {categories.map((cat) => {
-                const isActive = activeCategory === cat;
-                return (
-                  <button
-                    key={cat}
-                    onClick={() => {
-                      setActiveCategory(cat);
-                      setVisibleCount(6);
-                    }}
-                    className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-semibold tracking-wide transition-all cursor-pointer
-                      ${
+            {/* Filter Group: Kategori & Departemen */}
+            <div className="space-y-4 border-t border-border/40 pt-4">
+              {/* Filter Departemen */}
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-text-secondary mr-2 min-w-[70px]">
+                  Departemen:
+                </span>
+                {departmentsFilter.map((dept) => {
+                  const isActive = activeDepartment === dept;
+                  return (
+                    <button
+                      key={dept}
+                      onClick={() => {
+                        setActiveDepartment(dept);
+                        setVisibleCount(6);
+                      }}
+                      className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide transition-all cursor-pointer ${
                         isActive
                           ? "bg-primary text-background shadow-sm shadow-primary/25"
                           : "border border-border bg-surface text-text-secondary hover:border-primary/20 hover:text-primary"
                       }`}
-                  >
-                    {getCategoryIcon(cat)}
-                    <span>{cat}</span>
-                  </button>
-                );
-              })}
+                    >
+                      <span>{dept === "Semua" ? "Semua Departemen" : dept}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Filter Kategori */}
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-wider text-text-secondary mr-2 min-w-[70px]">
+                  Kategori:
+                </span>
+                {categories.map((cat) => {
+                  const isActive = activeCategory === cat;
+                  return (
+                    <button
+                      key={cat}
+                      onClick={() => {
+                        setActiveCategory(cat);
+                        setVisibleCount(6);
+                      }}
+                      className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold tracking-wide transition-all cursor-pointer ${
+                        isActive
+                          ? "bg-primary text-background shadow-sm shadow-primary/25"
+                          : "border border-border bg-surface text-text-secondary hover:border-primary/20 hover:text-primary"
+                      }`}
+                    >
+                      {getCategoryIcon(cat)}
+                      <span>{cat}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </ScrollReveal>
@@ -218,7 +331,7 @@ export default function PublikasiPage() {
                 {/* Image side */}
                 <div className="relative min-h-[300px] md:col-span-7 md:min-h-[420px] overflow-hidden">
                   <Image
-                    src={featuredPost.image}
+                    src={featuredPost.image || "/hero-bg.webp"}
                     alt={featuredPost.title}
                     fill
                     sizes="(min-width: 768px) 60vw, 100vw"
@@ -289,7 +402,7 @@ export default function PublikasiPage() {
                 {/* Card Thumbnail */}
                 <div className="relative aspect-[16/10] w-full overflow-hidden bg-surface">
                   <Image
-                    src={post.image}
+                    src={post.image || "/hero-bg.webp"}
                     alt={post.title}
                     fill
                     sizes="(min-width: 1024px) 30vw, 50vw"
