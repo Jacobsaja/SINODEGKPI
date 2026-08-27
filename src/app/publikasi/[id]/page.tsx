@@ -4,7 +4,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 import GalleryLightbox from "@/components/publikasi/GalleryLightbox";
-import CopyLinkButton from "@/components/publikasi/CopyLinkButton";
+import BookmarkButton from "@/components/publikasi/BookmarkButton";
+import ShareMenu from "@/components/publikasi/ShareMenu";
 import { getPublicationById, formatDateID, formatViewsID } from "@/lib/publications";
 import {
   Calendar,
@@ -85,8 +86,10 @@ export default async function PublikasiDetailPage({ params }: Props) {
 
   // Galeri: pakai `images` (array, kalau admin sudah upload banyak gambar),
   // fallback ke `image` tunggal supaya kompatibel dengan data lama.
-  const gallery =
+  const galleryRaw =
     post.images && post.images.length > 0 ? post.images : [post.image];
+  const gallery = galleryRaw.filter((img): img is string => Boolean(img && img.trim() !== ""));
+  if (gallery.length === 0) gallery.push("/hero-bg.webp");
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-background text-text-primary">
@@ -124,12 +127,15 @@ export default async function PublikasiDetailPage({ params }: Props) {
               Kembali ke Publikasi
             </Link>
 
-            <div className="mb-6 flex items-center justify-between gap-4">
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-xs font-bold text-primary">
                 {getCategoryIcon(post.category)}
                 {post.category}
               </span>
-              <CopyLinkButton />
+              <div className="flex items-center gap-2">
+                <BookmarkButton id={post.id} />
+                <ShareMenu title={post.title} />
+              </div>
             </div>
 
             <h1

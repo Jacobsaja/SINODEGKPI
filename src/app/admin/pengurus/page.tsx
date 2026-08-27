@@ -750,7 +750,7 @@ export default function AdminPengurusPage() {
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/40 pb-6">
         <div>
           <p className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-primary">Struktur Organisasi</p>
-          <h1 className="text-3xl font-extrabold text-text-primary mt-1" style={{ fontFamily: "'Playfair Display', serif" }}>
+          <h1 className="text-3xl font-extrabold text-text-primary mt-1">
             Kelola Pengurus
           </h1>
           <p className="mt-1.5 text-sm text-text-secondary">

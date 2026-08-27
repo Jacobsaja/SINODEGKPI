@@ -337,10 +337,7 @@ function PublikasiAdminContent() {
             <ChevronRight size={10} />
             <span className="text-primary">Publikasi</span>
           </div>
-          <h1
-            className="text-3xl font-extrabold text-text-primary mt-1"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <h1 className="text-3xl font-extrabold text-text-primary mt-1">
             Kelola Publikasi
           </h1>
           <p className="text-sm text-text-secondary mt-1">

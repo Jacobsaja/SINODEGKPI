@@ -204,10 +204,7 @@ function TokoAdminContent() {
             <ChevronRight size={10} />
             <span className="text-primary">Toko</span>
           </div>
-          <h1
-            className="text-3xl font-extrabold text-text-primary mt-1"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <h1 className="text-3xl font-extrabold text-text-primary mt-1">
             Kelola Toko
           </h1>
           <p className="text-sm text-text-secondary mt-1">

@@ -128,10 +128,7 @@ export default function AdminLayout({
               <p className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-primary">
                 GKPI Sinode
               </p>
-              <h1
-                className="text-2xl font-bold text-white mt-1"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
+              <h1 className="text-2xl font-bold text-text-primary mt-1 tracking-tight">
                 Masuk Admin Panel
               </h1>
               <p className="text-xs text-text-secondary mt-1.5">
@@ -219,7 +216,7 @@ export default function AdminLayout({
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
         {/* Top bar for mobile header */}
-        <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-border/80 bg-background/80 px-6 backdrop-blur-md md:h-20">
+        <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-border/80 bg-background/80 px-6 backdrop-blur-md md:h-20 shadow-sm shadow-border/50">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSidebarOpen(true)}
@@ -230,7 +227,7 @@ export default function AdminLayout({
             </button>
             <div className="flex flex-col">
               <span className="text-[10px] font-extrabold uppercase tracking-widest text-primary">GKPI Sinode</span>
-              <span className="text-sm font-bold text-white hidden md:inline-block">Admin Panel Dashboard</span>
+              <span className="text-sm font-bold text-text-primary hidden md:inline-block">Admin Panel Dashboard</span>
             </div>
           </div>
 

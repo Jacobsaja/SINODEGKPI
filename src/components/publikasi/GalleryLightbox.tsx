@@ -23,6 +23,8 @@ export default function GalleryLightbox({ images, title }: Props) {
   const goNext = () => setActiveIndex((i) => (i + 1) % images.length);
   const goPrev = () => setActiveIndex((i) => (i - 1 + images.length) % images.length);
 
+  const currentImage = images[activeIndex] || "/hero-bg.webp";
+
   return (
     <>
       <div
@@ -30,7 +32,7 @@ export default function GalleryLightbox({ images, title }: Props) {
         className="group/image relative aspect-[16/9] w-full cursor-zoom-in overflow-hidden rounded-2xl border border-border/40 bg-surface shadow-sm"
       >
         <Image
-          src={images[activeIndex]}
+          src={currentImage}
           alt={`${title} - gambar ${activeIndex + 1}`}
           fill
           sizes="(min-width: 768px) 700px, 100vw"
@@ -57,7 +59,7 @@ export default function GalleryLightbox({ images, title }: Props) {
                   : "border-border/50 opacity-70 hover:opacity-100"
               }`}
             >
-              <Image src={img} alt={`Thumbnail ${i + 1}`} fill sizes="96px" className="object-cover" />
+              <Image src={img || "/hero-bg.webp"} alt={`Thumbnail ${i + 1}`} fill sizes="96px" className="object-cover" />
             </button>
           ))}
         </div>
@@ -106,7 +108,7 @@ export default function GalleryLightbox({ images, title }: Props) {
 
           <div className="relative h-full w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
             <Image
-              src={images[activeIndex]}
+              src={currentImage}
               alt={`${title} - gambar ${activeIndex + 1}`}
               fill
               sizes="90vw"

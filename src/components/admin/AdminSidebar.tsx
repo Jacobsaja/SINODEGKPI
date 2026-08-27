@@ -140,18 +140,15 @@ export default function AdminSidebar({
               aria-disabled={isDisabled}
               className={`group relative flex items-center gap-3.5 rounded-xl border px-4 py-3.5 text-sm font-semibold transition-all ${
                 active
-                  ? "border-primary/20 bg-primary/10 text-text-primary shadow-inner"
-                  : "border-transparent text-text-secondary hover:border-border/60 hover:bg-background/40 hover:text-primary"
+                  ? "border-primary/20 bg-primary font-bold text-white shadow-md shadow-primary/20"
+                  : "border-transparent text-text-secondary hover:border-border/60 hover:bg-background/80 hover:text-primary hover:shadow-sm"
               } ${isDisabled ? "opacity-40 pointer-events-none cursor-not-allowed" : ""}`}
             >
-              {/* Active Indicator Bar */}
-              {active && (
-                <span className="absolute left-0 top-1/4 h-1/2 w-1.5 rounded-r-full bg-primary" />
-              )}
+              {/* Active Indicator Bar - removed because we use full bg now */}
               <Icon
                 size={18}
                 className={`transition-colors ${
-                  active ? "text-primary" : "text-text-secondary group-hover:text-primary"
+                  active ? "text-white" : "text-text-secondary group-hover:text-primary"
                 }`}
               />
               <span>{item.label}</span>
@@ -189,7 +186,7 @@ export default function AdminSidebar({
               {getInitials(email)}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-xs font-bold text-white">{email.split("@")[0]}</p>
+              <p className="truncate text-xs font-bold text-text-primary">{email.split("@")[0]}</p>
               <p className="truncate text-[10px] text-text-secondary/80 mt-0.5">{email}</p>
             </div>
           </div>

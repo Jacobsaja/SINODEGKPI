@@ -8,6 +8,8 @@ import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 import { getAllPublications, formatDateID } from "@/lib/publications";
 import type { Publication, PublicationDepartment } from "@/lib/types";
+import { SkeletonList } from "@/components/SkeletonLoader";
+import { getBookmarkedIds } from "@/components/publikasi/BookmarkButton";
 import {
   Search,
   Calendar,
@@ -26,8 +28,9 @@ import {
   Users,
 } from "lucide-react";
 
-const categories: ("Semua" | "Berita" | "Pengumuman" | "Kegiatan" | "Dokumen" | "Renungan Harian")[] = [
+const categories: ("Semua" | "Tersimpan" | "Berita" | "Pengumuman" | "Kegiatan" | "Dokumen" | "Renungan Harian")[] = [
   "Semua",
+  "Tersimpan",
   "Renungan Harian",
   "Berita",
   "Pengumuman",
@@ -84,9 +87,16 @@ export default function PublikasiPage() {
   }, []);
 
   // Daftar publikasi hasil filter
+  const bookmarkedIds = typeof window !== "undefined" ? getBookmarkedIds() : [];
+
   const filteredPublications = publicationsData.filter((post) => {
     const matchesCategory =
-      activeCategory === "Semua" || post.category === activeCategory;
+      activeCategory === "Semua"
+        ? true
+        : activeCategory === "Tersimpan"
+        ? bookmarkedIds.includes(post.id)
+        : post.category === activeCategory;
+
     const matchesDepartment =
       activeDepartment === "Semua" || (post.department ?? "Sinode") === activeDepartment;
     const matchesSearch =
@@ -461,13 +471,8 @@ export default function PublikasiPage() {
           ))}
         </div>
 
-        {/* Loading State */}
-        {isLoading && (
-          <div className="my-20 flex flex-col items-center justify-center text-center p-8">
-            <div className="h-10 w-10 rounded-full border-2 border-primary/30 border-t-primary animate-spin" />
-            <p className="text-sm text-text-secondary mt-4">Memuat publikasi...</p>
-          </div>
-        )}
+        {/* Loading State with Skeleton */}
+        {isLoading && <SkeletonList count={6} />}
 
         {/* Empty State */}
         {!isLoading && filteredPublications.length === 0 && (

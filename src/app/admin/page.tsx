@@ -70,20 +70,21 @@ export default async function AdminDashboardPage() {
 
   return (
     <div className="space-y-8 animate-fade-in-up">
-      {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border/40 pb-6">
-        <div>
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.25em] text-primary">
-            Ringkasan Sistem
+      {/* Welcome Banner */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary-dark to-primary p-8 md:p-10 shadow-lg shadow-primary/20">
+        {/* Glow Effects */}
+        <div className="absolute -top-24 -right-24 h-64 w-64 rounded-full bg-white/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 h-64 w-64 rounded-full bg-white/10 blur-3xl pointer-events-none" />
+        
+        <div className="relative z-10">
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-white/80 mb-2">
+            Selamat Datang di
           </p>
-          <h1
-            className="text-3xl font-extrabold text-white mt-1"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            Dashboard Admin
+          <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+            GKPI Sinode Workspace
           </h1>
-          <p className="mt-1.5 text-sm text-text-secondary">
-            Kelola konten renungan, pengumuman, berita, dan katalog toko GKPI Sinode dari satu tempat.
+          <p className="mt-2 text-sm md:text-base text-white/90 max-w-xl">
+            Pusat kendali untuk mengelola seluruh publikasi gereja, data jemaat, dan operasional toko digital dengan mudah.
           </p>
         </div>
       </div>
@@ -96,13 +97,16 @@ export default async function AdminDashboardPage() {
             <Link
               key={stat.label}
               href={stat.href}
-              className="group relative overflow-hidden rounded-2xl border border-border bg-surface p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:bg-surface shadow-sm hover:shadow-primary/5"
+              className="group relative overflow-hidden rounded-3xl border border-border bg-surface p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-primary/40 shadow-sm hover:shadow-xl hover:shadow-primary/10"
             >
+              {/* Subtle background glow on hover */}
+              <div className="absolute inset-0 -z-10 bg-gradient-to-br from-transparent to-primary/[0.03] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              
               <div className="flex items-start justify-between">
-                <div className={`flex h-12 w-12 items-center justify-center rounded-2xl border ${stat.colorClass}`}>
+                <div className={`flex h-12 w-12 items-center justify-center rounded-2xl border ${stat.colorClass} transition-transform duration-500 group-hover:scale-110`}>
                   <Icon size={22} />
                 </div>
-                <span className="text-[10px] font-bold text-text-secondary/70 uppercase tracking-widest bg-background/50 px-2.5 py-1 rounded-lg border border-border/40 transition-colors group-hover:border-primary/30 group-hover:text-primary">
+                <span className="text-[10px] font-bold text-text-secondary/70 uppercase tracking-widest bg-background/80 px-2.5 py-1 rounded-lg border border-border/60 transition-colors group-hover:border-primary/40 group-hover:text-primary group-hover:bg-primary/5">
                   Kelola
                 </span>
               </div>
@@ -120,14 +124,16 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Quick Actions Deck */}
-      <div className="rounded-2xl border border-border/80 bg-surface/20 p-6">
-        <h2 className="text-xs font-extrabold uppercase tracking-wider text-primary mb-4">Aksi Cepat Admin</h2>
+      <div className="rounded-3xl border border-border/80 bg-surface/40 p-6 backdrop-blur-sm">
+        <h2 className="text-xs font-extrabold uppercase tracking-wider text-primary mb-4 flex items-center gap-2">
+          <Sparkles size={14} /> Aksi Cepat Admin
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <Link
             href="/admin/publikasi?tab=form"
-            className="flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 transition-all hover:border-primary/40 hover:bg-surface hover:-translate-y-0.5"
+            className="group flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 transition-all duration-300 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1"
           >
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/20 text-primary">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary transition-transform duration-300 group-hover:scale-110 group-hover:bg-primary/20">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
             </div>
             <div>
@@ -137,9 +143,9 @@ export default async function AdminDashboardPage() {
           </Link>
           <Link
             href="/admin/toko?tab=form"
-            className="flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 transition-all hover:border-primary/40 hover:bg-surface hover:-translate-y-0.5"
+            className="group flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 transition-all duration-300 hover:border-purple-500/40 hover:shadow-lg hover:shadow-purple-500/5 hover:-translate-y-1"
           >
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-500/20 text-purple-300">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-purple-500/10 text-purple-400 transition-transform duration-300 group-hover:scale-110 group-hover:bg-purple-500/20">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
             </div>
             <div>
@@ -151,9 +157,9 @@ export default async function AdminDashboardPage() {
             href="/"
             target="_blank"
             rel="noreferrer"
-            className="flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 transition-all hover:border-primary/40 hover:bg-surface hover:-translate-y-0.5"
+            className="group flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 transition-all duration-300 hover:border-emerald-500/40 hover:shadow-lg hover:shadow-emerald-500/5 hover:-translate-y-1"
           >
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-300">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-500 transition-transform duration-300 group-hover:scale-110 group-hover:bg-emerald-500/20">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" /><path d="m21 3-9 9" /><path d="M15 3h6v6" /></svg>
             </div>
             <div>
@@ -187,51 +193,49 @@ export default async function AdminDashboardPage() {
               </p>
             )}
             {recentPublications.map((item) => (
-              <div
+              <Link
                 key={item.id}
-                className="flex items-center justify-between gap-4 rounded-xl border border-border/45 bg-background/20 hover:bg-background/40 p-3.5 transition-all duration-200"
+                href={`/admin/publikasi?edit=${item.id}`}
+                className="group flex items-center justify-between gap-4 rounded-2xl border border-border/45 bg-background/40 hover:bg-surface p-4 transition-all duration-300 hover:shadow-md hover:shadow-primary/5 hover:-translate-y-0.5 hover:border-primary/20"
               >
-                <div className="flex items-center gap-3.5 min-w-0">
+                <div className="flex items-center gap-4 min-w-0">
                   {item.image ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={item.image || undefined}
                       alt={item.title}
-                      className="h-10 w-10 shrink-0 rounded-lg object-cover border border-border/60"
+                      className="h-12 w-12 shrink-0 rounded-xl object-cover border border-border/60 transition-transform duration-300 group-hover:scale-105"
                     />
                   ) : (
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface text-text-secondary border border-border/50">
-                      <Newspaper size={16} />
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-surface text-text-secondary border border-border/50 transition-transform duration-300 group-hover:scale-105 group-hover:text-primary">
+                      <Newspaper size={18} />
                     </div>
                   )}
                   <div className="min-w-0">
                     <p className="truncate text-sm font-bold text-text-primary group-hover:text-primary transition-colors">
                       {item.title}
                     </p>
-                    <div className="flex items-center gap-2 mt-1">
+                    <div className="flex items-center gap-2 mt-1.5">
                       <span className={`rounded-md border px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide ${getPubCategoryStyle(item.category)}`}>
                         {item.category}
                       </span>
-                      <span className="text-[10px] text-text-secondary">
+                      <span className="text-[10px] text-text-secondary font-medium">
                         {formatDateID(item.date)}
                       </span>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-3 shrink-0">
                   {item.is_featured && (
-                    <span className="rounded-full border border-amber-500/35 bg-amber-500/10 px-2 py-0.5 text-[9px] font-extrabold text-amber-400 uppercase tracking-wider">
+                    <span className="rounded-full border border-amber-500/35 bg-amber-500/10 px-2 py-0.5 text-[9px] font-extrabold text-amber-500 uppercase tracking-wider">
                       Pin
                     </span>
                   )}
-                  <Link
-                    href={`/admin/publikasi?edit=${item.id}`}
-                    className="text-xs font-bold text-primary hover:text-red-700 px-2.5 py-1 rounded-lg hover:bg-primary/10 border border-transparent hover:border-primary/20 transition-all"
-                  >
-                    Edit
-                  </Link>
+                  <div className="text-text-secondary opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:text-primary">
+                    <ArrowRight size={16} />
+                  </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -254,51 +258,49 @@ export default async function AdminDashboardPage() {
               </p>
             )}
             {recentProducts.map((item) => (
-              <div
+              <Link
                 key={item.id}
-                className="flex items-center justify-between gap-4 rounded-xl border border-border/45 bg-background/20 hover:bg-background/40 p-3.5 transition-all duration-200"
+                href={`/admin/toko?edit=${item.id}`}
+                className="group flex items-center justify-between gap-4 rounded-2xl border border-border/45 bg-background/40 hover:bg-surface p-4 transition-all duration-300 hover:shadow-md hover:shadow-purple-500/5 hover:-translate-y-0.5 hover:border-purple-500/20"
               >
-                <div className="flex items-center gap-3.5 min-w-0">
+                <div className="flex items-center gap-4 min-w-0">
                   {item.image ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={item.image || undefined}
                       alt={item.name}
-                      className="h-10 w-10 shrink-0 rounded-lg object-cover border border-border/60"
+                      className="h-12 w-12 shrink-0 rounded-xl object-cover border border-border/60 transition-transform duration-300 group-hover:scale-105"
                     />
                   ) : (
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface text-text-secondary border border-border/50">
-                      <ShoppingBag size={16} />
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-surface text-text-secondary border border-border/50 transition-transform duration-300 group-hover:scale-105 group-hover:text-purple-400">
+                      <ShoppingBag size={18} />
                     </div>
                   )}
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-bold text-text-primary group-hover:text-primary transition-colors">
+                    <p className="truncate text-sm font-bold text-text-primary group-hover:text-purple-500 transition-colors">
                       {item.name}
                     </p>
-                    <div className="flex items-center gap-2 mt-1">
-                      <span className="rounded-md border border-purple-500/20 bg-purple-500/10 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-purple-300">
+                    <div className="flex items-center gap-2 mt-1.5">
+                      <span className="rounded-md border border-purple-500/20 bg-purple-500/10 px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-purple-400">
                         {item.category || "Umum"}
                       </span>
-                      <span className="text-[10px] font-bold text-primary">
+                      <span className="text-[10px] font-extrabold text-primary">
                         {formatRupiah(item.price)}
                       </span>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-3 shrink-0">
                   {item.is_featured && (
-                    <span className="rounded-full border border-amber-500/35 bg-amber-500/10 px-2 py-0.5 text-[9px] font-extrabold text-amber-400 uppercase tracking-wider">
+                    <span className="rounded-full border border-amber-500/35 bg-amber-500/10 px-2 py-0.5 text-[9px] font-extrabold text-amber-500 uppercase tracking-wider">
                       Star
                     </span>
                   )}
-                  <Link
-                    href={`/admin/toko?edit=${item.id}`}
-                    className="text-xs font-bold text-primary hover:text-red-700 px-2.5 py-1 rounded-lg hover:bg-primary/10 border border-transparent hover:border-primary/20 transition-all"
-                  >
-                    Edit
-                  </Link>
+                  <div className="text-text-secondary opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:text-purple-500">
+                    <ArrowRight size={16} />
+                  </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

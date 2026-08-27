@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
-const inter = Inter({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-plus-jakarta",
   display: "swap",
 });
 
@@ -85,7 +85,7 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`h-full antialiased ${inter.variable} ${playfairDisplay.variable}`}
+      className={`h-full antialiased ${plusJakartaSans.variable} ${playfairDisplay.variable}`}
       data-scroll-behavior="smooth"
     >
       <body className="min-h-full flex flex-col selection:bg-primary/20 selection:text-primary-dark font-sans">
@@ -94,8 +94,12 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         {children}
-        <SpeedInsights />
-        <Analytics />
+        {process.env.NODE_ENV === "production" && (
+          <>
+            <SpeedInsights />
+            <Analytics />
+          </>
+        )}
       </body>
     </html>
   );
