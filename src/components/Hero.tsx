@@ -94,30 +94,38 @@ export default function Hero() {
       <div className="absolute inset-0 flex items-center justify-center">
         {slides.map((slide, index) => {
           const isActive = index === current;
+          // Only load background image for initial slide, active slide, or next slide
+          const shouldLoadImage = index === 0 || isActive || index === (current + 1) % slides.length;
+          
           return (
             <div
               key={slide.id}
-              className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-1000 ease-in-out ${isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-                }`}
+              className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-1000 ease-in-out ${
+                isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+              }`}
             >
               {/* Background Image with slight scale animation when active */}
               <div className="absolute inset-0 w-full h-full">
                 <div
-                    className={`relative w-full h-full transition-transform duration-[12000ms] ease-out ${isActive ? "scale-105" : "scale-100"
-                      }`}
-                  >
+                  className={`relative w-full h-full transition-transform duration-[12000ms] ease-out ${
+                    isActive ? "scale-105" : "scale-100"
+                  }`}
+                >
+                  {shouldLoadImage && (
                     <Image
                       src={slide.image || assets.heroBg}
                       alt="GKPI Background"
                       fill
-                      sizes="100vw"
+                      sizes="(max-width: 768px) 100vw, 100vw"
                       className="object-cover opacity-80"
                       priority={index === 0}
+                      loading={index === 0 ? "eager" : "lazy"}
                       onError={(e) => {
                         (e.target as HTMLImageElement).srcset = assets.heroBg;
                       }}
                     />
-                  </div>
+                  )}
+                </div>
 
                 {/* Soft dark blue overlay for contrast and spiritual calmness */}
                 <div className="absolute inset-0 bg-primary-dark/60 mix-blend-multiply" />
