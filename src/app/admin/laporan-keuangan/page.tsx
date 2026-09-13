@@ -28,6 +28,7 @@ import {
   Wallet,
   Calendar,
   ExternalLink,
+  ChevronDown,
 } from "lucide-react";
 
 const MONTHS = Array.from({ length: 12 }, (_, i) => ({
@@ -74,6 +75,8 @@ function LaporanKeuanganAdminContent() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedYear, setSelectedYear] = useState<number | "Semua">("Semua");
+  const [showYearFilter, setShowYearFilter] = useState(false);
+  const [showMonthSelect, setShowMonthSelect] = useState(false);
 
   useEffect(() => {
     let ignore = false;
@@ -268,20 +271,54 @@ function LaporanKeuanganAdminContent() {
                   className="w-full rounded-xl border border-border bg-surface py-2.5 pl-10 pr-4 text-sm text-text-primary outline-none focus:border-primary/40"
                 />
               </div>
-              <select
-                value={selectedYear}
-                onChange={(e) =>
-                  setSelectedYear(e.target.value === "Semua" ? "Semua" : parseInt(e.target.value))
-                }
-                className="cursor-pointer rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40"
-              >
-                <option value="Semua">Semua Tahun</option>
-                {availableYears.map((y) => (
-                  <option key={y} value={y}>
-                    {y}
-                  </option>
-                ))}
-              </select>
+              <div className="flex items-center gap-2 relative">
+                <button
+                  type="button"
+                  onClick={() => setShowYearFilter(!showYearFilter)}
+                  className="flex items-center justify-between gap-3 rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 hover:border-primary/40 transition-all cursor-pointer min-w-[150px]"
+                >
+                  <span className="font-medium">{selectedYear === "Semua" ? "Semua Tahun" : selectedYear}</span>
+                  <ChevronDown size={14} className={`text-text-secondary transition-transform duration-200 ${showYearFilter ? "rotate-180" : ""}`} />
+                </button>
+
+                {/* Overlay penutup dropdown */}
+                {showYearFilter && (
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setShowYearFilter(false)} 
+                  />
+                )}
+
+                <AnimatePresence>
+                  {showYearFilter && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute right-0 top-full mt-2 w-44 rounded-xl border border-border bg-surface p-1.5 shadow-xl z-50 flex flex-col origin-top-right max-h-60 overflow-y-auto"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => { setSelectedYear("Semua"); setShowYearFilter(false); }}
+                        className={`text-left px-3 py-2 text-sm rounded-lg transition-colors ${selectedYear === "Semua" ? "bg-primary/10 text-primary font-bold" : "text-text-secondary hover:text-text-primary hover:bg-background/80"}`}
+                      >
+                        Semua Tahun
+                      </button>
+                      {availableYears.map((y) => (
+                        <button
+                          key={y}
+                          type="button"
+                          onClick={() => { setSelectedYear(y); setShowYearFilter(false); }}
+                          className={`text-left px-3 py-2 text-sm rounded-lg transition-colors ${selectedYear === y ? "bg-primary/10 text-primary font-bold" : "text-text-secondary hover:text-text-primary hover:bg-background/80"}`}
+                        >
+                          {y}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
 
             {/* Table */}
@@ -399,21 +436,62 @@ function LaporanKeuanganAdminContent() {
                 </h4>
 
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
+                  <div className="space-y-1.5 relative">
                     <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
                       Bulan
                     </label>
-                    <select
-                      value={form.month}
-                      onChange={(e) => setForm({ ...form, month: parseInt(e.target.value) })}
-                      className="w-full cursor-pointer rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40"
+                    <button
+                      type="button"
+                      onClick={() => setShowMonthSelect(!showMonthSelect)}
+                      className="flex w-full items-center justify-between rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 hover:border-primary/40 transition-all cursor-pointer"
                     >
-                      {MONTHS.map((m) => (
-                        <option key={m.value} value={m.value}>
-                          {m.label}
-                        </option>
-                      ))}
-                    </select>
+                      <span className="font-medium">
+                        {MONTHS.find((m) => m.value === form.month)?.label ?? "Pilih Bulan"}
+                      </span>
+                      <ChevronDown
+                        size={14}
+                        className={`text-text-secondary transition-transform duration-200 ${
+                          showMonthSelect ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+
+                    {showMonthSelect && (
+                      <div
+                        className="fixed inset-0 z-40"
+                        onClick={() => setShowMonthSelect(false)}
+                      />
+                    )}
+
+                    <AnimatePresence>
+                      {showMonthSelect && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                          transition={{ duration: 0.15 }}
+                          className="absolute left-0 top-full mt-2 w-full max-h-56 overflow-y-auto rounded-xl border border-border bg-surface p-1.5 shadow-xl z-50 flex flex-col origin-top"
+                        >
+                          {MONTHS.map((m) => (
+                            <button
+                              key={m.value}
+                              type="button"
+                              onClick={() => {
+                                setForm({ ...form, month: m.value });
+                                setShowMonthSelect(false);
+                              }}
+                              className={`text-left px-3 py-2 text-sm rounded-lg transition-colors ${
+                                form.month === m.value
+                                  ? "bg-primary/10 text-primary font-bold"
+                                  : "text-text-secondary hover:text-text-primary hover:bg-background/80"
+                              }`}
+                            >
+                              {m.label}
+                            </button>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">

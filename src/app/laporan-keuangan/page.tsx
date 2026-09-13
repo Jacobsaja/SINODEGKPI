@@ -14,7 +14,8 @@ import {
   getDownloadUrl,
   formatFileSize,
 } from "@/lib/laporan-keuangan";
-import { Search, ChevronRight, FileText, Download, ExternalLink, Calendar } from "lucide-react";
+import { Search, ChevronRight, FileText, Download, ExternalLink, Calendar, ChevronDown } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 function formatUploadDate(iso: string): string {
   return new Date(iso).toLocaleString("id-ID", {
@@ -28,6 +29,7 @@ export default function LaporanKeuanganPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedYear, setSelectedYear] = useState<number | "Semua">("Semua");
+  const [showYearFilter, setShowYearFilter] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -103,20 +105,54 @@ export default function LaporanKeuanganPage() {
                   className="w-full rounded-xl border border-border bg-surface py-3 pl-11 pr-4 text-sm text-text-primary outline-none focus:border-primary/40 focus:bg-surface transition-all"
                 />
               </div>
-              <select
-                value={selectedYear}
-                onChange={(e) =>
-                  setSelectedYear(e.target.value === "Semua" ? "Semua" : parseInt(e.target.value))
-                }
-                className="rounded-xl border border-border bg-surface px-4 py-3 text-sm text-text-primary outline-none focus:border-primary/40 cursor-pointer"
-              >
-                <option value="Semua">Semua Tahun</option>
-                {availableYears.map((y) => (
-                  <option key={y} value={y}>
-                    {y}
-                  </option>
-                ))}
-              </select>
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setShowYearFilter(!showYearFilter)}
+                  className="flex w-full sm:w-auto items-center justify-between gap-3 rounded-xl border border-border bg-surface px-5 py-3 text-sm text-text-primary outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 hover:border-primary/40 transition-all cursor-pointer min-w-[160px]"
+                >
+                  <span className="font-medium">{selectedYear === "Semua" ? "Semua Tahun" : selectedYear}</span>
+                  <ChevronDown size={14} className={`text-text-secondary transition-transform duration-200 ${showYearFilter ? "rotate-180" : ""}`} />
+                </button>
+
+                {/* Overlay penutup dropdown */}
+                {showYearFilter && (
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setShowYearFilter(false)} 
+                  />
+                )}
+
+                <AnimatePresence>
+                  {showYearFilter && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-border bg-surface p-1.5 shadow-xl z-50 flex flex-col origin-top-right max-h-60 overflow-y-auto"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => { setSelectedYear("Semua"); setShowYearFilter(false); }}
+                        className={`text-left px-3 py-2 text-sm rounded-lg transition-colors ${selectedYear === "Semua" ? "bg-primary/10 text-primary font-bold" : "text-text-secondary hover:text-text-primary hover:bg-background/80"}`}
+                      >
+                        Semua Tahun
+                      </button>
+                      {availableYears.map((y) => (
+                        <button
+                          key={y}
+                          type="button"
+                          onClick={() => { setSelectedYear(y); setShowYearFilter(false); }}
+                          className={`text-left px-3 py-2 text-sm rounded-lg transition-colors ${selectedYear === y ? "bg-primary/10 text-primary font-bold" : "text-text-secondary hover:text-text-primary hover:bg-background/80"}`}
+                        >
+                          {y}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
           </ScrollReveal>
         </div>

@@ -21,7 +21,8 @@ import {
   ArrowLeft,
   ChevronRight,
   ShoppingBag,
-  ExternalLink
+  ExternalLink,
+  ChevronDown
 } from "lucide-react";
 
 const emptyForm = {
@@ -57,6 +58,7 @@ function TokoAdminContent() {
   // State pencarian dan filter
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("Semua");
+  const [showCategoryFilter, setShowCategoryFilter] = useState(false);
 
   useEffect(() => {
     let ignore = false;
@@ -299,18 +301,55 @@ function TokoAdminContent() {
                   className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/60 outline-none focus:border-primary/40 focus:bg-background"
                 />
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 relative">
                 <Filter size={16} className="text-text-secondary shrink-0" />
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="rounded-xl border border-border bg-background/50 px-3.5 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 cursor-pointer"
+                
+                <button
+                  type="button"
+                  onClick={() => setShowCategoryFilter(!showCategoryFilter)}
+                  className="flex items-center justify-between gap-3 rounded-xl border border-border bg-background/50 px-3.5 py-2.5 text-sm text-text-primary outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 hover:border-primary/40 transition-all cursor-pointer min-w-[170px]"
                 >
-                  <option value="Semua">Semua Kategori</option>
-                  {existingCategories.map((c) => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
-                </select>
+                  <span className="font-medium">{selectedCategory === "Semua" ? "Semua Kategori" : selectedCategory}</span>
+                  <ChevronDown size={14} className={`text-text-secondary transition-transform duration-200 ${showCategoryFilter ? "rotate-180" : ""}`} />
+                </button>
+
+                {/* Overlay penutup dropdown */}
+                {showCategoryFilter && (
+                  <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setShowCategoryFilter(false)} 
+                  />
+                )}
+
+                <AnimatePresence>
+                  {showCategoryFilter && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-border bg-surface p-1.5 shadow-xl z-50 flex flex-col origin-top-right max-h-60 overflow-y-auto"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => { setSelectedCategory("Semua"); setShowCategoryFilter(false); }}
+                        className={`text-left px-3 py-2 text-sm rounded-lg transition-colors ${selectedCategory === "Semua" ? "bg-primary/10 text-primary font-bold" : "text-text-secondary hover:text-text-primary hover:bg-background/80"}`}
+                      >
+                        Semua Kategori
+                      </button>
+                      {existingCategories.map((c) => (
+                        <button
+                          key={c}
+                          type="button"
+                          onClick={() => { setSelectedCategory(c); setShowCategoryFilter(false); }}
+                          className={`text-left px-3 py-2 text-sm rounded-lg transition-colors ${selectedCategory === c ? "bg-primary/10 text-primary font-bold" : "text-text-secondary hover:text-text-primary hover:bg-background/80"}`}
+                        >
+                          {c}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
 

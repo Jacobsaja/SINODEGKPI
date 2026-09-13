@@ -22,7 +22,9 @@ import {
   FileText,
   FileSpreadsheet,
   File as FileGeneric,
+  ChevronDown,
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface FolderDetail {
   id: string;
@@ -83,6 +85,7 @@ export default function ShareFolderDetailPage() {
   const [coverUrl, setCoverUrl] = useState<string | null>(null);
   const [coverUploading, setCoverUploading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showStatusSelect, setShowStatusSelect] = useState(false);
 
   const [accessSearch, setAccessSearch] = useState("");
   const [showAddAccess, setShowAddAccess] = useState(false);
@@ -455,16 +458,50 @@ export default function ShareFolderDetailPage() {
           <div className="rounded-2xl border border-border bg-surface/20 p-5 space-y-4">
             <h3 className="font-bold text-white text-sm">Status</h3>
 
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 relative">
               <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Status Terbit</label>
-              <select
-                value={folder.status}
-                onChange={(e) => updateStatus(e.target.value as "draft" | "published")}
-                className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 transition-all cursor-pointer"
+              <button
+                type="button"
+                onClick={() => setShowStatusSelect(!showStatusSelect)}
+                className="flex w-full items-center justify-between rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 hover:border-primary/40 transition-all cursor-pointer"
               >
-                <option value="draft">Draf</option>
-                <option value="published">Terbit</option>
-              </select>
+                <span className="font-medium">{folder.status === "published" ? "Terbit" : "Draf"}</span>
+                <ChevronDown size={14} className={`text-text-secondary transition-transform duration-200 ${showStatusSelect ? "rotate-180" : ""}`} />
+              </button>
+
+              {showStatusSelect && (
+                <div 
+                  className="fixed inset-0 z-40" 
+                  onClick={() => setShowStatusSelect(false)} 
+                />
+              )}
+
+              <AnimatePresence>
+                {showStatusSelect && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute left-0 top-full mt-2 w-full rounded-xl border border-border bg-surface p-1.5 shadow-xl z-50 flex flex-col origin-top"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => { updateStatus("draft"); setShowStatusSelect(false); }}
+                      className={`text-left px-3 py-2 text-sm rounded-lg transition-colors ${folder.status === "draft" ? "bg-primary/10 text-primary font-bold" : "text-text-secondary hover:text-text-primary hover:bg-background/80"}`}
+                    >
+                      Draf
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => { updateStatus("published"); setShowStatusSelect(false); }}
+                      className={`text-left px-3 py-2 text-sm rounded-lg transition-colors ${folder.status === "published" ? "bg-primary/10 text-primary font-bold" : "text-text-secondary hover:text-text-primary hover:bg-background/80"}`}
+                    >
+                      Terbit
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             <div className="flex items-center justify-between rounded-xl border border-border/80 bg-background/30 p-3.5">

@@ -16,6 +16,7 @@ import {
   Trash2,
   ChevronRight,
   FileStack,
+  ChevronDown,
 } from "lucide-react";
 
 interface FolderRow {
@@ -66,6 +67,8 @@ export default function ShareFilesListPage() {
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | "draft" | "published">("all");
+  const [showStatusFilter, setShowStatusFilter] = useState(false);
+  const [showAccessModeSelect, setShowAccessModeSelect] = useState(false);
   const [sortField, setSortField] = useState<SortField>("created_at");
   const [sortAsc, setSortAsc] = useState(false);
 
@@ -224,16 +227,71 @@ export default function ShareFilesListPage() {
                   className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 transition-all"
                 />
               </div>
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 relative">
                 <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Cara Verifikasi Akses</label>
-                <select
-                  value={form.access_mode}
-                  onChange={(e) => setForm({ ...form, access_mode: e.target.value as "email" | "code" })}
-                  className="w-full rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 transition-all cursor-pointer"
+                <button
+                  type="button"
+                  onClick={() => setShowAccessModeSelect(!showAccessModeSelect)}
+                  className="flex w-full items-center justify-between rounded-xl border border-border bg-background/50 px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 hover:border-primary/40 transition-all cursor-pointer"
                 >
-                  <option value="email">Email terdaftar</option>
-                  <option value="code">Kode registrasi</option>
-                </select>
+                  <span className="font-medium">
+                    {form.access_mode === "email" ? "Email terdaftar" : "Kode registrasi"}
+                  </span>
+                  <ChevronDown
+                    size={14}
+                    className={`text-text-secondary transition-transform duration-200 ${
+                      showAccessModeSelect ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {showAccessModeSelect && (
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setShowAccessModeSelect(false)}
+                  />
+                )}
+
+                <AnimatePresence>
+                  {showAccessModeSelect && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute left-0 top-full mt-2 w-full rounded-xl border border-border bg-surface p-1.5 shadow-xl z-50 flex flex-col origin-top"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setForm({ ...form, access_mode: "email" });
+                          setShowAccessModeSelect(false);
+                        }}
+                        className={`text-left px-3 py-2 text-sm rounded-lg transition-colors ${
+                          form.access_mode === "email"
+                            ? "bg-primary/10 text-primary font-bold"
+                            : "text-text-secondary hover:text-text-primary hover:bg-background/80"
+                        }`}
+                      >
+                        Email terdaftar
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setForm({ ...form, access_mode: "code" });
+                          setShowAccessModeSelect(false);
+                        }}
+                        className={`text-left px-3 py-2 text-sm rounded-lg transition-colors ${
+                          form.access_mode === "code"
+                            ? "bg-primary/10 text-primary font-bold"
+                            : "text-text-secondary hover:text-text-primary hover:bg-background/80"
+                        }`}
+                      >
+                        Kode registrasi
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
 
@@ -293,15 +351,86 @@ export default function ShareFilesListPage() {
             className="w-full rounded-xl border border-border bg-surface pl-11 pr-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 transition-all"
           />
         </div>
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value as "all" | "draft" | "published")}
-          className="rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 transition-all cursor-pointer"
-        >
-          <option value="all">Semua Status</option>
-          <option value="draft">Draf</option>
-          <option value="published">Terbit</option>
-        </select>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setShowStatusFilter(!showStatusFilter)}
+            className="flex items-center justify-between gap-3 rounded-xl border border-border bg-surface px-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 hover:border-primary/40 transition-all cursor-pointer min-w-[150px]"
+          >
+            <span className="font-medium">
+              {statusFilter === "all" ? "Semua Status" : statusFilter === "draft" ? "Draf" : "Terbit"}
+            </span>
+            <ChevronDown
+              size={14}
+              className={`text-text-secondary transition-transform duration-200 ${
+                showStatusFilter ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+
+          {/* Overlay penutup dropdown */}
+          {showStatusFilter && (
+            <div
+              className="fixed inset-0 z-40"
+              onClick={() => setShowStatusFilter(false)}
+            />
+          )}
+
+          <AnimatePresence>
+            {showStatusFilter && (
+              <motion.div
+                initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                transition={{ duration: 0.15 }}
+                className="absolute right-0 top-full mt-2 w-44 rounded-xl border border-border bg-surface p-1.5 shadow-xl z-50 flex flex-col origin-top-right"
+              >
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStatusFilter("all");
+                    setShowStatusFilter(false);
+                  }}
+                  className={`text-left px-3 py-2 text-sm rounded-lg transition-colors ${
+                    statusFilter === "all"
+                      ? "bg-primary/10 text-primary font-bold"
+                      : "text-text-secondary hover:text-text-primary hover:bg-background/80"
+                  }`}
+                >
+                  Semua Status
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStatusFilter("draft");
+                    setShowStatusFilter(false);
+                  }}
+                  className={`text-left px-3 py-2 text-sm rounded-lg transition-colors ${
+                    statusFilter === "draft"
+                      ? "bg-primary/10 text-primary font-bold"
+                      : "text-text-secondary hover:text-text-primary hover:bg-background/80"
+                  }`}
+                >
+                  Draf
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStatusFilter("published");
+                    setShowStatusFilter(false);
+                  }}
+                  className={`text-left px-3 py-2 text-sm rounded-lg transition-colors ${
+                    statusFilter === "published"
+                      ? "bg-primary/10 text-primary font-bold"
+                      : "text-text-secondary hover:text-text-primary hover:bg-background/80"
+                  }`}
+                >
+                  Terbit
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* Table */}

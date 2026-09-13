@@ -21,6 +21,9 @@ Format yang digunakan berbasis [Keep a Changelog](https://keepachangelog.com/en/
 - **Konfigurasi Domain Terpusat**: Modul `src/lib/site-config.ts` untuk mengelola `NEXT_PUBLIC_SITE_URL` secara dinamis dengan fallback `https://sinodegkpi.vercel.app` (dipakai di metadata layout, `sitemap.ts`, dan `robots.ts`).
 
 ### Changed (Diubah)
+- **Modern Custom Dropdown UI (Publikasi, Toko, Laporan Keuangan, Sharefiles)**:
+  - Mengganti seluruh elemen native `<select>` browser di Admin Publikasi, Admin Toko, Admin Laporan Keuangan, Laporan Keuangan Publik, serta Admin Sharefiles (Daftar & Detail Folder) dengan komponen dropdown kustom berbasis React & Framer Motion.
+  - Tampilan dropdown konsisten dengan tema desain aplikasi (glassmorphism/surface, rounded-xl, animasi halus scale/fade saat buka-tutup, indikator panah rotasi `ChevronDown`, dan *click-outside overlay*).
 - **Edge CDN Caching (ISR) di Beranda (`src/app/page.tsx`)**:
   - Menambahkan `export const revalidate = 300` agar halaman Beranda di-cache oleh Vercel Edge CDN selama 5 menit. Mencegah jeda *cold start* serverless dan menjaga FCP/TTFB tetap instan (< 50 ms) tanpa membebani Supabase.
 - **Komponen Gambar Toko & Admin**:
