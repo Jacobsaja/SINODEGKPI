@@ -224,10 +224,12 @@ export default function TokoPage() {
               >
                 {/* Image side */}
                 <div className="relative min-h-[300px] overflow-hidden md:col-span-7 md:min-h-[420px]">
-                  <img
-                    src={featuredProduct.image || undefined}
+                  <Image
+                    src={featuredProduct.image || "/hero-bg.webp"}
                     alt={featuredProduct.name}
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[6000ms] group-hover:scale-105"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 55vw"
+                    className="object-cover transition-transform duration-[6000ms] group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-background/30 md:to-background/95" />
                   <div className="absolute left-6 top-6 rounded-xl border border-border bg-surface px-3 py-1.5 text-xs font-bold text-text-primary backdrop-blur">
@@ -291,10 +293,12 @@ export default function TokoPage() {
                 >
                   {/* Card Thumbnail */}
                   <div className="relative aspect-[16/10] w-full overflow-hidden">
-                    <img
-                      src={product.image || undefined}
+                    <Image
+                      src={product.image || "/hero-bg.webp"}
                       alt={product.name}
-                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
                     <span className="absolute left-5 top-5 inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-text-primary backdrop-blur">
@@ -423,10 +427,12 @@ export default function TokoPage() {
             <div className="flex-1 flex flex-col md:flex-row overflow-hidden bg-white">
               {/* Left Panel: Image */}
               <div className="w-full h-44 sm:h-52 md:h-full md:w-[45%] flex-shrink-0 relative overflow-hidden bg-slate-50 border-b md:border-b-0 md:border-r border-border/40">
-                <img
-                  src={selectedProduct.image || undefined}
+                <Image
+                  src={selectedProduct.image || "/hero-bg.webp"}
                   alt={selectedProduct.name}
-                  className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 45vw"
+                  className="object-cover hover:scale-105 transition-transform duration-700"
                 />
               </div>
 

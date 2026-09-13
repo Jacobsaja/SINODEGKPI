@@ -23,7 +23,6 @@ import {
   User, 
   Clock, 
   Upload, 
-  Image as ImageIcon, 
   X,
   FileText,
   Sparkles,
@@ -71,9 +70,27 @@ function PublikasiAdminContent() {
   const adminDepartment = useContext(AdminDepartmentContext);
   
   const [items, setItems] = useState<Publication[]>([]);
-  const [activeTab, setActiveTab] = useState<"list" | "form">("list");
+  const tabParam = searchParams.get("tab");
+  const editParam = searchParams.get("edit");
+  const newParam = searchParams.get("action");
+
+  const [userTab, setUserTab] = useState<"list" | "form" | null>(null);
+  const activeTab = userTab ?? ((tabParam === "form" || newParam === "new" || !!editParam) ? "form" : "list");
+  const setActiveTab = (tab: "list" | "form") => setUserTab(tab);
+
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState(() => ({
+    ...emptyForm,
+    department: (adminDepartment ?? "Sinode") as PublicationDepartment,
+  }));
+  const [prevAdminDept, setPrevAdminDept] = useState(adminDepartment);
+  if (prevAdminDept !== adminDepartment) {
+    setPrevAdminDept(adminDepartment);
+    if (adminDepartment !== null) {
+      setForm((prev) => ({ ...prev, department: adminDepartment }));
+    }
+  }
+
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
@@ -87,39 +104,47 @@ function PublikasiAdminContent() {
   const [selectedCategory, setSelectedCategory] = useState<string>("Semua");
 
   useEffect(() => {
-    loadItems();
+    let ignore = false;
+    async function fetchItems() {
+      const { data, error } = await supabase
+        .from("publications")
+        .select("*")
+        .order("date", { ascending: false });
+      if (!ignore && !error) setItems(data ?? []);
+    }
+    fetchItems();
+    return () => { ignore = true; };
   }, []);
 
-  // Sync form.department ke adminDepartment ketika context tersedia dan bukan null
+  // Pantau perubahan editParam untuk deep link
   useEffect(() => {
-    if (adminDepartment !== null) {
-      setForm((prev) => ({ ...prev, department: adminDepartment }));
-    }
-  }, [adminDepartment]);
+    if (!editParam) return;
+    const id = parseInt(editParam);
+    if (isNaN(id)) return;
 
-  // Pantau perubahan searchParams untuk deep link
-  useEffect(() => {
-    const tabParam = searchParams.get("tab");
-    const editParam = searchParams.get("edit");
-    const newParam = searchParams.get("action");
-
-    if (tabParam === "form" || newParam === "new") {
-      resetForm();
-      setActiveTab("form");
-    } else if (editParam) {
-      const id = parseInt(editParam);
-      if (!isNaN(id)) {
-        // Cari item yang akan diedit
-        const itemToEdit = items.find((i) => i.id === id);
-        if (itemToEdit) {
+    let ignore = false;
+    async function fetchEditItem() {
+      const itemToEdit = items.find((i) => i.id === id);
+      if (itemToEdit) {
+        if (!ignore) {
           startEdit(itemToEdit);
-        } else {
-          // Load item secara spesifik jika data belum tersedia
-          loadSingleItemAndEdit(id);
+          setUserTab("form");
+        }
+      } else {
+        const { data, error } = await supabase
+          .from("publications")
+          .select("*")
+          .eq("id", id)
+          .single();
+        if (!ignore && !error && data) {
+          startEdit(data);
+          setUserTab("form");
         }
       }
     }
-  }, [searchParams, items]);
+    fetchEditItem();
+    return () => { ignore = true; };
+  }, [editParam, items]);
 
   async function loadItems() {
     const { data, error } = await supabase
@@ -127,18 +152,6 @@ function PublikasiAdminContent() {
       .select("*")
       .order("date", { ascending: false });
     if (!error) setItems(data ?? []);
-  }
-
-  async function loadSingleItemAndEdit(id: number) {
-    const { data, error } = await supabase
-      .from("publications")
-      .select("*")
-      .eq("id", id)
-      .single();
-    
-    if (!error && data) {
-      startEdit(data);
-    }
   }
 
   // Upload gambar ke storage Supabase

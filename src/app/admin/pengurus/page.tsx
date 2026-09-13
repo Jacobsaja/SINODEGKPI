@@ -700,7 +700,23 @@ export default function AdminPengurusPage() {
   }
 
   useEffect(() => {
-    reload();
+    let ignore = false;
+    async function init() {
+      try {
+        const data = await getAllSeksi();
+        if (!ignore) setSeksiList(data);
+      } catch (err) {
+        if (!ignore) {
+          setLoadError(err instanceof Error ? err.message : "Gagal memuat data pengurus.");
+        }
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    }
+    init();
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   function toggleExpand(id: string) {

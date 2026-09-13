@@ -28,22 +28,27 @@ export default function AdminKontakPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [filter, setFilter] = useState<"all" | "unread">("all");
 
+
   useEffect(() => {
-    fetchMessages();
-  }, []);
+    let ignore = false;
+    async function init() {
+      const { data, error } = await supabase
+        .from("contact_messages")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-  const fetchMessages = async () => {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from("contact_messages")
-      .select("*")
-      .order("created_at", { ascending: false });
-
-    if (!error && data) {
-      setMessages(data as ContactMessage[]);
+      if (!ignore) {
+        if (!error && data) {
+          setMessages(data as ContactMessage[]);
+        }
+        setLoading(false);
+      }
     }
-    setLoading(false);
-  };
+    init();
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const toggleExpand = async (msg: ContactMessage) => {
     const isOpening = expandedId !== msg.id;

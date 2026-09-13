@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { formatRupiah, type Product } from "@/lib/products";
-import { Sparkles, ShoppingBag } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
 export default function ProductCard({ product }: { product: Product }) {
   return (

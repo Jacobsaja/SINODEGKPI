@@ -7,7 +7,6 @@ import Footer from "@/components/Footer";
 import Section from "@/components/Section";
 import ScrollReveal from "@/components/ScrollReveal";
 import Link from "next/link";
-import { assets } from "@/lib/assets";
 import {
   ChevronDown,
   BookOpen,
@@ -1271,6 +1270,7 @@ export default function ProfilGKPIPage() {
                       <audio
                         ref={audioRef}
                         src="/mars_gkpi.mp3"
+                        preload="none"
                         onTimeUpdate={handleTimeUpdate}
                         onLoadedMetadata={handleAudioLoaded}
                         onEnded={handleAudioEnded}

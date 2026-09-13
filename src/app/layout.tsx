@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import { SITE_URL } from "@/lib/site-config";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -17,7 +18,7 @@ const playfairDisplay = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sinodegkpi.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "GKPI Sinode - Gereja Kristen Protestan Indonesia",
     template: "%s | GKPI Sinode",
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "GKPI Sinode - Gereja Kristen Protestan Indonesia",
     description: "Komunitas yang bertumbuh dalam iman, melayani dengan kasih, dan berdampak bagi sesama.",
-    url: "https://sinodegkpi.vercel.app",
+    url: SITE_URL,
     siteName: "GKPI Sinode",
     locale: "id_ID",
     type: "website",
@@ -46,21 +47,14 @@ export const metadata: Metadata = {
 };
 
 // JSON-LD structured data: kasih tau Google identitas resmi organisasi ini.
-// Ditaruh di root layout (bukan per-halaman) karena ini identitas GLOBAL
-// situs, bukan konten spesifik satu halaman.
-//
-// CATATAN: begitu domain final (.or.id) sudah aktif, ganti SEMUA URL
-// "https://sinodegkpi.vercel.app" di bawah (dan di metadataBase atas)
-// ke domain final. Isi juga array `sameAs` dengan link medsos resmi
-// GKPI Sinode kalau/ketika sudah ada.
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": ["Church", "Organization"],
   name: "GKPI Sinode - Gereja Kristen Protestan Indonesia",
   alternateName: "GKPI",
-  url: "https://sinodegkpi.vercel.app",
-  logo: "https://sinodegkpi.vercel.app/mitra/Logo_GKPI.webp",
-  image: "https://sinodegkpi.vercel.app/og-image.webp",
+  url: SITE_URL,
+  logo: `${SITE_URL}/mitra/Logo_GKPI.webp`,
+  image: `${SITE_URL}/og-image.webp`,
   description:
     "GKPI Sinode - Komunitas yang bertumbuh dalam iman, melayani dengan kasih, dan berdampak bagi sesama.",
   address: {
@@ -70,10 +64,7 @@ const jsonLd = {
     addressCountry: "ID",
   },
   sameAs: [
-    // Isi link medsos resmi di sini kalau/ketika sudah ada, contoh:
-    // "https://www.facebook.com/gkpisinode",
-    // "https://www.instagram.com/gkpisinode",
-    // "https://www.youtube.com/@gkpisinode",
+    // Isi link medsos resmi di sini kalau/ketika sudah ada
   ],
 };
 
@@ -88,10 +79,6 @@ export default function RootLayout({
       className={`h-full antialiased ${plusJakartaSans.variable} ${playfairDisplay.variable}`}
       data-scroll-behavior="smooth"
     >
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      </head>
       <body className="min-h-full flex flex-col selection:bg-primary/20 selection:text-primary-dark font-sans">
         <script
           type="application/ld+json"

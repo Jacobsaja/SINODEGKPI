@@ -17,21 +17,23 @@ export default function AdminJemaatPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
-  async function loadChurches() {
-    setLoading(true);
-    setLoadError(null);
-    try {
-      const data = await getAllJemaat();
-      setChurches(data);
-    } catch {
-      setLoadError("Gagal memuat data jemaat. Coba muat ulang halaman.");
-    } finally {
-      setLoading(false);
-    }
-  }
 
   useEffect(() => {
-    loadChurches();
+    let ignore = false;
+    async function init() {
+      try {
+        const data = await getAllJemaat();
+        if (!ignore) setChurches(data);
+      } catch {
+        if (!ignore) setLoadError("Gagal memuat data jemaat. Coba muat ulang halaman.");
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    }
+    init();
+    return () => {
+      ignore = true;
+    };
   }, []);
 
   const filtered = useMemo(() => {

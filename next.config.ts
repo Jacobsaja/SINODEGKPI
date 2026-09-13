@@ -3,12 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   devIndicators: false,
   images: {
+    // unoptimized: true digunakan untuk memastikan penggunaan Vercel Free Tier tetap 0 transform
     unoptimized: true,
-    minimumCacheTTL: 31536000,
-    deviceSizes: [640, 1080, 1920],
-    imageSizes: [64, 128, 256],
-    qualities: [75, 90],
-    formats: ["image/webp"],
     remotePatterns: [
       {
         protocol: "https",

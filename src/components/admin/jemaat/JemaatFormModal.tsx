@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { X, Upload, Plus, Loader2, MapPin } from "lucide-react";
 import Image from "next/image";
 import {
@@ -36,39 +36,46 @@ const emptyForm = {
 export default function JemaatFormModal({ jemaat, onClose, onSaved }: JemaatFormModalProps) {
   const isEditing = jemaat !== null;
 
-  const [form, setForm] = useState(emptyForm);
-  const [jadwal, setJadwal] = useState<string[]>([]);
+  const [prevJemaat, setPrevJemaat] = useState(jemaat);
+  const [form, setForm] = useState(() => (jemaat ? {
+    nama: jemaat.nama,
+    pendeta: jemaat.pendeta,
+    alamat: jemaat.alamat,
+    telepon: jemaat.telepon ?? "",
+    kota: jemaat.kota,
+    provinsi: jemaat.provinsi,
+    lat: String(jemaat.lat),
+    lng: String(jemaat.lng),
+    resort_id: jemaat.resort_id ?? "",
+    wilayah_id: jemaat.wilayah_id ?? "",
+  } : emptyForm));
+  const [jadwal, setJadwal] = useState<string[]>(() => jemaat?.jadwal_ibadah ?? []);
   const [jadwalInput, setJadwalInput] = useState("");
   const [photoFile, setPhotoFile] = useState<File | null>(null);
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(() => jemaat?.foto || null);
   const [compressing, setCompressing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (jemaat) {
-      setForm({
-        nama: jemaat.nama,
-        pendeta: jemaat.pendeta,
-        alamat: jemaat.alamat,
-        telepon: jemaat.telepon ?? "",
-        kota: jemaat.kota,
-        provinsi: jemaat.provinsi,
-        lat: String(jemaat.lat),
-        lng: String(jemaat.lng),
-        resort_id: jemaat.resort_id ?? "",
-        wilayah_id: jemaat.wilayah_id ?? "",
-      });
-      setJadwal(jemaat.jadwal_ibadah ?? []);
-      setPhotoPreview(jemaat.foto || null);
-    } else {
-      setForm(emptyForm);
-      setJadwal([]);
-      setPhotoPreview(null);
-    }
+  if (prevJemaat !== jemaat) {
+    setPrevJemaat(jemaat);
+    setForm(jemaat ? {
+      nama: jemaat.nama,
+      pendeta: jemaat.pendeta,
+      alamat: jemaat.alamat,
+      telepon: jemaat.telepon ?? "",
+      kota: jemaat.kota,
+      provinsi: jemaat.provinsi,
+      lat: String(jemaat.lat),
+      lng: String(jemaat.lng),
+      resort_id: jemaat.resort_id ?? "",
+      wilayah_id: jemaat.wilayah_id ?? "",
+    } : emptyForm);
+    setJadwal(jemaat?.jadwal_ibadah ?? []);
+    setPhotoPreview(jemaat?.foto || null);
     setPhotoFile(null);
     setError(null);
-  }, [jemaat]);
+  }
 
   function updateField<K extends keyof typeof form>(key: K, value: string) {
     setForm((f) => ({ ...f, [key]: value }));

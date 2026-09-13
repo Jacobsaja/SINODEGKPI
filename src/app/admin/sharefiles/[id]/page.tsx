@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { detectFileType } from "@/lib/sharefile-types";
@@ -22,7 +22,6 @@ import {
   FileText,
   FileSpreadsheet,
   File as FileGeneric,
-  X,
 } from "lucide-react";
 
 interface FolderDetail {
@@ -75,7 +74,6 @@ function iconFor(type: string | null) {
 
 export default function ShareFolderDetailPage() {
   const params = useParams<{ id: string }>();
-  const router = useRouter();
   const folderId = params.id;
 
   const [folder, setFolder] = useState<FolderDetail | null>(null);
@@ -96,8 +94,8 @@ export default function ShareFolderDetailPage() {
   const [editValue, setEditValue] = useState("");
   const [uploadingFileId, setUploadingFileId] = useState<string | null>(null);
 
-  const loadAll = useCallback(async () => {
-    setLoading(true);
+  const loadAll = useCallback(async (showLoading = false) => {
+    if (showLoading) setLoading(true);
     const [{ data: f }, { data: fl }, { data: ac }] = await Promise.all([
       supabase.from("share_folders").select("*").eq("id", folderId).maybeSingle(),
       supabase.from("share_folder_files").select("*").eq("folder_id", folderId).order("sort_order", { ascending: true }),
@@ -119,8 +117,33 @@ export default function ShareFolderDetailPage() {
   }, [folderId]);
 
   useEffect(() => {
-    loadAll();
-  }, [loadAll]);
+    let ignore = false;
+    async function init() {
+      const [{ data: f }, { data: fl }, { data: ac }] = await Promise.all([
+        supabase.from("share_folders").select("*").eq("id", folderId).maybeSingle(),
+        supabase.from("share_folder_files").select("*").eq("folder_id", folderId).order("sort_order", { ascending: true }),
+        supabase.from("share_folder_access").select("*").eq("folder_id", folderId).order("created_at", { ascending: false }),
+      ]);
+      if (ignore) return;
+      setFolder(f as FolderDetail);
+      setFiles((fl as FileRow[]) ?? []);
+      setAccessList((ac as AccessRow[]) ?? []);
+
+      if (f?.cover_image_path) {
+        const { data: signed } = await supabase.storage
+          .from("sharefiles")
+          .createSignedUrl(f.cover_image_path, 3600);
+        if (!ignore) setCoverUrl(signed?.signedUrl ?? null);
+      } else {
+        if (!ignore) setCoverUrl(null);
+      }
+      if (!ignore) setLoading(false);
+    }
+    init();
+    return () => {
+      ignore = true;
+    };
+  }, [folderId]);
 
   async function touch(action: string) {
     await supabase

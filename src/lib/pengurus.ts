@@ -174,8 +174,9 @@ export async function getAllSeksi(): Promise<PengurusSeksi[]> {
     }
 
     return seksiList;
-  } catch (error: any) {
-    console.error("Gagal mengambil data pengurus:", error?.message || error);
+  } catch (error) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error("Gagal mengambil data pengurus:", msg);
     return [];
   }
 }

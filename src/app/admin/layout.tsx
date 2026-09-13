@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import AdminSidebar from "@/components/admin/AdminSidebar";
@@ -117,9 +118,11 @@ export default function AdminLayout({
           <div className="text-center space-y-2">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-primary to-primary p-0.5 shadow-sm shadow-primary/20">
               <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-[14px] bg-background">
-                <img
+                <Image
                   src="/mitra/Logo_GKPI.webp"
                   alt="Logo GKPI"
+                  width={56}
+                  height={56}
                   className="h-full w-full object-contain p-1"
                 />
               </div>

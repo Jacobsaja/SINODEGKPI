@@ -119,10 +119,6 @@ export default function Hero() {
                       sizes="(max-width: 768px) 100vw, 100vw"
                       className="object-cover opacity-80"
                       priority={index === 0}
-                      loading={index === 0 ? "eager" : "lazy"}
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).srcset = assets.heroBg;
-                      }}
                     />
                   )}
                 </div>

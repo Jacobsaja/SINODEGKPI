@@ -1,9 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 import { Bookmark } from "lucide-react";
 
 const BOOKMARKS_STORAGE_KEY = "gkpi_bookmarked_ids";
+
+let listeners: Array<() => void> = [];
+
+function emitChange() {
+  for (const listener of listeners) {
+    listener();
+  }
+}
+
+function subscribe(callback: () => void) {
+  listeners.push(callback);
+  window.addEventListener("storage", callback);
+  return () => {
+    listeners = listeners.filter((l) => l !== callback);
+    window.removeEventListener("storage", callback);
+  };
+}
 
 export function getBookmarkedIds(): number[] {
   if (typeof window === "undefined") return [];
@@ -24,6 +41,7 @@ export function toggleBookmarkId(id: number): boolean {
   
   try {
     localStorage.setItem(BOOKMARKS_STORAGE_KEY, JSON.stringify(updated));
+    emitChange();
   } catch {
     // Ignore storage errors
   }
@@ -31,18 +49,20 @@ export function toggleBookmarkId(id: number): boolean {
 }
 
 export default function BookmarkButton({ id }: { id: number }) {
-  const [isBookmarked, setIsBookmarked] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
-  useEffect(() => {
-    setMounted(true);
-    const bookmarked = getBookmarkedIds().includes(id);
-    setIsBookmarked(bookmarked);
-  }, [id]);
+  const isBookmarked = useSyncExternalStore(
+    subscribe,
+    () => getBookmarkedIds().includes(id),
+    () => false
+  );
 
   const handleToggle = () => {
-    const newState = toggleBookmarkId(id);
-    setIsBookmarked(newState);
+    toggleBookmarkId(id);
   };
 
   if (!mounted) return null;

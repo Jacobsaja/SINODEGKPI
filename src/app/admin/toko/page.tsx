@@ -16,7 +16,6 @@ import {
   Tag,
   DollarSign,
   Upload,
-  Image as ImageIcon,
   X,
   Sparkles,
   ArrowLeft,
@@ -29,9 +28,9 @@ const emptyForm = {
   name: "",
   description: "",
   price: 0,
-  category: "",
+  category: "Buku",
   image: "",
-  tokopedia_url: "https://www.tokopedia.com/",
+  tokopedia_url: "https://tokopedia.com/",
   shopee_url: "https://shopee.co.id/",
   is_featured: false,
 };
@@ -41,7 +40,14 @@ function TokoAdminContent() {
   const router = useRouter();
 
   const [items, setItems] = useState<Product[]>([]);
-  const [activeTab, setActiveTab] = useState<"list" | "form">("list");
+  const tabParam = searchParams.get("tab");
+  const editParam = searchParams.get("edit");
+  const newParam = searchParams.get("action");
+
+  const [userTab, setUserTab] = useState<"list" | "form" | null>(null);
+  const activeTab = userTab ?? ((tabParam === "form" || newParam === "new" || !!editParam) ? "form" : "list");
+  const setActiveTab = (tab: "list" | "form") => setUserTab(tab);
+
   const [editingId, setEditingId] = useState<number | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
@@ -53,30 +59,67 @@ function TokoAdminContent() {
   const [selectedCategory, setSelectedCategory] = useState<string>("Semua");
 
   useEffect(() => {
-    loadItems();
+    let ignore = false;
+    async function fetchItems() {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .order("created_at", { ascending: false });
+      if (!ignore && !error) setItems(data ?? []);
+    }
+    fetchItems();
+    return () => { ignore = true; };
   }, []);
 
-  // Pantau perubahan searchParams untuk deep link
+  // Pantau perubahan editParam untuk deep link
   useEffect(() => {
-    const tabParam = searchParams.get("tab");
-    const editParam = searchParams.get("edit");
-    const newParam = searchParams.get("action");
+    if (!editParam) return;
+    const id = parseInt(editParam);
+    if (isNaN(id)) return;
 
-    if (tabParam === "form" || newParam === "new") {
-      resetForm();
-      setActiveTab("form");
-    } else if (editParam) {
-      const id = parseInt(editParam);
-      if (!isNaN(id)) {
-        const itemToEdit = items.find((i) => i.id === id);
-        if (itemToEdit) {
-          startEdit(itemToEdit);
-        } else {
-          loadSingleItemAndEdit(id);
+    let ignore = false;
+    async function fetchEditItem() {
+      const itemToEdit = items.find((i) => i.id === id);
+      if (itemToEdit) {
+        if (!ignore) {
+          setEditingId(itemToEdit.id);
+          setForm({
+            name: itemToEdit.name,
+            description: itemToEdit.description,
+            price: itemToEdit.price,
+            category: itemToEdit.category,
+            image: itemToEdit.image,
+            tokopedia_url: itemToEdit.tokopedia_url,
+            shopee_url: itemToEdit.shopee_url,
+            is_featured: itemToEdit.is_featured,
+          });
+          setUserTab("form");
+        }
+      } else {
+        const { data, error } = await supabase
+          .from("products")
+          .select("*")
+          .eq("id", id)
+          .single();
+        if (!ignore && !error && data) {
+          setEditingId(data.id);
+          setForm({
+            name: data.name,
+            description: data.description,
+            price: data.price,
+            category: data.category,
+            image: data.image,
+            tokopedia_url: data.tokopedia_url,
+            shopee_url: data.shopee_url,
+            is_featured: data.is_featured,
+          });
+          setUserTab("form");
         }
       }
     }
-  }, [searchParams, items]);
+    fetchEditItem();
+    return () => { ignore = true; };
+  }, [editParam, items]);
 
   async function loadItems() {
     const { data, error } = await supabase
@@ -84,18 +127,6 @@ function TokoAdminContent() {
       .select("*")
       .order("created_at", { ascending: false });
     if (!error) setItems(data ?? []);
-  }
-
-  async function loadSingleItemAndEdit(id: number) {
-    const { data, error } = await supabase
-      .from("products")
-      .select("*")
-      .eq("id", id)
-      .single();
-    
-    if (!error && data) {
-      startEdit(data);
-    }
   }
 
   // Tampilkan kategori yang sudah ada sebagai saran

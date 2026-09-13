@@ -6,15 +6,34 @@ Format yang digunakan berbasis [Keep a Changelog](https://keepachangelog.com/en/
 
 ---
 
-## [Unreleased]
-
-Bagian ini untuk mencatat fitur yang sedang dalam tahap pengembangan atau perubahan kecil sebelum dirilis ke versi stabil berikutnya.
+## [Unreleased] - September 2026
 
 ### Added (Ditambahkan)
-- *Belum ada fitur baru yang sedang ditambahkan.*
+- **Security Headers di `src/proxy.ts`**:
+  - `X-Content-Type-Options: nosniff` (mencegah browser mengeksekusi file upload sebagai script MIME lain).
+  - `Referrer-Policy: strict-origin-when-cross-origin` (melindungi kerahasiaan URL rute saat pengunjung membuka tautan luar).
+  - `X-Frame-Options: DENY` (mencegah web GKPI di-embed ke dalam iframe jahat/clickjacking).
+- **Vercel Analytics CSP**: Mengizinkan endpoint `https://vitals.vercel-insights.com` pada `connect-src` di `src/proxy.ts` agar data web vitals tercatat akurat.
+- **Konfigurasi Domain Terpusat**: Modul `src/lib/site-config.ts` untuk mengelola `NEXT_PUBLIC_SITE_URL` secara dinamis dengan fallback `https://sinodegkpi.vercel.app` (dipakai di metadata layout, `sitemap.ts`, dan `robots.ts`).
+
+### Changed (Diubah)
+- **Komponen Gambar Toko & Admin**:
+  - Migrasi seluruh tag HTML `<img>` di `src/app/toko/page.tsx` dan logo `src/app/admin/layout.tsx` menjadi Next.js `<Image />` dengan atribut `sizes`, `fill`, dan `loading="lazy"`.
+- **Hero Image LCP Optimization**:
+  - Menghapus atribut `loading` yang berkonflik dengan `priority` di `src/components/Hero.tsx` untuk menghilangkan warning LCP di Next.js.
+- **Mars GKPI Audio Bandwidth Optimization**:
+  - Menambahkan `preload="none"` pada elemen `<audio>` di `src/app/profil-gkpi/page.tsx` untuk menghemat kuota data seluler pengunjung dan bandwidth hosting (2.75 MB hanya dimuat saat tombol Play ditekan).
+- **Konfigurasi `next.config.ts`**:
+  - Merapikan opsi `images` dengan `unoptimized: true` (memastikan pemakaian Vercel Image Optimization 0 kuota / 100% aman free tier) serta membersihkan properti yang tidak terpakai.
+- **Refactor React 19 & ESLint Clean-up**:
+  - Mengubah `BookmarkButton.tsx` menggunakan `useSyncExternalStore` untuk sinkronisasi `localStorage` tanpa re-render berantai.
+  - Memperbaiki sinkronisasi tab admin (`toko`, `publikasi`, `laporan-keuangan`) berbasis query param `useSearchParams` tanpa `setState` sinkron di dalam `useEffect`.
+  - Mengamankan data fetch async dengan `ignore` flag di `admin/jemaat`, `admin/pengurus`, `admin/kontak`, dan `admin/sharefiles`.
+  - Menghapus import dan ikon yang tidak terpakai di berbagai komponen.
 
 ### Fixed (Diperbaiki)
-- *Belum ada bug yang diperbaiki di tahap unreleased.*
+- **Aset 404 (Missing Asset)**: Mengarahkan `heroPublikasi` yang hilang ke `/hero-bg.webp` pada `src/lib/assets.ts` sehingga halaman pengurus dan mitra tidak lagi menghasilkan error 404.
+- **React Immobility / Safe Download**: Menghindari mutasi langsung `window.location.href` di `src/app/gkpi/sharefile/[slug]/page.tsx` dengan trigger download via anchor elemen dinamis.
 
 ---
 

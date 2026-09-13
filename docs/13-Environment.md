@@ -30,6 +30,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 | `NEXT_PUBLIC_SUPABASE_URL` | Browser & Server | URL endpoint REST API Supabase. Semua route client menggunakannya via file `src/lib/supabase.ts`. |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Browser & Server | Kunci anonim (public) Supabase. Digunakan oleh browser untuk read operasi dengan pengamanan RLS. |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server Saja | Kunci "bypass RLS" dengan akses penuh ke Supabase. Hanya digunakan di Next.js API Routes (`/api/sharefile/*`). |
+| `NEXT_PUBLIC_SITE_URL` *(Opsional)* | Browser & Server | Domain canonical website untuk metadata SEO, sitemap, dan OpenGraph (default: `https://sinodegkpi.vercel.app`). |
 
 > ⚠️ **Peringatan Keamanan**: Variabel yang dimulai dengan `NEXT_PUBLIC_` disertakan ke dalam bundel JavaScript yang dikirim ke browser. **JANGAN PERNAH** menambahkan awalan `NEXT_PUBLIC_` pada `SUPABASE_SERVICE_ROLE_KEY`.
 

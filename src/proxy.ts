@@ -16,7 +16,7 @@ export function proxy(request: NextRequest) {
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data: https:;
     font-src 'self' data:;
-    connect-src 'self' ${supabaseOrigin} ${supabaseWs};
+    connect-src 'self' ${supabaseOrigin} ${supabaseWs} https://vitals.vercel-insights.com;
     object-src 'none';
     base-uri 'self';
     form-action 'self';
@@ -34,6 +34,11 @@ export function proxy(request: NextRequest) {
     "Content-Security-Policy",
     contentSecurityPolicyHeaderValue
   );
+
+  // Standard Security Headers (MIME sniffing, Referrer privacy, Clickjacking)
+  response.headers.set("X-Content-Type-Options", "nosniff");
+  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  response.headers.set("X-Frame-Options", "DENY");
 
   // Hardened Browser API Permissions Policy (Defense in depth)
   response.headers.set(

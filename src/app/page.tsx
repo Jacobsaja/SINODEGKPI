@@ -19,7 +19,6 @@ import {
   Phone,
   Globe,
   CheckCircle2,
-  Calendar,
   BookOpen,
   Bell,
   Newspaper,

@@ -57,7 +57,14 @@ function LaporanKeuanganAdminContent() {
   const router = useRouter();
 
   const [items, setItems] = useState<FinancialReport[]>([]);
-  const [activeTab, setActiveTab] = useState<"list" | "form">("list");
+  const tabParam = searchParams.get("tab");
+  const editParam = searchParams.get("edit");
+  const newParam = searchParams.get("action");
+
+  const [userTab, setUserTab] = useState<"list" | "form" | null>(null);
+  const activeTab = userTab ?? ((tabParam === "form" || newParam === "new" || !!editParam) ? "form" : "list");
+  const setActiveTab = (tab: "list" | "form") => setUserTab(tab);
+
   const [editingId, setEditingId] = useState<number | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
@@ -69,40 +76,45 @@ function LaporanKeuanganAdminContent() {
   const [selectedYear, setSelectedYear] = useState<number | "Semua">("Semua");
 
   useEffect(() => {
-    loadItems();
+    let ignore = false;
+    async function fetchReports() {
+      const data = await getAllFinancialReportsAdmin();
+      if (!ignore) setItems(data);
+    }
+    fetchReports();
+    return () => { ignore = true; };
   }, []);
 
   useEffect(() => {
-    const tabParam = searchParams.get("tab");
-    const editParam = searchParams.get("edit");
-    const newParam = searchParams.get("action");
+    if (!editParam) return;
+    const id = parseInt(editParam);
+    if (isNaN(id)) return;
 
-    if (tabParam === "form" || newParam === "new") {
-      resetForm();
-      setActiveTab("form");
-    } else if (editParam) {
-      const id = parseInt(editParam);
-      if (!isNaN(id)) {
-        const itemToEdit = items.find((i) => i.id === id);
-        if (itemToEdit) {
+    let ignore = false;
+    async function fetchEditReport() {
+      const itemToEdit = items.find((i) => i.id === id);
+      if (itemToEdit) {
+        if (!ignore) {
           startEdit(itemToEdit);
-        } else {
-          loadSingleItemAndEdit(id);
+          setUserTab("form");
+        }
+      } else {
+        const item = await getFinancialReportById(id);
+        if (!ignore && item) {
+          startEdit(item);
+          setUserTab("form");
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, items]);
+    fetchEditReport();
+    return () => { ignore = true; };
+  }, [editParam, items]);
 
   async function loadItems() {
     const data = await getAllFinancialReportsAdmin();
     setItems(data);
   }
 
-  async function loadSingleItemAndEdit(id: number) {
-    const data = await getFinancialReportById(id);
-    if (data) startEdit(data);
-  }
 
   const availableYears = useMemo(() => getAvailableYears(items), [items]);
 
