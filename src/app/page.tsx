@@ -56,6 +56,8 @@ export const metadata: Metadata = {
   description: "GKPI (Gereja Kristen Protestan Indonesia) — berdiri sejak 1964 di Pematangsiantar. Bertumbuh dalam iman, melayani dengan kasih.",
 };
 
+export const revalidate = 300; // Cache Edge CDN 5 menit (ISR) untuk mencegah cold-start TTFB
+
 export default async function Home() {
   const latestPublications = await getLatestPublications(3);
   const publications = latestPublications.map((item) => ({

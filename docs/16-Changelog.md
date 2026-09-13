@@ -21,6 +21,8 @@ Format yang digunakan berbasis [Keep a Changelog](https://keepachangelog.com/en/
 - **Konfigurasi Domain Terpusat**: Modul `src/lib/site-config.ts` untuk mengelola `NEXT_PUBLIC_SITE_URL` secara dinamis dengan fallback `https://sinodegkpi.vercel.app` (dipakai di metadata layout, `sitemap.ts`, dan `robots.ts`).
 
 ### Changed (Diubah)
+- **Edge CDN Caching (ISR) di Beranda (`src/app/page.tsx`)**:
+  - Menambahkan `export const revalidate = 300` agar halaman Beranda di-cache oleh Vercel Edge CDN selama 5 menit. Mencegah jeda *cold start* serverless dan menjaga FCP/TTFB tetap instan (< 50 ms) tanpa membebani Supabase.
 - **Komponen Gambar Toko & Admin**:
   - Migrasi seluruh tag HTML `<img>` di `src/app/toko/page.tsx` dan logo `src/app/admin/layout.tsx` menjadi Next.js `<Image />` dengan atribut `sizes`, `fill`, dan `loading="lazy"`.
 - **Hero Image LCP & Bandwidth Optimization**:
