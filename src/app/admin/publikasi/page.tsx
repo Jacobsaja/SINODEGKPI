@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useContext, Suspense } from "react";
+import { useEffect, useState, useCallback, useContext, Suspense } from "react";
 import { AdminDepartmentContext } from "@/app/admin/layout";
 import { supabase } from "@/lib/supabase";
 import { compressBeforeUpload } from "@/lib/image-compress";
@@ -116,6 +116,26 @@ function PublikasiAdminContent() {
     return () => { ignore = true; };
   }, []);
 
+  const startEdit = useCallback((item: Publication) => {
+    setEditingId(item.id);
+    setForm({
+      title: item.title,
+      excerpt: item.excerpt,
+      content: item.content,
+      category: item.category,
+      department: adminDepartment ?? item.department ?? "Sinode",
+      date: item.date,
+      author: item.author,
+      image: item.image,
+      images: item.images ?? [],
+      documents: item.documents ?? [],
+      read_time: item.read_time,
+      views: item.views,
+      is_featured: item.is_featured,
+    });
+    setUserTab("form");
+  }, [adminDepartment]);
+
   // Pantau perubahan editParam untuk deep link
   useEffect(() => {
     if (!editParam) return;
@@ -144,7 +164,7 @@ function PublikasiAdminContent() {
     }
     fetchEditItem();
     return () => { ignore = true; };
-  }, [editParam, items]);
+  }, [editParam, items, startEdit]);
 
   async function loadItems() {
     const { data, error } = await supabase
@@ -167,24 +187,31 @@ function PublikasiAdminContent() {
     setUploadError("");
     setUploading(true);
 
-    const compressed = await compressBeforeUpload(file, "publikasi");
+    try {
+      const compressed = await compressBeforeUpload(file, "publikasi");
 
-    // Selalu .webp karena compressBeforeUpload konversi ke image/webp
-    const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.webp`;
+      // Selalu .webp karena compressBeforeUpload konversi ke image/webp
+      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.webp`;
 
-    const { error } = await supabase.storage
-      .from("publications")
-      .upload(fileName, compressed, { upsert: false });
+      const { error } = await supabase.storage
+        .from("publications")
+        .upload(fileName, compressed, { upsert: false });
 
-    if (error) {
-      setUploadError("Gagal upload gambar: " + error.message);
+      if (error) {
+        setUploadError("Gagal upload gambar: " + error.message);
+        setUploading(false);
+        return;
+      }
+
+      const { data } = supabase.storage.from("publications").getPublicUrl(fileName);
+      setForm((prev) => ({ ...prev, image: data.publicUrl }));
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Gagal mengupload gambar.";
+      setUploadError(msg);
+    } finally {
       setUploading(false);
-      return;
+      e.target.value = "";
     }
-
-    const { data } = supabase.storage.from("publications").getPublicUrl(fileName);
-    setForm((prev) => ({ ...prev, image: data.publicUrl }));
-    setUploading(false);
   }
 
   // Upload galeri gambar tambahan (bisa pilih beberapa sekaligus, otomatis dikompres)
@@ -203,8 +230,9 @@ function PublikasiAdminContent() {
     try {
       const urls = await uploadPublikasiImages(files);
       setForm((prev) => ({ ...prev, images: [...prev.images, ...urls] }));
-    } catch (err) {
-      setGalleryError(err instanceof Error ? err.message : "Gagal upload galeri.");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Gagal mengupload galeri.";
+      setGalleryError(msg);
     } finally {
       setUploadingGallery(false);
       e.target.value = "";
@@ -234,8 +262,9 @@ function PublikasiAdminContent() {
     try {
       const docs = await uploadPublikasiDocuments(files);
       setForm((prev) => ({ ...prev, documents: [...prev.documents, ...docs] }));
-    } catch (err) {
-      setDocError(err instanceof Error ? err.message : "Gagal upload dokumen.");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Gagal mengupload dokumen.";
+      setDocError(msg);
     } finally {
       setUploadingDocs(false);
       e.target.value = "";
@@ -247,26 +276,6 @@ function PublikasiAdminContent() {
       ...prev,
       documents: prev.documents.filter((_, i) => i !== index),
     }));
-  }
-
-  function startEdit(item: Publication) {
-    setEditingId(item.id);
-    setForm({
-      title: item.title,
-      excerpt: item.excerpt,
-      content: item.content,
-      category: item.category,
-      department: adminDepartment ?? item.department ?? "Sinode",
-      date: item.date,
-      author: item.author,
-      image: item.image,
-      images: item.images ?? [],
-      documents: item.documents ?? [],
-      read_time: item.read_time,
-      views: item.views,
-      is_featured: item.is_featured,
-    });
-    setActiveTab("form");
   }
 
   function resetForm() {

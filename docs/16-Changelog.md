@@ -14,6 +14,10 @@ Format yang digunakan berbasis [Keep a Changelog](https://keepachangelog.com/en/
   - `Referrer-Policy: strict-origin-when-cross-origin` (melindungi kerahasiaan URL rute saat pengunjung membuka tautan luar).
   - `X-Frame-Options: DENY` (mencegah web GKPI di-embed ke dalam iframe jahat/clickjacking).
 - **Vercel Analytics CSP**: Mengizinkan endpoint `https://vitals.vercel-insights.com` pada `connect-src` di `src/proxy.ts` agar data web vitals tercatat akurat.
+- **Dynamic Sitemap (`src/app/sitemap.ts`)**:
+  - Mengubah generasi `sitemap.xml` menjadi dinamis (*async*) dengan mengambil data artikel publikasi dari Supabase secara otomatis (hingga 500 artikel terbaru) beserta tanggal modifikasi `lastModified`.
+  - Mendaftarkan rute departemen (`/publikasi/departemen/diakonat`, `/apostolat`, `/pastorat`) ke dalam sitemap untuk pengindeksan Google.
+  - Dilengkapi *graceful error handling* jika koneksi database gagal, sitemap tetap menyajikan rute statis tanpa merusak build.
 - **Konfigurasi Domain Terpusat**: Modul `src/lib/site-config.ts` untuk mengelola `NEXT_PUBLIC_SITE_URL` secara dinamis dengan fallback `https://sinodegkpi.vercel.app` (dipakai di metadata layout, `sitemap.ts`, dan `robots.ts`).
 
 ### Changed (Diubah)
@@ -25,9 +29,10 @@ Format yang digunakan berbasis [Keep a Changelog](https://keepachangelog.com/en/
   - Menambahkan `preload="none"` pada elemen `<audio>` di `src/app/profil-gkpi/page.tsx` untuk menghemat kuota data seluler pengunjung dan bandwidth hosting (2.75 MB hanya dimuat saat tombol Play ditekan).
 - **Konfigurasi `next.config.ts`**:
   - Merapikan opsi `images` dengan `unoptimized: true` (memastikan pemakaian Vercel Image Optimization 0 kuota / 100% aman free tier) serta membersihkan properti yang tidak terpakai.
-- **Refactor React 19 & ESLint Clean-up**:
+- **Refactor React 19 & ESLint Clean-up (0 Errors, 0 Warnings)**:
   - Mengubah `BookmarkButton.tsx` menggunakan `useSyncExternalStore` untuk sinkronisasi `localStorage` tanpa re-render berantai.
   - Memperbaiki sinkronisasi tab admin (`toko`, `publikasi`, `laporan-keuangan`) berbasis query param `useSearchParams` tanpa `setState` sinkron di dalam `useEffect`.
+  - Mengamankan fungsi `startEdit` dengan `useCallback` di `admin/publikasi` dan `admin/laporan-keuangan` untuk menghilangkan seluruh peringatan `react-hooks/exhaustive-deps`.
   - Mengamankan data fetch async dengan `ignore` flag di `admin/jemaat`, `admin/pengurus`, `admin/kontak`, dan `admin/sharefiles`.
   - Menghapus import dan ikon yang tidak terpakai di berbagai komponen.
 

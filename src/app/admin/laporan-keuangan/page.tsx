@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, Suspense } from "react";
+import { useEffect, useMemo, useState, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import type { FinancialReport } from "@/lib/types";
@@ -85,6 +85,22 @@ function LaporanKeuanganAdminContent() {
     return () => { ignore = true; };
   }, []);
 
+  const startEdit = useCallback((item: FinancialReport) => {
+    setEditingId(item.id);
+    setForm({
+      month: item.month,
+      year: item.year,
+      name: item.name,
+      description: item.description ?? "",
+      file_url: item.file_url,
+      file_path: item.file_path,
+      file_name: item.file_name,
+      file_size: item.file_size ?? 0,
+      status: item.status,
+    });
+    setUserTab("form");
+  }, []);
+
   useEffect(() => {
     if (!editParam) return;
     const id = parseInt(editParam);
@@ -108,7 +124,7 @@ function LaporanKeuanganAdminContent() {
     }
     fetchEditReport();
     return () => { ignore = true; };
-  }, [editParam, items]);
+  }, [editParam, items, startEdit]);
 
   async function loadItems() {
     const data = await getAllFinancialReportsAdmin();
@@ -142,22 +158,6 @@ function LaporanKeuanganAdminContent() {
     } finally {
       setUploading(false);
     }
-  }
-
-  function startEdit(item: FinancialReport) {
-    setEditingId(item.id);
-    setForm({
-      month: item.month,
-      year: item.year,
-      name: item.name,
-      description: item.description ?? "",
-      file_url: item.file_url,
-      file_path: item.file_path,
-      file_name: item.file_name,
-      file_size: item.file_size ?? 0,
-      status: item.status,
-    });
-    setActiveTab("form");
   }
 
   function resetForm() {
