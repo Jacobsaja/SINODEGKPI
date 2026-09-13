@@ -23,8 +23,9 @@ Format yang digunakan berbasis [Keep a Changelog](https://keepachangelog.com/en/
 ### Changed (Diubah)
 - **Komponen Gambar Toko & Admin**:
   - Migrasi seluruh tag HTML `<img>` di `src/app/toko/page.tsx` dan logo `src/app/admin/layout.tsx` menjadi Next.js `<Image />` dengan atribut `sizes`, `fill`, dan `loading="lazy"`.
-- **Hero Image LCP Optimization**:
+- **Hero Image LCP & Bandwidth Optimization**:
   - Menghapus atribut `loading` yang berkonflik dengan `priority` di `src/components/Hero.tsx` untuk menghilangkan warning LCP di Next.js.
+  - Menunda preloading slide ke-2 selama 2,5 detik di `Hero.tsx` agar 100% bandwidth awal difokuskan hanya untuk memuat slide pertama (LCP), tanpa menggunakan kuota Vercel Image Optimization sama sekali (`unoptimized: true` tetap terjaga).
 - **Mars GKPI Audio Bandwidth Optimization**:
   - Menambahkan `preload="none"` pada elemen `<audio>` di `src/app/profil-gkpi/page.tsx` untuk menghemat kuota data seluler pengunjung dan bandwidth hosting (2.75 MB hanya dimuat saat tombol Play ditekan).
 - **Konfigurasi `next.config.ts`**:

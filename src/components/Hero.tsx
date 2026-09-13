@@ -80,12 +80,22 @@ const slides = [
 
 export default function Hero() {
   const [current, setCurrent] = useState(0);
+  const [canPreloadNext, setCanPreloadNext] = useState(false);
 
   useEffect(() => {
+    // Tunda preloading slide berikutnya 2.5 detik agar seluruh bandwidth awal fokus ke slide 1 (LCP)
+    const preloadTimer = setTimeout(() => {
+      setCanPreloadNext(true);
+    }, 2500);
+
     const timer = setInterval(() => {
       setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
     }, 10000);
-    return () => clearInterval(timer);
+
+    return () => {
+      clearTimeout(preloadTimer);
+      clearInterval(timer);
+    };
   }, []);
 
   return (
@@ -94,8 +104,9 @@ export default function Hero() {
       <div className="absolute inset-0 flex items-center justify-center">
         {slides.map((slide, index) => {
           const isActive = index === current;
-          // Only load background image for initial slide, active slide, or next slide
-          const shouldLoadImage = index === 0 || isActive || index === (current + 1) % slides.length;
+          // Hanya muat slide aktif di awal; slide berikutnya baru dimuat setelah jeda 2.5 detik
+          const shouldLoadImage =
+            isActive || (canPreloadNext && index === (current + 1) % slides.length);
           
           return (
             <div
