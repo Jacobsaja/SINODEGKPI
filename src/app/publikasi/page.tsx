@@ -106,7 +106,7 @@ export default function PublikasiPage() {
     return matchesCategory && matchesDepartment && matchesSearch;
   });
 
-  // Postingan renungan unggulan dari kategori aktif atau data pertama
+  // Postingan unggulan dari kategori aktif atau data pertama
   const featuredPost =
     activeCategory === "Semua" && activeDepartment === "Semua" && searchQuery === "" && publicationsData.length > 0
       ? publicationsData.find((p) => p.is_featured) || publicationsData[0]
@@ -326,12 +326,15 @@ export default function PublikasiPage() {
           </div>
         </ScrollReveal>
 
-        {/* ── Featured Daily Devotion ── */}
+        {/* ── Featured Publication ── */}
         {featuredPost && (
           <ScrollReveal>
             <div className="mb-14">
               <p className="mb-4 text-xs font-bold uppercase tracking-widest text-primary flex items-center gap-2">
-                <Bookmark size={14} className="animate-pulse" /> Renungan Harian
+                <span className="animate-pulse flex items-center">
+                  {getCategoryIcon(featuredPost.category)}
+                </span>
+                {featuredPost.category}
               </p>
               <Link
                 href={`/publikasi/${featuredPost.id}`}
