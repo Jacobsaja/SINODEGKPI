@@ -18,6 +18,8 @@ Format yang digunakan berbasis [Keep a Changelog](https://keepachangelog.com/en/
   - Mengubah generasi `sitemap.xml` menjadi dinamis (*async*) dengan mengambil data artikel publikasi dari Supabase secara otomatis (hingga 500 artikel terbaru) beserta tanggal modifikasi `lastModified`.
   - Mendaftarkan rute departemen (`/publikasi/departemen/diakonat`, `/apostolat`, `/pastorat`) ke dalam sitemap untuk pengindeksan Google.
   - Dilengkapi *graceful error handling* jika koneksi database gagal, sitemap tetap menyajikan rute statis tanpa merusak build.
+- **Dokumentasi Simulasi Kuota & Zero-Cost Architecture (`USAGE.md`)**:
+  - Menyusun rincian matematis kuota Vercel Hobby & Supabase Free Tier, analisis optimasi kode (`unoptimized: true`, ISR caching 300s, kompresi gambar client-side, audio `preload="none"`), serta simulasi 3 skenario beban trafik (Normal, Puncak Acara, dan Batas Beban Maksimal).
 - **Konfigurasi Domain Terpusat**: Modul `src/lib/site-config.ts` untuk mengelola `NEXT_PUBLIC_SITE_URL` secara dinamis dengan fallback `https://sinodegkpi.vercel.app` (dipakai di metadata layout, `sitemap.ts`, dan `robots.ts`).
 
 ### Changed (Diubah)

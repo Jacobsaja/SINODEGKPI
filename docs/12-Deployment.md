@@ -169,3 +169,11 @@ Jika ada masalah setelah deployment:
 - [ ] ESLint tidak menunjukkan error kritis (`npm run lint`)
 - [ ] Supabase RLS policies sudah dikonfigurasi dengan benar
 - [ ] URL produksi di `layout.tsx` dan `sitemap.ts` sudah benar
+
+---
+
+## Simulasi Penggunaan Kuota (Free Tier)
+
+Untuk simulasi konsumsi bandwidth Vercel dan kuota database/storage Supabase secara mendalam, silakan merujuk ke dokumen utama:
+👉 **[USAGE.md](../USAGE.md)**
+

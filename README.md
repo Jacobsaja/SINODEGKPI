@@ -248,6 +248,14 @@ To deploy manually, connect the repository to a Vercel project and configure the
 
 ---
 
+## 📊 Resource Usage & Cost Simulation (Vercel & Supabase)
+
+Untuk rincian arsitektur *zero-cost*, simulasi matematis konsumsi kuota (bandwidth, database disk, storage egress, function execution), dan jaminan operasional **100% Gratis (Rp 0/bulan)** pada Vercel Hobby & Supabase Free Tier, silakan baca dokumentasi lengkap di:
+
+👉 **[USAGE.md](USAGE.md) — Panduan Simulasi & Penggunaan Kuota Vercel & Supabase**
+
+---
+
 ## 🔐 Environment Variables
 
 | Variable | Scope | Description |
