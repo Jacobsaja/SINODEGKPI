@@ -6,7 +6,16 @@ import ScrollReveal from "@/components/ScrollReveal";
 import GalleryLightbox from "@/components/publikasi/GalleryLightbox";
 import BookmarkButton from "@/components/publikasi/BookmarkButton";
 import ShareMenu from "@/components/publikasi/ShareMenu";
-import { getPublicationById, formatDateID, formatViewsID } from "@/lib/publications";
+import AudioPlayer from "@/components/AudioPlayer";
+import DevotionalReader from "@/components/publikasi/DevotionalReader";
+import {
+  getPublicationById,
+  getLatestDevotions,
+  formatDateID,
+  formatFullDateID,
+  formatViewsID,
+  incrementPublicationViews,
+} from "@/lib/publications";
 import {
   Calendar,
   User,
@@ -46,9 +55,6 @@ function getFileLabel(url: string): string {
   return ext.length <= 5 ? ext : "FILE";
 }
 
-// NOTE: Jika project ini sudah di Next.js 15+ dan `params` datang sebagai
-// Promise, ubah tipe di bawah jadi `Promise<{ id: string }>` lalu
-// `const { id } = await params;` di kedua fungsi.
 export const revalidate = 3600; // Cache Edge CDN 1 jam
 
 type Props = {
@@ -64,7 +70,7 @@ export async function generateMetadata({ params }: Props) {
   }
 
   return {
-    title: `${post.title} | Publikasi GKPI`,
+    title: `${post.title} | ${post.category === "Renungan Harian" ? "Renungan Harian" : "Publikasi"} GKPI`,
     description: post.excerpt,
     openGraph: {
       title: post.title,
@@ -84,39 +90,70 @@ export default async function PublikasiDetailPage({ params }: Props) {
     notFound();
   }
 
-  // Galeri: pakai `images` (array, kalau admin sudah upload banyak gambar),
-  // fallback ke `image` tunggal supaya kompatibel dengan data lama.
+  // Tambah hitungan pembaca secara non-blocking
+  incrementPublicationViews(id).catch(() => {});
+
+  const isRenungan = post.category === "Renungan Harian";
+  const audioUrl =
+    post.audio_url ||
+    (post.document_url &&
+    (post.document_url.includes("/audios/") ||
+      post.document_url.endsWith(".mp3") ||
+      post.document_url.endsWith(".m4a") ||
+      post.document_url.endsWith(".wav"))
+      ? post.document_url
+      : null);
+
+  // Galeri gambar
   const galleryRaw =
     post.images && post.images.length > 0 ? post.images : [post.image];
   const gallery = galleryRaw.filter((img): img is string => Boolean(img && img.trim() !== ""));
-  if (gallery.length === 0) gallery.push("/hero-bg.webp");
+
+  // Jika Renungan Harian, ambil 3 renungan terbaru lainnya (dalam 30 hari terakhir)
+  let relatedDevotions: import("@/lib/types").Publication[] = [];
+  if (isRenungan) {
+    const allRecent = await getLatestDevotions(4);
+    relatedDevotions = allRecent.filter((d) => d.id !== post.id).slice(0, 3);
+  }
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-background text-text-primary">
       <Navbar />
 
       <section className="relative pb-16 pt-32 md:pt-36">
-        <div className="mx-auto w-full max-w-4xl px-5 sm:px-8">
-          {/* Breadcrumbs */}
-          <nav aria-label="Breadcrumb" className="mb-8 flex flex-wrap items-center gap-2">
-            <Link
-              href="/"
-              className="text-sm text-text-primary/75 transition-colors hover:text-primary"
-            >
-              Beranda
-            </Link>
-            <ChevronRight size={14} className="text-text-primary/30" />
-            <Link
-              href="/publikasi"
-              className="text-sm text-text-primary/75 transition-colors hover:text-primary"
-            >
-              Publikasi
-            </Link>
-            <ChevronRight size={14} className="text-text-primary/30" />
-            <span className="max-w-[200px] truncate text-sm font-medium text-primary sm:max-w-xs">
-              {post.title}
-            </span>
-          </nav>
+        {isRenungan ? (
+          /* Tampilan Khusus Renungan Harian */
+          <DevotionalReader
+            post={post}
+            audioUrl={audioUrl}
+            fullDate={formatFullDateID(post.date)}
+            formattedViews={formatViewsID(post.views)}
+            relatedDevotions={relatedDevotions}
+            gallery={gallery}
+          />
+        ) : (
+          /* Tampilan Standar Publikasi / Berita / Pengumuman / Dokumen */
+          <div className="mx-auto w-full max-w-4xl px-5 sm:px-8">
+            {/* Breadcrumbs */}
+            <nav aria-label="Breadcrumb" className="mb-8 flex flex-wrap items-center gap-2">
+              <Link
+                href="/"
+                className="text-sm text-text-primary/75 transition-colors hover:text-primary"
+              >
+                Beranda
+              </Link>
+              <ChevronRight size={14} className="text-text-primary/30" />
+              <Link
+                href="/publikasi"
+                className="text-sm text-text-primary/75 transition-colors hover:text-primary"
+              >
+                Publikasi
+              </Link>
+              <ChevronRight size={14} className="text-text-primary/30" />
+              <span className="max-w-[200px] truncate text-sm font-medium text-primary sm:max-w-xs">
+                {post.title}
+              </span>
+            </nav>
 
           <ScrollReveal>
             <Link
@@ -163,6 +200,17 @@ export default async function PublikasiDetailPage({ params }: Props) {
                 {formatViewsID(post.views)} dilihat
               </span>
             </div>
+
+            {/* Audio Player Card (jika artikel/renungan memiliki audio) */}
+            {(post.audio_url || (post.document_url && (post.document_url.includes("/audios/") || post.document_url.endsWith(".mp3") || post.document_url.endsWith(".m4a") || post.document_url.endsWith(".wav")))) && (
+              <div className="mb-10">
+                <AudioPlayer
+                  src={post.audio_url || post.document_url!}
+                  title={post.category === "Renungan Harian" ? "Dengarkan Renungan Harian" : `Audio: ${post.title}`}
+                  subtitle={`Oleh ${post.author} · ${formatDateID(post.date)}`}
+                />
+              </div>
+            )}
           </ScrollReveal>
 
           {/* Galeri Gambar */}
@@ -225,6 +273,7 @@ export default async function PublikasiDetailPage({ params }: Props) {
             </ScrollReveal>
           )}
         </div>
+      )}
       </section>
 
       <Footer />

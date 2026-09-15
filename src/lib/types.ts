@@ -34,6 +34,7 @@ export interface Publication {
   views: number;
   is_featured: boolean;
   document_url: string | null;
+  audio_url?: string | null;
   created_at: string;
   updated_at: string;
 }

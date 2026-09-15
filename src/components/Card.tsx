@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Calendar } from "lucide-react";
+import { ArrowRight, Calendar, Headphones } from "lucide-react";
 
 interface CardProps {
   title: string;
@@ -7,6 +7,7 @@ interface CardProps {
   date?: string;
   category?: string;
   href?: string;
+  hasAudio?: boolean;
 }
 
 export default function Card({
@@ -15,6 +16,7 @@ export default function Card({
   date,
   category,
   href = "#",
+  hasAudio = false,
 }: CardProps) {
   return (
     <article className="group bg-surface rounded-2xl border border-border hover:border-primary hover:shadow-md transition-all duration-300 flex flex-col h-full overflow-hidden">
@@ -27,6 +29,12 @@ export default function Card({
               {category}
             </span>
           )}
+          {hasAudio && (
+            <span className="flex items-center gap-1 text-[10px] font-bold text-amber-500 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full">
+              <Headphones size={11} />
+              Audio
+            </span>
+          )}
           {date && (
             <span className="flex items-center gap-1.5 text-xs text-text-secondary">
               <Calendar size={13} />
@@ -37,7 +45,9 @@ export default function Card({
 
         {/* Title */}
         <h3 className="text-xl font-sans font-bold text-text-primary group-hover:text-primary transition-colors duration-200 leading-tight">
-          {title}
+          <Link href={href || "/publikasi"}>
+            {title}
+          </Link>
         </h3>
 
         {/* Excerpt */}

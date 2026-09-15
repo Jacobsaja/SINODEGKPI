@@ -7,9 +7,15 @@ import { compressBeforeUpload } from "@/lib/image-compress";
 import {
   uploadPublikasiImages,
   uploadPublikasiDocuments,
+  uploadPublikasiAudio,
   PUBLIKASI_IMAGE_ACCEPT,
   PUBLIKASI_DOCUMENT_ACCEPT,
+  PUBLIKASI_AUDIO_ACCEPT,
 } from "@/lib/publikasi-upload";
+import {
+  cleanupExpiredDevotions,
+  deletePublicationMedia,
+} from "@/lib/publikasi-cleanup";
 import type { Publication, PublicationCategory, PublicationDepartment, PublicationDocument } from "@/lib/types";
 import { useSearchParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -29,7 +35,10 @@ import {
   ArrowLeft,
   ChevronRight,
   ChevronDown,
-  BookOpen
+  BookOpen,
+  Check,
+  Headphones,
+  Volume2
 } from "lucide-react";
 
 const CATEGORIES: PublicationCategory[] = [
@@ -58,6 +67,7 @@ const emptyForm = {
   image: "",
   images: [] as string[],
   documents: [] as PublicationDocument[],
+  audio_url: "" as string | null,
   read_time: "3 menit",
   views: 0,
   is_featured: false,
@@ -99,24 +109,78 @@ function PublikasiAdminContent() {
   const [galleryError, setGalleryError] = useState("");
   const [uploadingDocs, setUploadingDocs] = useState(false);
   const [docError, setDocError] = useState("");
+  const [uploadingAudio, setUploadingAudio] = useState(false);
+  const [audioError, setAudioError] = useState("");
 
   // State pencarian dan filter
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("Semua");
   const [showCategoryFilter, setShowCategoryFilter] = useState(false);
+  const [selectedDepartment, setSelectedDepartment] = useState<string>("Semua");
+  const [showDepartmentFilter, setShowDepartmentFilter] = useState(false);
+
+  // State untuk custom dropdown di Form
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+  const [isDepartmentDropdownOpen, setIsDepartmentDropdownOpen] = useState(false);
+
+  // State untuk status pembersihan renungan > 30 hari
+  const [isCleaningUp, setIsCleaningUp] = useState(false);
+  const [cleanupBanner, setCleanupBanner] = useState<string | null>(null);
 
   useEffect(() => {
     let ignore = false;
-    async function fetchItems() {
+    async function initAndFetch() {
+      // 1. Pembersihan otomatis renungan > 30 hari di background
+      try {
+        const cleanup = await cleanupExpiredDevotions(30);
+        if (!ignore && cleanup.deletedCount > 0) {
+          setCleanupBanner(
+            `Sistem otomatis membersihkan ${cleanup.deletedCount} renungan berusia > 30 hari beserta ${cleanup.deletedFilesCount} file media dari penyimpanan.`
+          );
+        }
+      } catch (err) {
+        console.warn("Auto cleanup renungan error:", err);
+      }
+
+      // 2. Muat data publikasi terbaru
       const { data, error } = await supabase
         .from("publications")
         .select("*")
         .order("date", { ascending: false });
       if (!ignore && !error) setItems(data ?? []);
     }
-    fetchItems();
+
+    initAndFetch();
     return () => { ignore = true; };
   }, []);
+
+  async function handleManualCleanup() {
+    if (
+      !confirm(
+        "Apakah Anda yakin ingin membersihkan renungan harian yang usianya lebih dari 30 hari? Tindakan ini akan menghapus data beserta file audio, foto cover, galeri, dan dokumen dari server secara permanen."
+      )
+    ) {
+      return;
+    }
+
+    setIsCleaningUp(true);
+    try {
+      const res = await cleanupExpiredDevotions(30);
+      if (res.deletedCount > 0) {
+        setCleanupBanner(
+          `Berhasil membersihkan ${res.deletedCount} renungan dan ${res.deletedFilesCount} file media dari penyimpanan.`
+        );
+        loadItems();
+      } else {
+        setCleanupBanner("Tidak ada renungan yang berusia lebih dari 30 hari.");
+      }
+    } catch {
+      setCleanupBanner("Gagal melakukan pembersihan renungan.");
+    } finally {
+      setIsCleaningUp(false);
+      setTimeout(() => setCleanupBanner(null), 7000);
+    }
+  }
 
   const startEdit = useCallback((item: Publication) => {
     setEditingId(item.id);
@@ -131,6 +195,7 @@ function PublikasiAdminContent() {
       image: item.image,
       images: item.images ?? [],
       documents: item.documents ?? [],
+      audio_url: item.audio_url ?? item.document_url ?? "",
       read_time: item.read_time,
       views: item.views,
       is_featured: item.is_featured,
@@ -289,6 +354,59 @@ function PublikasiAdminContent() {
     setUploadError("");
     setGalleryError("");
     setDocError("");
+    setAudioError("");
+    setIsCategoryDropdownOpen(false);
+    setIsDepartmentDropdownOpen(false);
+  }
+
+  // Helper untuk memeriksa durasi audio
+  function checkAudioDuration(file: File): Promise<number> {
+    return new Promise((resolve) => {
+      const audio = document.createElement("audio");
+      audio.preload = "metadata";
+      const objectUrl = URL.createObjectURL(file);
+      audio.src = objectUrl;
+      audio.onloadedmetadata = () => {
+        URL.revokeObjectURL(objectUrl);
+        resolve(audio.duration || 0);
+      };
+      audio.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        resolve(0); // Fallback jika browser gagal membaca metadata
+      };
+    });
+  }
+
+  // Upload audio renungan (MP3/M4A/WAV, opsional, maks 5 menit & 3MB)
+  async function handleAudioUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 3 * 1024 * 1024) {
+      setAudioError("Ukuran file audio maksimal 3MB (sesuai batas durasi maksimal 5 menit).");
+      return;
+    }
+
+    setAudioError("");
+    setUploadingAudio(true);
+    try {
+      // Validasi durasi audio maksimal 5 menit (300 detik + 5 detik toleransi)
+      const duration = await checkAudioDuration(file);
+      if (duration > 305) {
+        const mins = Math.floor(duration / 60);
+        const secs = Math.round(duration % 60);
+        throw new Error(`Durasi audio melebihi batas 5 menit (terdeteksi ${mins} menit ${secs} detik). Harap gunakan audio maksimal 5 menit.`);
+      }
+
+      const url = await uploadPublikasiAudio(file);
+      setForm((prev) => ({ ...prev, audio_url: url }));
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Gagal mengupload audio.";
+      setAudioError(msg);
+    } finally {
+      setUploadingAudio(false);
+      e.target.value = "";
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -297,23 +415,48 @@ function PublikasiAdminContent() {
     // Jika admin scoped, selalu gunakan adminDepartment dari context (bukan state form)
     // agar tidak bisa dimanipulasi dari client meskipun dropdown di-disabled secara visual.
     const safeDepartment: PublicationDepartment = adminDepartment ?? form.department;
-    const payload = { ...form, department: safeDepartment };
-    if (editingId) {
-      await supabase.from("publications").update(payload).eq("id", editingId);
-    } else {
-      await supabase.from("publications").insert(payload);
+    const payload = { 
+      ...form, 
+      department: safeDepartment,
+      audio_url: form.audio_url || null,
+      document_url: form.audio_url || null,
+    };
+
+    try {
+      if (editingId) {
+        const { error } = await supabase.from("publications").update(payload).eq("id", editingId);
+        if (error && (error.message.includes("audio_url") || error.code === "PGRST204")) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { audio_url: _aud, ...fallbackPayload } = payload;
+          await supabase.from("publications").update({ ...fallbackPayload, document_url: form.audio_url || null }).eq("id", editingId);
+        }
+      } else {
+        const { error } = await supabase.from("publications").insert(payload);
+        if (error && (error.message.includes("audio_url") || error.code === "PGRST204")) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { audio_url: _aud, ...fallbackPayload } = payload;
+          await supabase.from("publications").insert({ ...fallbackPayload, document_url: form.audio_url || null });
+        }
+      }
+    } catch (err) {
+      console.error("Gagal menyimpan publikasi:", err);
+    } finally {
+      setSaving(false);
+      resetForm();
+      loadItems();
+      
+      // Bersihkan query params dan kembali ke daftar
+      router.replace("/admin/publikasi");
+      setActiveTab("list");
     }
-    setSaving(false);
-    resetForm();
-    loadItems();
-    
-    // Bersihkan query params dan kembali ke daftar
-    router.replace("/admin/publikasi");
-    setActiveTab("list");
   }
 
   async function handleDelete(id: number) {
-    if (!confirm("Apakah Anda yakin ingin menghapus publikasi ini?")) return;
+    if (!confirm("Apakah Anda yakin ingin menghapus publikasi ini beserta semua file medianya?")) return;
+    const itemToDelete = items.find((i) => i.id === id);
+    if (itemToDelete) {
+      await deletePublicationMedia(itemToDelete);
+    }
     await supabase.from("publications").delete().eq("id", id);
     loadItems();
   }
@@ -329,7 +472,9 @@ function PublikasiAdminContent() {
       selectedCategory === "Semua" || item.category === selectedCategory;
 
     const matchesDepartment =
-      adminDepartment !== null ? (item.department ?? "Sinode") === adminDepartment : true;
+      adminDepartment !== null 
+        ? (item.department ?? "Sinode") === adminDepartment 
+        : selectedDepartment === "Semua" || (item.department ?? "Sinode") === selectedDepartment;
 
     return matchesSearch && matchesCategory && matchesDepartment;
   });
@@ -413,6 +558,31 @@ function PublikasiAdminContent() {
             transition={{ duration: 0.25 }}
             className="space-y-4"
           >
+            {/* Notifikasi Pembersihan Otomatis/Manual */}
+            <AnimatePresence>
+              {cleanupBanner && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="flex items-center justify-between gap-3 rounded-2xl border border-primary/30 bg-primary/10 px-4 py-3 text-xs text-primary shadow-sm"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Sparkles size={16} className="shrink-0 text-primary" />
+                    <span className="font-medium">{cleanupBanner}</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setCleanupBanner(null)}
+                    className="text-primary/70 hover:text-primary transition-colors cursor-pointer"
+                    title="Tutup"
+                  >
+                    <X size={14} />
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             {/* Filter Bar */}
             <div className="flex flex-col gap-3 md:flex-row md:items-center justify-between rounded-2xl border border-border bg-surface p-4">
               <div className="relative flex-1">
@@ -425,55 +595,138 @@ function PublikasiAdminContent() {
                   className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-text-primary placeholder-text-secondary/60 outline-none focus:border-primary/40 focus:bg-background"
                 />
               </div>
-              <div className="flex items-center gap-2 relative">
+              <div className="flex flex-wrap items-center gap-2 relative">
                 <Filter size={16} className="text-text-secondary shrink-0" />
                 
-                <button
-                  type="button"
-                  onClick={() => setShowCategoryFilter(!showCategoryFilter)}
-                  className="flex items-center justify-between gap-3 rounded-xl border border-border bg-background/50 px-3.5 py-2.5 text-sm text-text-primary outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 hover:border-primary/40 transition-all cursor-pointer min-w-[170px]"
-                >
-                  <span className="font-medium">{selectedCategory === "Semua" ? "Semua Kategori" : selectedCategory}</span>
-                  <ChevronDown size={14} className={`text-text-secondary transition-transform duration-200 ${showCategoryFilter ? "rotate-180" : ""}`} />
-                </button>
+                {/* Filter Kategori */}
+                <div className="relative">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowCategoryFilter(!showCategoryFilter);
+                      setShowDepartmentFilter(false);
+                    }}
+                    className="flex items-center justify-between gap-3 rounded-xl border border-border bg-background/50 px-3.5 py-2.5 text-sm text-text-primary outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 hover:border-primary/40 transition-all cursor-pointer min-w-[160px]"
+                  >
+                    <span className="font-medium">{selectedCategory === "Semua" ? "Semua Kategori" : selectedCategory}</span>
+                    <ChevronDown size={14} className={`text-text-secondary transition-transform duration-200 ${showCategoryFilter ? "rotate-180 text-primary" : ""}`} />
+                  </button>
 
-                {/* Overlay penutup dropdown */}
-                {showCategoryFilter && (
-                  <div 
-                    className="fixed inset-0 z-40" 
-                    onClick={() => setShowCategoryFilter(false)} 
-                  />
+                  {/* Overlay penutup dropdown */}
+                  {showCategoryFilter && (
+                    <div 
+                      className="fixed inset-0 z-40" 
+                      onClick={() => setShowCategoryFilter(false)} 
+                    />
+                  )}
+
+                  <AnimatePresence>
+                    {showCategoryFilter && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-border bg-surface p-1.5 shadow-xl z-50 flex flex-col origin-top-right"
+                      >
+                        <button
+                          type="button"
+                          onClick={() => { setSelectedCategory("Semua"); setShowCategoryFilter(false); }}
+                          className={`text-left px-3 py-2 text-sm rounded-lg transition-colors flex items-center justify-between ${selectedCategory === "Semua" ? "bg-primary/10 text-primary font-bold" : "text-text-secondary hover:text-text-primary hover:bg-background/80"}`}
+                        >
+                          <span>Semua Kategori</span>
+                          {selectedCategory === "Semua" && <Check size={14} className="text-primary" />}
+                        </button>
+                        {CATEGORIES.map((c) => (
+                          <button
+                            key={c}
+                            type="button"
+                            onClick={() => { setSelectedCategory(c); setShowCategoryFilter(false); }}
+                            className={`text-left px-3 py-2 text-sm rounded-lg transition-colors flex items-center justify-between ${selectedCategory === c ? "bg-primary/10 text-primary font-bold" : "text-text-secondary hover:text-text-primary hover:bg-background/80"}`}
+                          >
+                            <span>{c}</span>
+                            {selectedCategory === c && <Check size={14} className="text-primary" />}
+                          </button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Filter Departemen (Khusus Super Admin) */}
+                {adminDepartment === null && (
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowDepartmentFilter(!showDepartmentFilter);
+                        setShowCategoryFilter(false);
+                      }}
+                      className="flex items-center justify-between gap-3 rounded-xl border border-border bg-background/50 px-3.5 py-2.5 text-sm text-text-primary outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 hover:border-primary/40 transition-all cursor-pointer min-w-[160px]"
+                    >
+                      <span className="font-medium">{selectedDepartment === "Semua" ? "Semua Dept" : selectedDepartment}</span>
+                      <ChevronDown size={14} className={`text-text-secondary transition-transform duration-200 ${showDepartmentFilter ? "rotate-180 text-primary" : ""}`} />
+                    </button>
+
+                    {showDepartmentFilter && (
+                      <div 
+                        className="fixed inset-0 z-40" 
+                        onClick={() => setShowDepartmentFilter(false)} 
+                      />
+                    )}
+
+                    <AnimatePresence>
+                      {showDepartmentFilter && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 5, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 5, scale: 0.95 }}
+                          transition={{ duration: 0.15 }}
+                          className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-border bg-surface p-1.5 shadow-xl z-50 flex flex-col origin-top-right"
+                        >
+                          <button
+                            type="button"
+                            onClick={() => { setSelectedDepartment("Semua"); setShowDepartmentFilter(false); }}
+                            className={`text-left px-3 py-2 text-sm rounded-lg transition-colors flex items-center justify-between ${selectedDepartment === "Semua" ? "bg-primary/10 text-primary font-bold" : "text-text-secondary hover:text-text-primary hover:bg-background/80"}`}
+                          >
+                            <span>Semua Departemen</span>
+                            {selectedDepartment === "Semua" && <Check size={14} className="text-primary" />}
+                          </button>
+                          {DEPARTMENTS_LIST.map((d) => (
+                            <button
+                              key={d}
+                              type="button"
+                              onClick={() => { setSelectedDepartment(d); setShowDepartmentFilter(false); }}
+                              className={`text-left px-3 py-2 text-sm rounded-lg transition-colors flex items-center justify-between ${selectedDepartment === d ? "bg-primary/10 text-primary font-bold" : "text-text-secondary hover:text-text-primary hover:bg-background/80"}`}
+                            >
+                              <span>{d === "Sinode" ? "Sinode / Umum" : `Departemen ${d}`}</span>
+                              {selectedDepartment === d && <Check size={14} className="text-primary" />}
+                            </button>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 )}
 
-                <AnimatePresence>
-                  {showCategoryFilter && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 5, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 5, scale: 0.95 }}
-                      transition={{ duration: 0.15 }}
-                      className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-border bg-surface p-1.5 shadow-xl z-50 flex flex-col origin-top-right"
-                    >
-                      <button
-                        type="button"
-                        onClick={() => { setSelectedCategory("Semua"); setShowCategoryFilter(false); }}
-                        className={`text-left px-3 py-2 text-sm rounded-lg transition-colors ${selectedCategory === "Semua" ? "bg-primary/10 text-primary font-bold" : "text-text-secondary hover:text-text-primary hover:bg-background/80"}`}
-                      >
-                        Semua Kategori
-                      </button>
-                      {CATEGORIES.map((c) => (
-                        <button
-                          key={c}
-                          type="button"
-                          onClick={() => { setSelectedCategory(c); setShowCategoryFilter(false); }}
-                          className={`text-left px-3 py-2 text-sm rounded-lg transition-colors ${selectedCategory === c ? "bg-primary/10 text-primary font-bold" : "text-text-secondary hover:text-text-primary hover:bg-background/80"}`}
-                        >
-                          {c}
-                        </button>
-                      ))}
-                    </motion.div>
+                {/* Tombol Bersihkan Renungan Kadaluarsa (> 30 Hari) */}
+                <button
+                  type="button"
+                  onClick={handleManualCleanup}
+                  disabled={isCleaningUp}
+                  title="Hapus permanen renungan berusia > 30 hari beserta file media di Supabase Storage"
+                  className="flex items-center gap-1.5 rounded-xl border border-rose-500/30 bg-rose-500/10 px-3.5 py-2.5 text-sm font-semibold text-rose-400 hover:bg-rose-500/20 hover:border-rose-500/50 transition-all cursor-pointer shrink-0 disabled:opacity-50"
+                >
+                  {isCleaningUp ? (
+                    <svg className="animate-spin h-4 w-4 text-rose-400" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                  ) : (
+                    <Trash2 size={15} />
                   )}
-                </AnimatePresence>
+                  <span>{isCleaningUp ? "Membersihkan..." : "Bersihkan Renungan >30 Hari"}</span>
+                </button>
               </div>
             </div>
 
@@ -679,41 +932,135 @@ function PublikasiAdminContent() {
                   </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Kategori</label>
-                  <select
-                    value={form.category}
-                    onChange={(e) =>
-                      setForm({ ...form, category: e.target.value as PublicationCategory })
-                    }
-                    className="w-full rounded-xl border border-border/60 bg-gradient-to-br from-background/60 to-background/40 px-4 py-3 text-sm text-text-primary outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20 focus:bg-gradient-to-br focus:from-background/80 focus:to-background/60 transition-all cursor-pointer appearance-none bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMiA0TDYgOEwxMCA0IiBzdHJva2U9IiM5Q0EzQUYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4')] bg-no-repeat bg-[right_14px_center] pr-10 hover:border-primary/40 hover:shadow-md hover:shadow-primary/5"
-                  >
-                    {CATEGORIES.map((c) => (
-                      <option key={c} value={c}>{c}</option>
-                    ))}
-                  </select>
+                {/* Custom Dropdown Kategori */}
+                <div className="space-y-1.5 relative">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
+                    Kategori Publikasi
+                  </label>
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsCategoryDropdownOpen((prev) => !prev);
+                        setIsDepartmentDropdownOpen(false);
+                      }}
+                      className="w-full flex items-center justify-between rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none hover:border-primary/50 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer shadow-sm"
+                    >
+                      <span className={`inline-block rounded-md border px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider ${getPubCategoryStyle(form.category)}`}>
+                        {form.category}
+                      </span>
+                      <ChevronDown
+                        size={16}
+                        className={`text-text-secondary transition-transform duration-200 shrink-0 ${
+                          isCategoryDropdownOpen ? "rotate-180 text-primary" : ""
+                        }`}
+                      />
+                    </button>
+
+                    {isCategoryDropdownOpen && (
+                      <>
+                        <div
+                          className="fixed inset-0 z-40"
+                          onClick={() => setIsCategoryDropdownOpen(false)}
+                        />
+                        <div className="absolute left-0 right-0 top-full mt-2 rounded-xl border border-border bg-surface p-1.5 shadow-2xl z-50 flex flex-col space-y-1 backdrop-blur-xl">
+                          {CATEGORIES.map((c) => {
+                            const isSelected = form.category === c;
+                            return (
+                              <button
+                                key={c}
+                                type="button"
+                                onClick={() => {
+                                  setForm((prev) => ({ ...prev, category: c }));
+                                  setIsCategoryDropdownOpen(false);
+                                }}
+                                className={`flex items-center justify-between px-3.5 py-2.5 text-sm rounded-lg transition-all cursor-pointer ${
+                                  isSelected
+                                    ? "bg-primary/15 text-primary font-bold"
+                                    : "text-text-secondary hover:text-text-primary hover:bg-background/80 font-medium"
+                                }`}
+                              >
+                                <span className={`inline-block rounded-md border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${getPubCategoryStyle(c)}`}>
+                                  {c}
+                                </span>
+                                {isSelected && <Check size={16} className="text-primary" />}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Departemen Pengunggah</label>
-                  <select
-                    value={adminDepartment ?? form.department}
-                    disabled={adminDepartment !== null}
-                    onChange={(e) =>
-                      setForm({ ...form, department: e.target.value as PublicationDepartment })
-                    }
-                    className={`w-full rounded-xl border px-4 py-3 text-sm text-text-primary outline-none transition-all appearance-none bg-no-repeat bg-[right_14px_center] pr-10 ${
-                      adminDepartment !== null
-                        ? "border-border/30 bg-[var(--color-surface)] opacity-60 cursor-not-allowed text-text-secondary"
-                        : "border-border/60 bg-gradient-to-br from-background/60 to-background/40 cursor-pointer focus:border-primary/50 focus:ring-2 focus:ring-primary/20 hover:border-primary/40 hover:shadow-md hover:shadow-primary/5"
-                    } bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iMTIiIHZpZXdCb3g9IjAgMCAxMiAxMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMiA0TDYgOEwxMCA0IiBzdHJva2U9IiM5Q0EzQUYiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4')]`}
-                  >
-                    {DEPARTMENTS_LIST.map((d) => (
-                      <option key={d} value={d}>
-                        {d === "Sinode" ? "Sinode / Umum" : `Departemen ${d}`}
-                      </option>
-                    ))}
-                  </select>
+                {/* Custom Dropdown Departemen Pengunggah */}
+                <div className="space-y-1.5 relative">
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
+                    Departemen Pengunggah
+                  </label>
+                  {adminDepartment !== null ? (
+                    <div className="w-full flex items-center justify-between rounded-xl border border-border/40 bg-surface/60 px-4 py-3 text-sm text-text-secondary opacity-80 cursor-not-allowed">
+                      <span className="font-semibold">
+                        {adminDepartment === "Sinode" ? "Sinode / Umum" : `Departemen ${adminDepartment}`}
+                      </span>
+                      <span className="text-[10px] text-amber-400/90 font-bold px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20">
+                        Terkunci
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsDepartmentDropdownOpen((prev) => !prev);
+                          setIsCategoryDropdownOpen(false);
+                        }}
+                        className="w-full flex items-center justify-between rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none hover:border-primary/50 focus:border-primary/50 focus:ring-2 focus:ring-primary/20 transition-all cursor-pointer shadow-sm"
+                      >
+                        <span className="font-semibold text-text-primary">
+                          {form.department === "Sinode" ? "Sinode / Umum" : `Departemen ${form.department}`}
+                        </span>
+                        <ChevronDown
+                          size={16}
+                          className={`text-text-secondary transition-transform duration-200 shrink-0 ${
+                            isDepartmentDropdownOpen ? "rotate-180 text-primary" : ""
+                          }`}
+                        />
+                      </button>
+
+                      {isDepartmentDropdownOpen && (
+                        <>
+                          <div
+                            className="fixed inset-0 z-40"
+                            onClick={() => setIsDepartmentDropdownOpen(false)}
+                          />
+                          <div className="absolute left-0 right-0 top-full mt-2 rounded-xl border border-border bg-surface p-1.5 shadow-2xl z-50 flex flex-col space-y-1 backdrop-blur-xl">
+                            {DEPARTMENTS_LIST.map((d) => {
+                              const isSelected = form.department === d;
+                              return (
+                                <button
+                                  key={d}
+                                  type="button"
+                                  onClick={() => {
+                                    setForm((prev) => ({ ...prev, department: d }));
+                                    setIsDepartmentDropdownOpen(false);
+                                  }}
+                                  className={`flex items-center justify-between px-3.5 py-2.5 text-sm rounded-lg transition-all cursor-pointer ${
+                                    isSelected
+                                      ? "bg-primary/15 text-primary font-bold"
+                                      : "text-text-secondary hover:text-text-primary hover:bg-background/80 font-medium"
+                                  }`}
+                                >
+                                  <span>{d === "Sinode" ? "Sinode / Umum" : `Departemen ${d}`}</span>
+                                  {isSelected && <Check size={16} className="text-primary" />}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  )}
                   {adminDepartment !== null && (
                     <p className="text-[10px] text-amber-400/80 font-semibold mt-1 flex items-center gap-1">
                       <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -883,6 +1230,65 @@ function PublikasiAdminContent() {
                   )}
                 </div>
 
+                {/* Audio Renungan (Opsional) */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary flex items-center gap-1.5">
+                      <Headphones size={14} className="text-primary" />
+                      Audio Renungan
+                    </label>
+                    <span className="text-[10px] text-text-secondary/70 font-semibold bg-surface px-2 py-0.5 rounded border border-border/50">
+                      Opsional
+                    </span>
+                  </div>
+
+                  <div className="relative flex flex-col items-center justify-center rounded-xl border border-dashed border-border hover:border-primary/40 bg-background/20 p-4 transition-all group">
+                    <input
+                      type="file"
+                      accept={PUBLIKASI_AUDIO_ACCEPT}
+                      onChange={handleAudioUpload}
+                      disabled={uploadingAudio}
+                      className="absolute inset-0 z-10 w-full h-full opacity-0 cursor-pointer"
+                    />
+                    <Headphones size={22} className="text-text-secondary group-hover:text-primary transition-colors" />
+                    <span className="text-xs font-semibold text-text-primary mt-2">
+                      {form.audio_url ? "Ganti File Audio" : "Pilih File Audio"}
+                    </span>
+                    <span className="text-[10px] text-text-secondary/70 mt-1">MP3 / M4A / WAV / AAC, durasi maks 5 menit (maks 3MB)</span>
+                  </div>
+
+                  {uploadingAudio && (
+                    <div className="flex items-center gap-2 justify-center py-2 text-xs text-primary">
+                      <svg className="animate-spin h-3.5 w-3.5" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                      Mengunggah audio...
+                    </div>
+                  )}
+                  {audioError && <p className="text-[10px] text-red-400 mt-1 text-center">{audioError}</p>}
+
+                  {form.audio_url && !uploadingAudio && (
+                    <div className="rounded-xl border border-primary/20 bg-primary/[0.04] p-3 space-y-2 mt-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <Volume2 size={15} className="text-primary shrink-0" />
+                          <span className="text-xs font-semibold text-text-primary truncate">
+                            Audio Terpasang
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setForm((prev) => ({ ...prev, audio_url: null }))}
+                          className="inline-flex items-center gap-1 text-[11px] font-bold text-red-400 hover:text-red-300 transition-colors cursor-pointer"
+                          title="Hapus Audio"
+                        >
+                          <X size={12} />
+                          Hapus
+                        </button>
+                      </div>
+                      <audio controls className="w-full h-8 accent-primary" src={form.audio_url} preload="none" />
+                    </div>
+                  )}
+                </div>
+
                 {/* Featured checkbox styled as switch container */}
                 <div className="flex items-center justify-between rounded-xl border border-border/80 bg-background/35 p-3.5">
                   <div className="flex items-center gap-2">
@@ -904,7 +1310,7 @@ function PublikasiAdminContent() {
                 <div className="pt-2 flex flex-col gap-2.5">
                   <button
                     type="submit"
-                    disabled={saving || uploading || uploadingGallery || uploadingDocs}
+                    disabled={saving || uploading || uploadingGallery || uploadingDocs || uploadingAudio}
                     className="w-full py-3 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary-dark transition-all shadow-md shadow-primary/10 disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5"
                   >
                     {saving ? (

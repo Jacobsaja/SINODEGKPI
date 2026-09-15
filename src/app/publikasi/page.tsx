@@ -67,7 +67,20 @@ export default function PublikasiPage() {
   const [publicationsData, setPublicationsData] = useState<Publication[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState<string>("Semua");
+  const [activeCategory, setActiveCategory] = useState<string>(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const catParam = params.get("kategori") || params.get("category");
+      if (catParam) {
+        const decoded = decodeURIComponent(catParam).trim().toLowerCase();
+        const found = categories.find(
+          (c) => c.toLowerCase() === decoded
+        );
+        if (found) return found;
+      }
+    }
+    return "Semua";
+  });
   const [activeDepartment, setActiveDepartment] = useState<string>("Semua");
   const [visibleCount, setVisibleCount] = useState(6);
 
@@ -75,6 +88,7 @@ export default function PublikasiPage() {
   // Data diperbarui saat admin mengubah konten pada kunjungan berikutnya.
   useEffect(() => {
     let isMounted = true;
+
     getAllPublications().then((data) => {
       if (isMounted) {
         setPublicationsData(data);

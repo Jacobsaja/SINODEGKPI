@@ -134,9 +134,9 @@ export default function Hero() {
                   )}
                 </div>
 
-                {/* Soft dark blue overlay for contrast and spiritual calmness */}
-                <div className="absolute inset-0 bg-primary-dark/60 mix-blend-multiply" />
-                <div className="absolute inset-0 bg-gradient-to-b from-primary-dark/30 via-transparent to-primary-dark/50" />
+                {/* Dark overlay for contrast */}
+                <div className="absolute inset-0 bg-black/50" />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60" />
               </div>
 
               {/* Content Container */}

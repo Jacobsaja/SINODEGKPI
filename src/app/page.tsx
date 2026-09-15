@@ -9,7 +9,12 @@ import ScrollReveal from "@/components/ScrollReveal";
 import Image from "next/image";
 import Link from "next/link";
 import { assets } from "@/lib/assets";
-import { getLatestPublications, formatDateID } from "@/lib/publications";
+import {
+  getLatestDevotions,
+  getLatestArticles,
+  getLatestPublications,
+  formatDateID,
+} from "@/lib/publications";
 import {
   ChevronRight,
   ShieldCheck,
@@ -59,12 +64,32 @@ export const metadata: Metadata = {
 export const revalidate = 300; // Cache Edge CDN 5 menit (ISR) untuk mencegah cold-start TTFB
 
 export default async function Home() {
-  const latestPublications = await getLatestPublications(3);
-  const publications = latestPublications.map((item) => ({
+  const [latestDevotions, latestArticles, allLatest] = await Promise.all([
+    getLatestDevotions(3),
+    getLatestArticles(3),
+    getLatestPublications(3),
+  ]);
+
+  const devotions = latestDevotions.map((item) => ({
+    id: item.id,
     title: item.title,
     excerpt: item.excerpt,
     date: formatDateID(item.date),
     category: item.category,
+    author: item.author,
+    hasAudio: Boolean(item.audio_url || (item.document_url && (item.document_url.includes("/audios/") || item.document_url.endsWith(".mp3") || item.document_url.endsWith(".m4a")))),
+    href: `/publikasi/${item.id}`,
+  }));
+
+  const articles = (latestArticles.length > 0 ? latestArticles : allLatest).map((item) => ({
+    id: item.id,
+    title: item.title,
+    excerpt: item.excerpt,
+    date: formatDateID(item.date),
+    category: item.category,
+    author: item.author,
+    hasAudio: Boolean(item.audio_url || (item.document_url && (item.document_url.includes("/audios/") || item.document_url.endsWith(".mp3") || item.document_url.endsWith(".m4a")))),
+    href: `/publikasi/${item.id}`,
   }));
 
   return (
@@ -77,24 +102,23 @@ export default async function Home() {
         <ScrollReveal>
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6">
             {[
-              
               {
                 icon: BookOpen,
                 title: "Renungan",
                 desc: "Bacaan rohani harian penguat iman.",
-                href: "publikasi",
+                href: "/#renungan",
               },
               {
                 icon: Bell,
                 title: "Info",
                 desc: "Informasi terkait GKPI.",
-                href: "profil-gkpi",
+                href: "/#info",
               },
               {
                 icon: Newspaper,
                 title: "Publikasi",
-                desc: "Majalah, renungan, dan literasi GKPI.",
-                href: "publikasi",
+                desc: "Warta, berita, dan literasi GKPI.",
+                href: "/#publikasi",
               },
               {
                 icon: Phone,
@@ -129,7 +153,120 @@ export default async function Home() {
         </ScrollReveal>
       </section>
 
-      {/* About section */}
+      {/* ── 3. Visi & Misi ────────────────────────────────────────────── */}
+      <Section id="visi-misi" pattern>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+          {/* Visi */}
+          <div className="bg-surface border border-border rounded-2xl p-8 md:p-10 space-y-6 shadow-sm hover:shadow-md hover:border-primary transition-all duration-300">
+            <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <ShieldCheck size={28} className="text-primary" />
+            </div>
+            <div className="space-y-4">
+              <h3 className="text-2xl font-sans font-bold text-text-primary">Visi</h3>
+              <p className="text-text-secondary leading-relaxed italic text-2xl sm:text-3xl font-serif font-semibold text-primary-dark">
+                &quot;Menjadi Persekutuan Penyembahan dan Persembahan Pada Tahun 2030&quot;
+              </p>
+            </div>
+          </div>
+
+          {/* Misi */}
+          <div className="bg-surface border border-border rounded-2xl p-8 md:p-10 space-y-6 shadow-sm hover:shadow-md hover:border-primary transition-all duration-300">
+            <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
+              <HeartHandshake size={28} className="text-primary" />
+            </div>
+            <div className="space-y-4">
+              <h3 className="text-2xl font-sans font-bold text-text-primary">Misi</h3>
+              <p className="text-text-secondary text-base md:text-lg mb-6 leading-relaxed font-medium">
+                Dalam rangka mendukung Visi GKPI maka Misi GKPI dijabarkan dalam Panca Pelayanan GKPI:
+              </p>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {misiPoints.map((point) => (
+                  <li key={point} className="flex items-center gap-3.5 p-3 rounded-xl bg-slate-50 border border-border/40 hover:bg-slate-100/80 transition-colors">
+                    <CheckCircle2 size={20} className="text-success shrink-0" />
+                    <span className="text-text-primary text-base font-bold tracking-wide leading-tight">{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </Section>
+
+      {/* ── 4. Renungan Harian (Khusus Renungan) ───────────────────────── */}
+      <Section
+        id="renungan"
+        title="Renungan Harian"
+        subtitle="Santapan rohani dan firman Tuhan untuk menguatkan langkah iman setiap hari."
+      >
+        {devotions.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {devotions.map((item) => (
+              <Card key={item.id} {...item} />
+            ))}
+          </div>
+        ) : (
+          <div className="mx-auto max-w-3xl bg-surface border border-border rounded-2xl p-8 md:p-12 text-center space-y-6 shadow-sm">
+            <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto">
+              <BookOpen size={32} />
+            </div>
+            <div className="space-y-3">
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Santapan Rohani</span>
+              <blockquote className="text-xl md:text-2xl font-serif italic text-text-primary leading-relaxed">
+                &quot;Segala perkara dapat kutanggung di dalam Dia yang memberi kekuatan kepadaku.&quot;
+              </blockquote>
+              <p className="text-sm font-bold text-text-secondary uppercase tracking-widest">— Filipi 4:13</p>
+            </div>
+            <p className="text-sm text-text-secondary max-w-xl mx-auto leading-relaxed">
+              Jadikan firman Tuhan sebagai pelita bagi langkah hidup kita. Temukan renungan harian dan bacaan rohani lainnya di ruang publikasi.
+            </p>
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                href="/publikasi?kategori=Renungan+Harian"
+                className="inline-flex items-center gap-2 px-7 py-3.5 bg-primary text-white text-sm font-bold rounded-md hover:bg-primary-dark shadow-sm transition-all duration-300"
+              >
+                Jelajahi Renungan Harian
+                <ChevronRight size={16} />
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Tombol Cek Selengkapnya ke /publikasi bagian renungan harian */}
+        <div className="mt-14 text-center">
+          <Link
+            href="/publikasi?kategori=Renungan+Harian"
+            className="inline-flex items-center gap-2 text-sm text-primary font-bold hover:text-primary-dark hover:underline underline-offset-8 transition-all"
+          >
+            Cek Selengkapnya
+            <ChevronRight size={16} />
+          </Link>
+        </div>
+      </Section>
+
+      {/* ── 5. Publikasi & Warta ───────────────────────────────────────── */}
+      <Section
+        id="publikasi"
+        title="Publikasi & Warta"
+        subtitle="Berita terkini, warta pelayanan, pengumuman, dan literasi Sinode GKPI."
+        pattern
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {articles.map((item) => (
+            <Card key={item.id} {...item} />
+          ))}
+        </div>
+        <div className="mt-16 text-center">
+          <Link
+            href="/publikasi"
+            className="inline-flex items-center gap-2 text-sm text-primary font-bold hover:text-primary-dark hover:underline underline-offset-8 transition-all"
+          >
+            Lihat semua publikasi
+            <ChevronRight size={16} />
+          </Link>
+        </div>
+      </Section>
+
+      {/* ── 6. Tentang Kami ────────────────────────────────────────────── */}
       <Section id="tentang">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           {/* Text side */}
@@ -198,77 +335,14 @@ export default async function Home() {
         </div>
       </Section>
 
-      {/* ── Visi & Misi ────────────────────────────────────────────────── */}
-      <Section pattern>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-          {/* Visi */}
-          <div className="bg-surface border border-border rounded-2xl p-8 md:p-10 space-y-6 shadow-sm hover:shadow-md hover:border-primary transition-all duration-300">
-            <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
-              <ShieldCheck size={28} className="text-primary" />
-            </div>
-            <div className="space-y-4">
-              <h3 className="text-2xl font-sans font-bold text-text-primary">Visi</h3>
-              <p className="text-text-secondary leading-relaxed italic text-2xl sm:text-3xl font-serif font-semibold text-primary-dark">
-                &quot;Menjadi Persekutuan Penyembahan dan Persembahan Pada Tahun 2030&quot;
-              </p>
-            </div>
-          </div>
-
-          {/* Misi */}
-          <div className="bg-surface border border-border rounded-2xl p-8 md:p-10 space-y-6 shadow-sm hover:shadow-md hover:border-primary transition-all duration-300">
-            <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center">
-              <HeartHandshake size={28} className="text-primary" />
-            </div>
-            <div className="space-y-4">
-              <h3 className="text-2xl font-sans font-bold text-text-primary">Misi</h3>
-              <p className="text-text-secondary text-base md:text-lg mb-6 leading-relaxed font-medium">
-                Dalam rangka mendukung Visi GKPI maka Misi GKPI dijabarkan dalam Panca Pelayanan GKPI:
-              </p>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {misiPoints.map((point) => (
-                  <li key={point} className="flex items-center gap-3.5 p-3 rounded-xl bg-slate-50 border border-border/40 hover:bg-slate-100/80 transition-colors">
-                    <CheckCircle2 size={20} className="text-success shrink-0" />
-                    <span className="text-text-primary text-base font-bold tracking-wide leading-tight">{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* ── Announcements ──────────────────────────────────────────────── */}
+      {/* ── 7. Info GKPI (Sorotan Dokumen & Panduan) ───────────────────── */}
       <Section
-        id="publikasi"
-        title="Info"
+        id="info"
+        title="Info GKPI"
         subtitle="Ringkasan kabar, dokumen, dan arah pelayanan GKPI dalam satu ruang informasi."
-        className="!pb-8 md:!pb-10"
         pattern
       >
         <InfoSlideshow />
-      </Section>
-
-      {/* ── Publications ───────────────────────────────────────────────── */}
-      <Section
-        id="literasi"
-        title="Publikasi & Literasi"
-        subtitle="Renungan, majalah, dan panduan untuk pertumbuhan rohani jemaat."
-        className="!pt-6 md:!pt-8"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {publications.map((item, i) => (
-            <Card key={i} {...item} />
-          ))}
-        </div>
-        <div className="mt-16 text-center">
-          <Link
-            href="/publikasi"
-            className="inline-flex items-center gap-2 text-sm text-primary font-bold hover:text-primary-dark hover:underline underline-offset-8 transition-all"
-          >
-            Lihat semua publikasi
-            <ChevronRight size={16} />
-          </Link>
-        </div>
       </Section>
 
       {/* ── Partners ───────────────────────────────────────────────────── */}

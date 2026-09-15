@@ -14,6 +14,16 @@ const ALLOWED_DOCUMENT_TYPES = [
   "application/vnd.ms-excel",
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 ];
+const ALLOWED_AUDIO_TYPES = [
+  "audio/mpeg",
+  "audio/mp3",
+  "audio/wav",
+  "audio/x-m4a",
+  "audio/m4a",
+  "audio/aac",
+  "audio/ogg",
+  "audio/mp4",
+];
 
 // Dipakai untuk atribut `accept` di <input type="file"> pada form admin.
 export const PUBLIKASI_IMAGE_ACCEPT = ALLOWED_IMAGE_TYPES.join(",");
@@ -24,6 +34,19 @@ export const PUBLIKASI_DOCUMENT_ACCEPT = [
   ".xls",
   ".xlsx",
 ].join(",");
+export const PUBLIKASI_AUDIO_ACCEPT = [
+  "audio/mpeg",
+  "audio/mp3",
+  "audio/wav",
+  "audio/m4a",
+  "audio/aac",
+  "audio/ogg",
+  ".mp3",
+  ".m4a",
+  ".wav",
+  ".aac",
+  ".ogg",
+].join(",");
 
 export function isAllowedImage(file: File): boolean {
   return ALLOWED_IMAGE_TYPES.includes(file.type);
@@ -31,6 +54,12 @@ export function isAllowedImage(file: File): boolean {
 
 export function isAllowedDocument(file: File): boolean {
   return ALLOWED_DOCUMENT_TYPES.includes(file.type);
+}
+
+export function isAllowedAudio(file: File): boolean {
+  if (ALLOWED_AUDIO_TYPES.includes(file.type)) return true;
+  const ext = file.name.split(".").pop()?.toLowerCase();
+  return ["mp3", "m4a", "wav", "aac", "ogg"].includes(ext ?? "");
 }
 
 /** Format ukuran file jadi label enak dibaca, mis. "2.4 MB". */
@@ -114,4 +143,34 @@ export async function uploadPublikasiDocuments(
     docs.push(await uploadPublikasiDocument(file));
   }
   return docs;
+}
+
+/**
+ * Upload 1 file audio renungan (MP3/M4A/WAV/AAC/OGG).
+ * Maksimal 10MB (sesuai batas durasi maksimal 5 menit). Mengembalikan URL publik Supabase Storage.
+ */
+export async function uploadPublikasiAudio(file: File): Promise<string> {
+  if (!isAllowedAudio(file)) {
+    throw new Error("Format audio tidak didukung. Gunakan MP3, M4A, WAV, atau AAC.");
+  }
+
+  const MAX_SIZE = 3 * 1024 * 1024; // 3 MB (hemat kuota, cukup untuk rekaman suara 5 menit)
+  if (file.size > MAX_SIZE) {
+    throw new Error("Ukuran file audio maksimal 3 MB (durasi maksimal 5 menit).");
+  }
+
+  const ext = file.name.split(".").pop()?.toLowerCase() ?? "mp3";
+  const path = `audios/${crypto.randomUUID()}.${ext}`;
+
+  const { error } = await supabase.storage.from(BUCKET).upload(path, file, {
+    contentType: file.type || "audio/mpeg",
+    upsert: false,
+  });
+
+  if (error) {
+    throw new Error(`Gagal upload audio: ${error.message}`);
+  }
+
+  const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+  return data.publicUrl;
 }

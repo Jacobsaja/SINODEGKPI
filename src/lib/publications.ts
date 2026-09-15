@@ -21,13 +21,60 @@ export async function getLatestPublications(limit = 3): Promise<Publication[]> {
 }
 
 /**
+ * Renungan harian terbaru untuk section "Renungan" di Beranda.
+ * Hanya memuat renungan yang usianya maksimal 30 hari dari hari ini.
+ */
+export async function getLatestDevotions(limit = 3): Promise<Publication[]> {
+  const cutoffDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+    .toISOString()
+    .slice(0, 10);
+
+  const { data, error } = await supabase
+    .from("publications")
+    .select("*")
+    .eq("category", "Renungan Harian")
+    .gte("date", cutoffDate)
+    .order("date", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error("Gagal mengambil renungan terbaru:", error.message);
+    return [];
+  }
+  return data ?? [];
+}
+
+/**
+ * Publikasi warta & berita non-renungan untuk section "Publikasi" di Beranda.
+ */
+export async function getLatestArticles(limit = 3): Promise<Publication[]> {
+  const { data, error } = await supabase
+    .from("publications")
+    .select("*")
+    .neq("category", "Renungan Harian")
+    .order("date", { ascending: false })
+    .limit(limit);
+
+  if (error) {
+    console.error("Gagal mengambil publikasi artikel:", error.message);
+    return [];
+  }
+  return data ?? [];
+}
+
+/**
  * Semua publikasi untuk halaman /publikasi (client component, filter & search
  * dilakukan di sisi client setelah data ini dimuat).
  * Jika parameter department diisi, filter publikasi berdasarkan departemen tersebut.
+ * Otomatis menyaring renungan harian yang usianya sudah lebih dari 30 hari.
  */
 export async function getAllPublications(
   department?: PublicationDepartment
 ): Promise<Publication[]> {
+  const cutoffDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+    .toISOString()
+    .slice(0, 10);
+
   let query = supabase
     .from("publications")
     .select("*")
@@ -49,18 +96,24 @@ export async function getAllPublications(
         .order("date", { ascending: false });
 
       if (fallbackData) {
-        if (department) {
-          return fallbackData.filter(
-            (item: Publication) => (item.department ?? "Sinode") === department
-          );
-        }
-        return fallbackData;
+        const filtered = fallbackData.filter(
+          (item: Publication) =>
+            (item.category !== "Renungan Harian" || item.date >= cutoffDate) &&
+            (!department || (item.department ?? "Sinode") === department)
+        );
+        return filtered;
       }
     }
     console.error("Gagal mengambil publikasi:", error.message);
     return [];
   }
-  return data ?? [];
+
+  // Saring renungan harian yang usianya lebih dari 30 hari
+  const activeItems = (data ?? []).filter(
+    (item: Publication) => item.category !== "Renungan Harian" || item.date >= cutoffDate
+  );
+
+  return activeItems;
 }
 
 /**
@@ -93,4 +146,46 @@ export function formatDateID(isoDate: string): string {
 /** Format angka views menjadi format ribuan Indonesia (1248 -> "1.248"). */
 export function formatViewsID(views: number): string {
   return views.toLocaleString("id-ID");
+}
+
+/** Format tanggal lengkap dengan nama hari ("Selasa, 15 September 2026"). */
+export function formatFullDateID(isoDate: string): string {
+  try {
+    const d = new Date(isoDate);
+    if (isNaN(d.getTime())) return isoDate;
+    return d.toLocaleDateString("id-ID", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  } catch {
+    return isoDate;
+  }
+}
+
+/**
+ * Menambah hitungan views saat publikasi / renungan dibaca.
+ * Dijalankan secara non-blocking agar tidak memperlambat respon server.
+ */
+export async function incrementPublicationViews(id: string | number): Promise<void> {
+  try {
+    const numericId = typeof id === "string" ? parseInt(id, 10) : id;
+    if (isNaN(numericId)) return;
+
+    const { data } = await supabase
+      .from("publications")
+      .select("views")
+      .eq("id", numericId)
+      .single();
+
+    if (data) {
+      await supabase
+        .from("publications")
+        .update({ views: (data.views || 0) + 1 })
+        .eq("id", numericId);
+    }
+  } catch (err) {
+    console.warn("Gagal update counter views:", err);
+  }
 }
