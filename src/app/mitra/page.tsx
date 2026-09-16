@@ -241,7 +241,7 @@ export default function MitraPage() {
       <section className="relative overflow-hidden px-5 pb-16 pt-32 sm:px-8 md:pb-24 md:pt-40">
         <div className="absolute inset-0">
           <Image
-            src={assets.heroBg}
+            src={assets.heroMitra}
             alt="Mitra GKPI"
             fill
             className="object-cover opacity-20"

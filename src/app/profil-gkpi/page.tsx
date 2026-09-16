@@ -610,8 +610,8 @@ export default function ProfilGKPIPage() {
       <section className="relative flex min-h-[86vh] items-end overflow-hidden bg-background pb-10 pt-32 md:min-h-[90vh] md:pb-14">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/hero_slide_3.webp"
-            alt="Alkitab dan dasar iman GKPI"
+            src="/sinode_GKPI.webp"
+            alt="Kantor Sinode GKPI"
             fill
             priority
             sizes="100vw"

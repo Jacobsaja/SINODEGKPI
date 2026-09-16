@@ -103,7 +103,7 @@ export default function TokoPage() {
       <section className="relative flex min-h-[50vh] items-end overflow-hidden bg-background pb-12 pt-32 md:min-h-[55vh] md:pb-16">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/hero-bg.webp"
+            src="/sinode_GKPI.webp"
             alt="Toko Latar Belakang"
             fill
             priority
@@ -225,7 +225,7 @@ export default function TokoPage() {
                 {/* Image side */}
                 <div className="relative min-h-[300px] overflow-hidden md:col-span-7 md:min-h-[420px]">
                   <Image
-                    src={featuredProduct.image || "/hero-bg.webp"}
+                    src={featuredProduct.image || "/sinode_GKPI.webp"}
                     alt={featuredProduct.name}
                     fill
                     sizes="(max-width: 768px) 100vw, 55vw"
@@ -294,7 +294,7 @@ export default function TokoPage() {
                   {/* Card Thumbnail */}
                   <div className="relative aspect-[16/10] w-full overflow-hidden">
                     <Image
-                      src={product.image || "/hero-bg.webp"}
+                      src={product.image || "/sinode_GKPI.webp"}
                       alt={product.name}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -428,7 +428,7 @@ export default function TokoPage() {
               {/* Left Panel: Image */}
               <div className="w-full h-44 sm:h-52 md:h-full md:w-[45%] flex-shrink-0 relative overflow-hidden bg-slate-50 border-b md:border-b-0 md:border-r border-border/40">
                 <Image
-                  src={selectedProduct.image || "/hero-bg.webp"}
+                  src={selectedProduct.image || "/sinode_GKPI.webp"}
                   alt={selectedProduct.name}
                   fill
                   sizes="(max-width: 768px) 100vw, 45vw"

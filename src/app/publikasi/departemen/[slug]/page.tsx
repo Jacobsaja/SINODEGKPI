@@ -103,7 +103,7 @@ export default async function DepartmentPublicationPage({ params }: Props) {
       <section className="relative flex min-h-[45vh] items-end overflow-hidden bg-background pb-12 pt-32 md:min-h-[50vh] md:pb-16">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/hero-bg.webp"
+            src="/Publikasi.webp"
             alt={`Publikasi ${config.name}`}
             fill
             priority
@@ -183,7 +183,7 @@ export default async function DepartmentPublicationPage({ params }: Props) {
                   {/* Card Thumbnail */}
                   <div className="relative aspect-[16/10] w-full overflow-hidden bg-surface">
                     <Image
-                      src={post.image || "/hero-bg.webp"}
+                      src={post.image || "/Publikasi.webp"}
                       alt={post.title}
                       fill
                       sizes="(min-width: 1024px) 30vw, 50vw"

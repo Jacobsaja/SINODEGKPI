@@ -47,7 +47,7 @@ const slides = [
     reference: "2 Timotius 3:16",
     cta: "Lihat Publikasi",
     href: "publikasi",
-    image: assets.slide3,
+    image: assets.slide5,
   },
   {
     id: 6,
@@ -56,7 +56,7 @@ const slides = [
     reference: "Mazmur 122:1",
     cta: "Lihat Informasi Gereja",
     href: "info",
-    image: assets.slide2,
+    image: assets.slide6,
   },
   {
     id: 7,
@@ -65,7 +65,7 @@ const slides = [
     reference: "Pengkhotbah 4:9",
     cta: "Lihat Mitra Gereja",
     href: "mitra",
-    image: assets.slide3,
+    image: assets.slide7,
   },
   {
     id: 8,
@@ -74,7 +74,7 @@ const slides = [
     reference: "1 Korintus 12:12",
     cta: "Lihat Struktur Gereja",
     href: "pengurus",
-    image: assets.slide4,
+    image: assets.slide8,
   },
 ];
 

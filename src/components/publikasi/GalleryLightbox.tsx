@@ -23,7 +23,7 @@ export default function GalleryLightbox({ images, title }: Props) {
   const goNext = () => setActiveIndex((i) => (i + 1) % images.length);
   const goPrev = () => setActiveIndex((i) => (i - 1 + images.length) % images.length);
 
-  const currentImage = images[activeIndex] || "/hero-bg.webp";
+  const currentImage = images[activeIndex] || "/Publikasi.webp";
 
   return (
     <>
@@ -59,7 +59,7 @@ export default function GalleryLightbox({ images, title }: Props) {
                   : "border-border/50 opacity-70 hover:opacity-100"
               }`}
             >
-              <Image src={img || "/hero-bg.webp"} alt={`Thumbnail ${i + 1}`} fill sizes="96px" className="object-cover" />
+              <Image src={img || "/Publikasi.webp"} alt={`Thumbnail ${i + 1}`} fill sizes="96px" className="object-cover" />
             </button>
           ))}
         </div>

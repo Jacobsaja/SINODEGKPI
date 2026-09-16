@@ -143,7 +143,7 @@ export default function PublikasiPage() {
       <section className="relative flex min-h-[50vh] items-end overflow-hidden bg-background pb-12 pt-32 md:min-h-[55vh] md:pb-16">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/hero-bg.webp"
+            src="/Publikasi.webp"
             alt="Publikasi Latar Belakang"
             fill
             priority
@@ -358,7 +358,7 @@ export default function PublikasiPage() {
                 {/* Image side */}
                 <div className="relative min-h-[300px] md:col-span-7 md:min-h-[420px] overflow-hidden">
                   <Image
-                    src={featuredPost.image || "/hero-bg.webp"}
+                    src={featuredPost.image || "/Publikasi.webp"}
                     alt={featuredPost.title}
                     fill
                     sizes="(min-width: 768px) 60vw, 100vw"
@@ -429,7 +429,7 @@ export default function PublikasiPage() {
                 {/* Card Thumbnail */}
                 <div className="relative aspect-[16/10] w-full overflow-hidden bg-surface">
                   <Image
-                    src={post.image || "/hero-bg.webp"}
+                    src={post.image || "/Publikasi.webp"}
                     alt={post.title}
                     fill
                     sizes="(min-width: 1024px) 30vw, 50vw"
