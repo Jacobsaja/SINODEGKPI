@@ -868,10 +868,16 @@ function PublikasiAdminContent() {
               {/* Left Column - Main Content (2/3 width) */}
               <div className="lg:col-span-2 space-y-5 rounded-2xl border border-border bg-surface/20 p-6 shadow-md">
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Judul Artikel</label>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
+                    {form.category === "Renungan Harian" ? "Tema / Judul Renungan" : "Judul Artikel"}
+                  </label>
                   <input
                     type="text"
-                    placeholder="Masukkan judul publikasi yang menarik..."
+                    placeholder={
+                      form.category === "Renungan Harian"
+                        ? "Contoh: Allah Menentang Penindasan dan Kejahatan..."
+                        : "Masukkan judul publikasi yang menarik..."
+                    }
                     value={form.title}
                     onChange={(e) => setForm({ ...form, title: e.target.value })}
                     className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-primary/40 focus:bg-background transition-all"
@@ -880,27 +886,53 @@ function PublikasiAdminContent() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Ringkasan Singkat (Excerpt)</label>
+                  <div className="flex items-center justify-between">
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
+                      {form.category === "Renungan Harian"
+                        ? "Nats / Ayat Renungan (Ayat Hari Ini)"
+                        : "Ringkasan Singkat (Excerpt)"}
+                    </label>
+                    {form.category === "Renungan Harian" && (
+                      <span className="text-[10px] font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full border border-primary/20">
+                        Ditampilkan di Kartu Ayat Hari Ini
+                      </span>
+                    )}
+                  </div>
                   <textarea
-                    placeholder="Berikan 1-2 kalimat ringkasan artikel sebagai pratinjau..."
+                    placeholder={
+                      form.category === "Renungan Harian"
+                        ? 'Contoh: Nahum 1:12 — "Beginilah firman TUHAN: Sekalipun mereka utuh dan begitu banyak jumlahnya, tetapi mereka akan hilang terbabat dan mati binasa; sekalipun Aku telah merendahkan engkau, tetapi Aku tidak akan merendahkan engkau lagi."'
+                        : "Berikan 1-2 kalimat ringkasan artikel sebagai pratinjau..."
+                    }
                     value={form.excerpt}
                     onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
                     className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-primary/40 focus:bg-background transition-all"
                     rows={3}
-                    maxLength={300}
+                    maxLength={500}
                     required
                   />
-                  <div className="flex justify-end">
-                    <span className="text-[10px] text-text-secondary/70">
-                      {form.excerpt.length}/300 karakter
+                  <div className="flex justify-between items-center text-[10px] text-text-secondary/70">
+                    <span>
+                      {form.category === "Renungan Harian"
+                        ? "💡 Tuliskan nats Alkitab pokok beserta referensinya di sini agar tampil di kotak Nats / Ayat Hari Ini."
+                        : "Ringkasan akan muncul di daftar publikasi dan pratinjau media sosial."}
+                    </span>
+                    <span>
+                      {form.excerpt.length}/500 karakter
                     </span>
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Isi Lengkap Artikel</label>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
+                    {form.category === "Renungan Harian" ? "Uraian & Renungan Firman Lengkap" : "Isi Lengkap Artikel"}
+                  </label>
                   <textarea
-                    placeholder="Ketik konten artikel secara lengkap di sini..."
+                    placeholder={
+                      form.category === "Renungan Harian"
+                        ? "Tuliskan uraian firman, renungan, dan pesan refleksi kehidupan secara lengkap di sini..."
+                        : "Ketik konten artikel secara lengkap di sini..."
+                    }
                     value={form.content}
                     onChange={(e) => setForm({ ...form, content: e.target.value })}
                     className="w-full rounded-xl border border-border bg-background/50 px-4 py-3 text-sm text-text-primary outline-none focus:border-primary/40 focus:bg-background transition-all font-sans leading-relaxed"
@@ -918,12 +950,18 @@ function PublikasiAdminContent() {
                 </h4>
 
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">Penulis / Sumber</label>
+                  <label className="text-[11px] font-bold uppercase tracking-wider text-text-secondary">
+                    {form.category === "Renungan Harian" ? "Pelayan Firman / Penulis" : "Penulis / Sumber"}
+                  </label>
                   <div className="relative">
                     <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary" />
                     <input
                       type="text"
-                      placeholder="Nama Penulis / Tim Media"
+                      placeholder={
+                        form.category === "Renungan Harian"
+                          ? "Contoh: Pdt. Dr. Jamil D. P. Sitorus, M.Th"
+                          : "Nama Penulis / Tim Media"
+                      }
                       value={form.author}
                       onChange={(e) => setForm({ ...form, author: e.target.value })}
                       className="w-full rounded-xl border border-border bg-background/50 pl-10 pr-4 py-2.5 text-sm text-text-primary outline-none focus:border-primary/40 focus:bg-background transition-all"
@@ -1284,7 +1322,29 @@ function PublikasiAdminContent() {
                           Hapus
                         </button>
                       </div>
-                      <audio controls className="w-full h-8 accent-primary" src={form.audio_url} preload="none" />
+                      <audio
+                        controls
+                        className="w-full h-8 accent-primary"
+                        preload="metadata"
+                        src={
+                          form.audio_url.startsWith("https://cpzplvifayzyihjzecdp.supabase.co/storage/v1/object/public/publications/")
+                            ? `/api/audio-stream?url=${encodeURIComponent(form.audio_url)}`
+                            : form.audio_url
+                        }
+                      />
+                      <div className="flex items-center justify-between text-[11px] pt-1 text-text-secondary">
+                        <a
+                          href={form.audio_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary hover:underline font-semibold"
+                        >
+                          Buka di tab baru ↗
+                        </a>
+                        <span className="text-[10px] text-text-secondary/70">
+                          Gunakan MP3 standar agar kompatibel di semua browser
+                        </span>
+                      </div>
                     </div>
                   )}
                 </div>

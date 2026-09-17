@@ -178,14 +178,21 @@ export default function DevotionalReader({
       {/* 3. LAYOUT UTAMA: 2 Kolom di Desktop (Sticky Sidebar Kiri + Isi Scroll Kanan) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
-        {/* KOLOM KIRI (FIXED / STICKY DI DESKTOP): JUDUL/TEMA, AYAT NATS, PENULIS, AUDIO */}
+        {/* KOLOM KIRI (FIXED / STICKY DI DESKTOP): COVER FLYER, INFO PELAYAN FIRMAN, AUDIO */}
         <aside className="lg:col-span-5 xl:col-span-4 lg:sticky lg:top-24 space-y-5">
           
-          {/* Card 1: Identitas Renungan (Tema, Penulis, Tanggal) */}
-          <div className="relative rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/[0.08] via-surface to-background p-6 sm:p-7 shadow-xl overflow-hidden">
+          {/* Card 1: Cover Flyer & Info Pelayan Firman */}
+          <div className="relative rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/[0.08] via-surface to-background p-5 sm:p-6 shadow-xl overflow-hidden space-y-4">
             <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-primary/10 blur-2xl pointer-events-none" />
 
-            <div className="relative z-10 space-y-4">
+            {/* Flyer / Cover Renungan (Jika diunggah) */}
+            {gallery.length > 0 && (
+              <div className="overflow-hidden rounded-2xl border border-border/70 shadow-md">
+                <GalleryLightbox images={gallery} title={post.title} />
+              </div>
+            )}
+
+            <div className="relative z-10 space-y-3.5">
               {/* Badge & Tanggal */}
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/15 px-3 py-0.5 text-[11px] font-bold text-primary tracking-wide uppercase">
@@ -198,59 +205,38 @@ export default function DevotionalReader({
                 </span>
               </div>
 
-              {/* Judul / Tema Pokok Renungan */}
-              <h1
-                className="text-2xl sm:text-3xl font-bold leading-snug text-text-primary tracking-tight"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                {post.title}
-              </h1>
-
               {/* Pelayan Firman / Penulis */}
-              <div className="border-t border-border/50 pt-4 flex items-center justify-between gap-3">
+              <div className="border-t border-border/50 pt-3.5 space-y-3">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
-                    <User size={16} />
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                    <User size={18} />
                   </div>
-                  <div className="min-w-0">
-                    <p className="text-[10px] uppercase font-bold text-text-secondary/70">Pelayan Firman</p>
-                    <p className="font-bold text-sm text-text-primary truncate">{post.author}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[10px] uppercase font-extrabold tracking-wider text-text-secondary/70">
+                      Pelayan Firman
+                    </p>
+                    <p className="font-bold text-sm text-text-primary leading-tight mt-0.5">
+                      {post.author}
+                    </p>
                   </div>
                 </div>
 
-                <div className="text-right text-xs text-text-secondary shrink-0">
-                  <span className="flex items-center justify-end gap-1">
-                    <Clock size={12} className="text-primary" />
-                    {post.read_time || "4 mnt"}
+                {/* Info Baca & Dilihat */}
+                <div className="flex items-center justify-between rounded-xl bg-background/50 border border-border/50 px-3.5 py-2 text-xs text-text-secondary">
+                  <span className="flex items-center gap-1.5 font-medium">
+                    <Clock size={13} className="text-primary" />
+                    <span>{post.read_time || "4 mnt"}</span>
                   </span>
-                  <span className="flex items-center justify-end gap-1 text-[11px] mt-0.5">
-                    <Eye size={12} className="text-primary" />
-                    {formattedViews}
+                  <span className="flex items-center gap-1.5 font-medium">
+                    <Eye size={13} className="text-primary" />
+                    <span>{formattedViews} dilihat</span>
                   </span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Card 2: Nats Firman Tuhan (Kutipan Ayat Pokok) */}
-          {post.excerpt && (
-            <div className="rounded-2xl border border-primary/30 bg-primary/[0.04] p-5 shadow-sm space-y-2.5">
-              <div className="flex items-center gap-2 text-primary">
-                <Quote size={16} />
-                <span className="text-[11px] font-extrabold uppercase tracking-wider">
-                  Nats / Ayat Hari Ini
-                </span>
-              </div>
-              <blockquote
-                className="text-sm sm:text-base font-serif italic leading-relaxed text-text-primary/95 pl-2 border-l-2 border-primary/40"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                &ldquo;{post.excerpt}&rdquo;
-              </blockquote>
-            </div>
-          )}
-
-          {/* Card 3: Pemutar Audio Renungan (Tetap Fixed & Mudah Dikontrol) */}
+          {/* Card 2: Pemutar Audio Renungan (Tetap Fixed & Mudah Dikontrol) */}
           {audioUrl && (
             <div className="rounded-2xl border border-border bg-surface p-4 shadow-md space-y-2">
               <div className="flex items-center justify-between gap-2 text-xs font-bold text-text-primary">
@@ -271,9 +257,45 @@ export default function DevotionalReader({
           )}
         </aside>
 
-        {/* KOLOM KANAN (SCROLLABLE): TOOLBAR UKURAN FONT, TEKS RENUNGAN, DOA, GALERI */}
+        {/* KOLOM KANAN (SCROLLABLE): JUDUL, NATS, TOOLBAR, TEKS RENUNGAN, DOA */}
         <div className="lg:col-span-7 xl:col-span-8 space-y-6">
           
+          {/* Judul Utama Renungan */}
+          <div className="space-y-2">
+            <h1
+              className="text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight text-text-primary tracking-tight"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              {post.title}
+            </h1>
+            <div className="flex flex-wrap items-center gap-3 text-xs text-text-secondary">
+              <span className="flex items-center gap-1.5 font-medium">
+                <Calendar size={13} className="text-primary" />
+                {fullDate}
+              </span>
+              <span>•</span>
+              <span>Pelayan Firman: <strong className="text-text-primary">{post.author}</strong></span>
+            </div>
+          </div>
+
+          {/* Card Nats / Ayat Hari Ini */}
+          {post.excerpt && (
+            <div className="rounded-2xl border border-primary/30 bg-primary/[0.04] p-5 sm:p-6 shadow-sm space-y-2.5">
+              <div className="flex items-center gap-2 text-primary">
+                <Quote size={18} />
+                <span className="text-xs font-extrabold uppercase tracking-wider">
+                  Nats / Ayat Hari Ini
+                </span>
+              </div>
+              <blockquote
+                className="text-base sm:text-lg font-serif italic leading-relaxed text-text-primary/95 pl-3 border-l-2 border-primary/40"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
+                &ldquo;{post.excerpt}&rdquo;
+              </blockquote>
+            </div>
+          )}
+
           {/* Toolbar Pengatur Font & Tombol Berbagi */}
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border/80 bg-surface/90 backdrop-blur-md px-4 py-3 shadow-md">
             {/* Pengatur Ukuran Font */}
@@ -333,13 +355,6 @@ export default function DevotionalReader({
               <ShareMenu title={post.title} />
             </div>
           </div>
-
-          {/* Galeri Foto jika diunggah */}
-          {gallery.length > 0 && (
-            <div className="overflow-hidden rounded-2xl border border-border">
-              <GalleryLightbox images={gallery} title={post.title} />
-            </div>
-          )}
 
           {/* Isi Bacaan Renungan Harian */}
           <article className={`space-y-6 text-text-primary transition-all duration-200 ${getTextSizeClass()}`}>

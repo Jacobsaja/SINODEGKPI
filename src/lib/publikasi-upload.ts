@@ -162,8 +162,18 @@ export async function uploadPublikasiAudio(file: File): Promise<string> {
   const ext = file.name.split(".").pop()?.toLowerCase() ?? "mp3";
   const path = `audios/${crypto.randomUUID()}.${ext}`;
 
+  // Normalisasi MIME type standar agar browser dapat streaming audio dengan benar
+  let contentType = file.type || "audio/mpeg";
+  if (ext === "mp3" || contentType === "audio/mp3") {
+    contentType = "audio/mpeg";
+  } else if (ext === "m4a" || contentType === "audio/x-m4a") {
+    contentType = "audio/mp4";
+  } else if (ext === "wav" || contentType === "audio/x-wav") {
+    contentType = "audio/wav";
+  }
+
   const { error } = await supabase.storage.from(BUCKET).upload(path, file, {
-    contentType: file.type || "audio/mpeg",
+    contentType,
     upsert: false,
   });
 

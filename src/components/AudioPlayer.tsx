@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Play, Pause, Volume2, VolumeX, Headphones, RotateCcw } from "lucide-react";
+import { Play, Pause, Volume2, VolumeX, Headphones, RotateCcw, AlertCircle, ExternalLink } from "lucide-react";
 
 interface AudioPlayerProps {
   src: string;
@@ -24,6 +24,31 @@ export default function AudioPlayer({
   const [isMuted, setIsMuted] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
+  const streamSrc = src.startsWith("https://cpzplvifayzyihjzecdp.supabase.co/storage/v1/object/public/publications/")
+    ? `/api/audio-stream?url=${encodeURIComponent(src)}`
+    : src;
+
+  // Watchdog: pastikan loading spinner tidak macet lebih dari 3 detik
+  useEffect(() => {
+    if (!isLoading) return;
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [isLoading]);
+
+  // Reload audio saat URL berubah
+  useEffect(() => {
+    if (audioRef.current) {
+      setIsPlaying(false);
+      setProgress(0);
+      setHasError(false);
+      setIsLoading(false);
+      audioRef.current.load();
+    }
+  }, [streamSrc]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -32,40 +57,49 @@ export default function AudioPlayer({
     }
   }, [volume, isMuted, playbackRate]);
 
-  const togglePlay = async () => {
+  const togglePlay = () => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    if (isPlaying) {
+    if (isPlaying || !audio.paused) {
       audio.pause();
       setIsPlaying(false);
+      setIsLoading(false);
     } else {
-      try {
-        setIsLoading(true);
-        await audio.play();
+      setIsLoading(true);
+      setHasError(false);
+      audio.play().then(() => {
         setIsPlaying(true);
-      } catch (err) {
-        console.error("Audio playback error:", err);
-      } finally {
         setIsLoading(false);
-      }
+      }).catch((err) => {
+        console.warn("Audio playback issue:", err);
+        setIsPlaying(false);
+        setIsLoading(false);
+        setHasError(true);
+      });
     }
   };
 
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       setProgress(audioRef.current.currentTime);
+      if (isLoading) {
+        setIsLoading(false);
+      }
     }
   };
 
   const handleLoadedMetadata = () => {
     if (audioRef.current) {
-      setDuration(audioRef.current.duration);
+      setDuration(audioRef.current.duration || 0);
+      setHasError(false);
+      setIsLoading(false);
     }
   };
 
   const handleEnded = () => {
     setIsPlaying(false);
+    setIsLoading(false);
     setProgress(0);
   };
 
@@ -106,13 +140,41 @@ export default function AudioPlayer({
     >
       <audio
         ref={audioRef}
-        src={src}
-        preload="none"
-        onTimeUpdate={handleTimeUpdate}
+        src={streamSrc}
+        preload="metadata"
+        onPlay={() => {
+          setIsPlaying(true);
+          setIsLoading(false);
+          setHasError(false);
+        }}
+        onPause={() => {
+          setIsPlaying(false);
+          setIsLoading(false);
+        }}
+        onPlaying={() => {
+          setIsPlaying(true);
+          setIsLoading(false);
+          setHasError(false);
+        }}
+        onLoadedData={() => {
+          setIsLoading(false);
+          setHasError(false);
+        }}
+        onCanPlay={() => {
+          setIsLoading(false);
+          setHasError(false);
+          if (audioRef.current?.duration) {
+            setDuration(audioRef.current.duration);
+          }
+        }}
         onLoadedMetadata={handleLoadedMetadata}
+        onTimeUpdate={handleTimeUpdate}
         onEnded={handleEnded}
-        onWaiting={() => setIsLoading(true)}
-        onPlaying={() => setIsLoading(false)}
+        onError={() => {
+          setIsLoading(false);
+          setIsPlaying(false);
+          setHasError(true);
+        }}
       />
 
       <div className="flex flex-col sm:flex-row items-center gap-5">
@@ -208,6 +270,25 @@ export default function AudioPlayer({
           </div>
         </div>
       </div>
+
+      {hasError && (
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-amber-500/10 border border-amber-500/25 px-3 py-2 text-xs text-amber-300">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <AlertCircle size={14} className="shrink-0 text-amber-400" />
+            <span className="truncate">Browser belum mendukung pemutaran langsung format file ini.</span>
+          </div>
+          <a
+            href={src}
+            target="_blank"
+            rel="noopener noreferrer"
+            download
+            className="inline-flex items-center gap-1 font-semibold text-primary hover:underline shrink-0 text-[11px]"
+          >
+            <span>Buka / Unduh</span>
+            <ExternalLink size={12} />
+          </a>
+        </div>
+      )}
     </div>
   );
 }
